@@ -1,15 +1,5 @@
 <?php 
 session_start();
-if(isset($_GET['logout'])){
-	session_unset();
-}else{
-	if(isset($_SESSION['usr'])){
-		header('Location: admin/index.php');   
-		exit;
-	}
-	
-}
-
 ?>
 <!DOCTYPE html>
 <html >
@@ -70,7 +60,7 @@ if(isset($_GET['logout'])){
     </form>
   </div>
   
-  <div class="cta"><a href="forgotpass.php">Mode passe oublié?</a></div>
+  <div class="cta"><a href="#">Mode passe oublié?</a></div>
 </div>
       
     

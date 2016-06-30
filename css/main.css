@@ -698,6 +698,7 @@ table {
 }
 #nearby-inst .inst-nearby-item .img-inst {
     background-color: #E1E1E1;
+    background-image: url('../images/no_thumb_host_80.jpg');
     padding: 3px;
     float: left;
     height: 57px;
@@ -892,4 +893,8 @@ table.legend_dpop tr td img{
     background-color: #175F9C;
     color: #FFF;
     margin: 0px;
+}
+
+.bold{
+    font-weight:bold;
 }

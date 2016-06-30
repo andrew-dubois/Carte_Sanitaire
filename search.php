@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>MSPP -  Carte Sanitaire</title>
     <script type="text/javascript" src="js/jquery191.js"></script>
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&key=AIzaSyBKTJn79hsRgdkWhnJr8QxodRTidYVFTKs"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 <!--    <script type="text/javascript" src="http://geoxml3.googlecode.com/svn/branches/polys/geoxml3.js"></script>
     <script type="text/javascript" src="http://geoxml3.googlecode.com/svn/branches/kmz/ZipFile.complete.js"></script>
     <script type="text/javascript" src="http://geoxml3.googlecode.com/svn/trunk/ProjectedOverlay.js"></script> -->

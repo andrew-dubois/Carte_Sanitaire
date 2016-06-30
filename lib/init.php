@@ -3,5 +3,5 @@
 //include_once('core/orgunit.php');
 
 /* imports dynamic sections */
-include('lib/inc/orgunit.inc.php');
+include('lib/inc/orgunitSPA.inc.php');
 ?>
