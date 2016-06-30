@@ -69,4 +69,68 @@ include(dirname(dirname(__FILE__)).'/core/users.php');
 				
 		}
 		
+		/* 
+	 * insert new user
+	 * @param NONE
+	 * Returns TRUE OR FALSE
+	*/	
+	
+	if(isset($_POST['InputFullName'])){
+		$usr= new Users;
+		$fullname=trim($_POST['InputFullName']);
+		$username=trim($_POST['InputuserName']);
+		$pass=trim($_POST['pass']);
+		$email=trim($_POST['InputEmail']);
+		$role=trim($_POST['role']);
+		$res=$usr->addnewuser($fullname,$username,$pass,$email,$role);
+		
+		if($res){
+			
+			header('Location: ../../admin/users.php?adduser=success');
+			exit;
+		}
+		
+		exit;
+				
+		}
+	
+	//delete a user
+	if(isset($_POST['iduser'])){
+		$usr= new Users;
+		$iduser=$_POST['iduser'];
+		$deluser=$usr->delUser($iduser);
+		
+	}
+	
+	//UPDATE user info 
+	if(isset($_POST['usrname']) ){
+		$nomcp = $_POST['nomcomp'];
+		$pass = $_POST['passusr'];
+		$emailuser = $_POST['emailusr'];
+		$usrname= $_POST['usrname'];
+
+		$usr= new Users;
+		$result= $usr->update_user($usrname,$nomcp,$pass,$emailuser);
+		if($result){
+			echo "yes";
+		}else{
+			echo"no";
+		}
+	}
+	
+	//list of user
+	function fuserlist(){
+		$usr= new Users;
+		$listuser= $usr->userslist();
+		return $listuser;
+	}
+	
+	// user info by username
+	/* function userInfoByUsrn($username){
+		$usr= new Users;
+		$userinfo= $usr-> userinfobyusername($usrname);
+		return $userinfo;
+		
+	} */
+		
 ?>

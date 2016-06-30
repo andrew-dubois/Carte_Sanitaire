@@ -107,19 +107,6 @@ $(document).ready(function () {
     google.maps.event.addListener(map, 'mousemove', function (ev) {
         MOUSE_LOCATION[0] = ev.latLng.lat();
         MOUSE_LOCATION[1] = ev.latLng.lng();
-//        if (distanceSearch)
-//        {
-//            var cityCircle = new google.maps.Circle({
-//                strokeColor: '#FF0000',
-//                strokeOpacity: 0.8,
-//                strokeWeight: 2,
-//                fillColor: '#FF0000',
-//                fillOpacity: 0.35,
-//                map: map,
-//                center: ev.latLng,
-//                radius: 5
-//            });
-//        }
     });
 
     /*When user select a map type*/
@@ -198,40 +185,11 @@ function executeColorizeDep() {
     });
 }
 
-var DistanceCircle;
-
 function BindDepInfoWindow(poly, depName, depInfoWindow) {
     poly.addListener('click', function (event) {
         depInfoWindow.setPosition(event.latLng);
         depInfoWindow.setContent("<strong>" + depName + "</strong>");
         depInfoWindow.open(map);
-    });
-
-    poly.addListener('mousemove', function (ev) {
-        MOUSE_LOCATION[0] = ev.latLng.lat();
-        MOUSE_LOCATION[1] = ev.latLng.lng();
-        if (distanceSearch)
-        {
-            if (typeof DistanceCircle !== "undefined")
-            {
-                // Move Poly
-                //DistanceCircle.moveTo(new google.maps.LatLng(MOUSE_LOCATION[0], MOUSE_LOCATION[1]));
-            } else
-            {
-                // Create poly
-                DistanceCircle = new google.maps.Circle({
-                    strokeColor: '#FFFFFF',
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                    fillColor: '#FFFFFF',
-                    fillOpacity: 0.35,
-                    map: map,
-                    center: ev.latLng,
-                    radius: 200,
-                    draggable: true
-                });
-            }
-        }
     });
 }
 
@@ -243,9 +201,10 @@ function WhiteSelectDepartment(DepName) {
                 depsPolygons[department].Polys[poly].setOptions({fillColor: '#ea5656', fillOpacity: 0.4});
             }
         }
-    } else
+    }
+    else
     {
-        DepName = DepName == "Grand-Anse" ? "Grand'Anse" : DepName;
+        DepName = DepName == "Grand Anse" ? "Grand'Anse" : DepName;
         for (var department in depsPolygons) {
             if (depsPolygons[department].DepName != DepName)
                 for (var poly in depsPolygons[department].Polys)
@@ -320,7 +279,12 @@ function viewCommDept(nameDep) {
  * @return void
  */
 function getNumFacLabDep() {
-    $('#NB_lab_infr').text(facTypeCount['lab']);
+    var depname = $('#dep-list-dropdmenu').val();
+    $.get("lib/inc/orgunit.inc.php?facSPALabDep=" + depname, function (data) {
+        var obj = jQuery.parseJSON(data);
+        var facLabTotal = obj[0]['countlab'];
+        $('#NB_lab_infr').text(facLabTotal);
+    });
 }
 
 /*
@@ -329,7 +293,22 @@ function getNumFacLabDep() {
  * @return void
  */
 function getNumFacHIVDep() {
-    $('#NB_vih_fac').text(facTypeCount['hiv']);
+    var depname = $('#dep-list-dropdmenu').val();
+    $.get("lib/inc/orgunit.inc.php?facSPAHIVDep=" + depname, function (data) {
+        var obj = jQuery.parseJSON(data);
+        var facVIHTotal = obj[0]['countvih'];
+        $('#NB_vih_fac').text(facVIHTotal);
+    });
+}
+
+//store fac id in a session
+function storeFacID() {
+    var facid_arr_to_str = FACILITY_ID.join(",");
+    //facid={name:"facid",value:facid_arr_to_str};
+    //alert(facid_arr_to_str);	
+    $.get('lib/inc/orgunit.inc.php?store_FACID=' + facid_arr_to_str, function (data) {
+        //alert(data);
+    });
 }
 
 //set the map
