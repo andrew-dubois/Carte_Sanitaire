@@ -1,0 +1,245 @@
+/* CSS Document */
+/* menu overlaps passed this point, convert to button menu*/
+/* @media (max-width: 864px) {
+    #navbar{
+        display: none;
+    }
+    #mobile-nav{
+        display: block !important;
+    }
+}
+
+ */
+ #mobile-nav{
+    display: none;
+}
+#navbar-mob{
+	
+	display:none;
+}
+
+#head {
+    background-image: url(../images/bg_head2.png);
+    background-repeat: repeat-x;
+    overflow: hidden;
+}
+
+#logosite {
+    background-image: url(../images/sitelogo.png);
+    background-repeat: no-repeat;
+    background-position: left top;
+    display: block;
+    float: right;
+    height: 73px;
+    width: 300px;
+    position: relative;
+    margin-left: 1px;
+}
+#logosite_desc, #logocard_desc {
+    display: inherit;
+    margin-left: 80px;
+}
+#logosite_desc h2, #logocard h2 {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+    text-align: center;
+    color: #4374cd;
+    margin-bottom: 5px;
+    line-height: 20px !important;
+}
+#logosite_desc p, #logocard p {
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 12px;
+    text-align: center;
+    color: #666;
+    line-height: 18px;
+}
+
+#logocard {
+    background-image: url(../images/cardlogo_mod.png);
+    background-repeat: no-repeat;
+    background-position: left top;
+    display: inherit;
+    float: left;
+    max-width: 335px;
+    position: relative;
+}
+
+#language {
+    clear: both;
+    float: right;
+    width: 100px;
+    margin-top: 10px;
+    margin-right: 35px;
+    background-image: url(../images/lang-arrow-icon.png);
+    background-repeat: no-repeat;
+    background-position: right 8px;
+}
+
+
+#content-head {
+    max-width: 1024px;
+    margin-right: auto;
+    margin-left: auto;
+    overflow: hidden;
+}
+#navbar {
+    background-color: #175f9c;
+    /*margin-top: 5px;*/
+    box-shadow: 0px 5px 8px #919191;
+    margin-bottom: 15px;
+     border-radius: 0;
+     border-color: transparent;
+     border-width: 0px;
+}
+
+#navbar-inner {
+    height: inherit;
+    max-width: 900px;
+    margin-right: auto;
+    margin-left: auto;
+}
+#navbar-inner ul {
+    margin: 0px;
+}
+#navbar-inner ul li {
+    float: left;
+    list-style-type: none;
+    display: block;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: #4d84b3;
+}
+#navbar-inner ul li a {
+    color: #FFF;
+    font-size: 17px;
+    font-family: Verdana, Geneva, sans-serif;
+    display: block;
+    padding-top: 40px;
+    padding-right: 29px;
+    padding-bottom: 10px;
+    padding-left: 29px;
+    text-decoration: none;
+}
+.focusMenuItem {
+    background-color: #3c79ac;
+
+}
+#navbar-inner ul li a:hover{
+    background-color: #2065a0;
+}
+
+#navbar-inner ul li a.mIcon {
+    background-repeat: no-repeat;
+    background-position: center 7px;
+}
+#navbar-inner ul li a.mIcon.homeicon {
+    background-image: url(../images/home-icon.png);	
+}
+#navbar-inner ul li a.mIcon.abouticon {
+    background-image: url(../images/about-icon.png);
+    background-position: center 5px	
+}
+#navbar-inner ul li a.mIcon.mapicon {
+    background-image: url(../images/map-icon.png);	
+}	
+#navbar-inner ul li a.mIcon.sitemapicon {
+    background-image: url(../images/siteplan-icon.png);	
+    background-position: center 13px	
+}
+#navbar-inner ul li a.mIcon.docicon {
+    background-image: url(../images/doc-icon.png);	
+}
+#language a {
+    padding-left: 32px;
+    background-image: url(../images/flag-french-icon.png);
+    background-repeat: no-repeat;
+    background-position: left center;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    color: #175f9c;
+    display: block;
+}
+.link-section {
+    height: 224px;
+    width: 374px;
+    background-color: #FFF;
+    box-shadow: 0px 0px 40px #C9C9C9;
+    position: relative;
+    text-align: center;
+    transition-duration: 0.5s;
+}
+
+.link-section:hover{
+    box-shadow: 0px 0px 50px #175f9c;
+}
+
+#main-content .container .row .span6 {
+    margin-left: 78px;
+    width: 374px;
+    margin-top: 48px;
+}
+.link-section h1 {
+    font-size: 18px;
+    margin: 0px;
+    font-family: Verdana, Geneva, sans-serif;
+    font-weight: normal;
+    text-align: center;
+    color: #175F9C;
+}
+.link-section .caption-section {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    /*background-color: #9f9f9f;*/
+    width: 374px;
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top : solid 3px #175F9C
+}
+.link-section .caption-section span {
+    color: #000;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 12px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+#footer {
+    background-color: #0b4475;
+    /*padding-top: 20px;
+    padding-bottom: 20px;
+    left: 0px;*/
+    color: #FFF;
+    text-align: center;
+    font-size: 12px;
+    height:60px;
+    /*clear: both;*/
+    position: absolute;
+    width: 100%;
+}
+
+#footer .footer-text{
+    margin: 20px 0;
+}
+
+#footer a, #footer a:hover {
+    color: #5c9dd5;
+}
+/*New styles*/
+.mapbg {
+	background-image: url(../images/mapbg_opt.png);
+	background-repeat: no-repeat;
+	background-size:cover;
+}
+
+#main-content {
+    /*background-color: #FFF;*/
+    height: 600px;
+    width: 960px;
+    margin-right: auto;
+    margin-left: auto;
+    /*border: 1px solid #d8e4ee;*/
+    /*opacity: .6;*/
+}

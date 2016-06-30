@@ -1,0 +1,156 @@
+@media all and (min-width: 800px) and (max-width: 1024px) {
+	#main-content{
+		width :600px;
+		/* border :1px solid #000; */
+		height:auto;
+	}
+	
+	 .link-section {
+    height: 224px;
+    width: auto;
+	/* clear:both */
+	} 
+	#main-content .container .row .span6 {
+    /* margin-left: 78px; */
+    width: 100% !important;
+    margin-top: 48px;
+	clear:both;
+	margin-left:0
+	
+   }
+	
+	.link-section .caption-section {
+		width :100%;
+	}
+	
+	
+	.container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+      width: 100%
+	}
+	
+	.row {
+      margin-left:0
+	}
+	
+	[class*="span"] {
+    float: left;
+    min-height: 1px;
+    margin-left:0
+	}
+	
+	/*Navbar Menu */
+	#navbar-inner ul li a {
+    color: #FFF;
+    font-size: 1em;
+    font-family: Verdana, Geneva, sans-serif;
+    display: block;
+    padding:30px 10px 10px 10px ;
+    text-decoration: none;
+	}
+	
+	#navbar-inner {
+    height: inherit;
+    max-width: 600px;
+    margin-right: auto;
+    margin-left: auto;
+	}
+}
+
+@media (max-width: 799px) {
+	#navbar-inner ul {
+    display:none;
+	}
+	
+	#navbar-mob{
+	
+	display:block;
+	}
+	
+	 #nav-mob-menu {
+		font-size:2.5em;
+		color:#fff;
+		float:left;
+		
+	}
+	
+	#nav-mob-menu-rightOpt{
+		font-size:2.5em;
+		color:#fff;
+		float:right;
+		
+	}
+	
+	
+	/*links box */
+	#main-content{
+		width :auto;
+		/* border :1px solid #000; */
+		height:auto;
+	}
+	
+	#logosite{
+		
+		clear:both;
+		float:none;
+		margin-left:auto;
+		margin-right:auto;
+	}
+	
+	#logocard{
+		
+		margin-left:auto;
+		margin-right:auto;
+		width:300px;
+		position:relative;
+		float:none;
+		display:block;
+	}
+	
+	 .link-section {
+    height: auto;
+    width: auto;
+	padding:3px 0 3px 0;
+	margin-bottom:15px;
+	background: #D4E8F9;
+	border: 1px solid #175F9C;
+	/* clear:both */
+	} 
+	.mapbg{
+		background:none;
+	}
+	.link-section  img{
+		display:none;
+	}
+	.link-section .caption-section {
+		display:none;
+	}
+	#main-content .container .row .span6 {
+    /* margin-left: 78px; */
+    width: 100% !important;
+    margin-top: 38px;
+	clear:both;
+	margin-left:0
+	
+   }
+	
+	.link-section .caption-section {
+		width :100%;
+	}
+	
+	
+	.container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+      width: 100%
+	}
+	
+	.row {
+      margin-left:0
+	}
+	
+	[class*="span"] {
+    float: left;
+    min-height: 1px;
+    margin-left:0
+	}
+
+	
+}
