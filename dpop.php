@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Donn&eacute;es Population -  Carte Sanitaire</title>
     <script type="text/javascript" src="js/jquery191.js"></script>
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&key=AIzaSyBKTJn79hsRgdkWhnJr8QxodRTidYVFTKs"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
      <script type="text/javascript">
     	google.load("visualization", "1", {packages:["corechart"]}); 
