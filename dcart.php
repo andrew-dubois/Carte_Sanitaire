@@ -1,5 +1,5 @@
-<?php
-include_once('lib/init.php');
+<?php include_once('lib/init.php'); 
+//include_once('lib/inc/polygons.php');
 ?>
 <!DOCTYPE html">
 <html>
@@ -7,26 +7,24 @@ include_once('lib/init.php');
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>MSPP -  Carte Sanitaire</title>
         <script type="text/javascript" src="js/jquery191.js"></script>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>  
-        <script type="text/javascript" src="js/markerClusterer/markerclusterer_packaged.js"></script>
-
-<!--<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/src/markerclusterer.js"></script>-->
-
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBKTJn79hsRgdkWhnJr8QxodRTidYVFTKs"></script>   
+        <!--<script type="text/javascript" src="js/markercluster.js"></script>-->
+		<script type="text/javascript" src="js/markerClusterer/markerclusterer_packaged.js"></script>
+       
+        
         <script type="text/javascript" src="js/bootstrap/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/bootstrap/js/bootstrap-slider.js"></script>
         <script type="text/javascript" src="js/cs_tree/lib/jquery.cookie.js"></script>
         <script type="text/javascript" src="js/cs_tree/jquery.treeview.js"></script> 
-
+        
         <script type="text/javascript" src="js/custom.js"></script>
         <script type="text/javascript" src="js/map.js"></script>        
         <script type="text/javascript" src="js/map_clustering.js"></script>
         <script type="text/javascript" src="js/dcart_legend.js"></script>
         <script type="text/javascript" src="js/dcart_leftmenu.js"></script>
-
+        
         <link href="css/main.css" rel="stylesheet" type="text/css">         
 
         <link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-        <link href="js/bootstrap/css/slider.css" rel="stylesheet" type="text/css">
         <link href="css/bootstrap-custum.css" rel="stylesheet" type="text/css"> 
         <link href="js/cs_tree/jquery.treeview.css" rel="stylesheet" type="text/css">     
     </head>
@@ -46,7 +44,7 @@ include_once('lib/init.php');
                         SANITAIRE D'HAITI </h2>
                     <p>UNIT&Eacute; D'&Eacute;TUDES ET DE PROGRAMMATION</p>
                 </div>
-                <div id="hdlink"><a href="login.php">Se Connecter</a></div>
+                <div id="hdlink"><a href="#myModal" data-toggle="modal">Se Connecter</a></div>
             </div>
 
             <!--Navbar-->
@@ -65,8 +63,7 @@ include_once('lib/init.php');
                         <div class="span2" id="leftmenu">
                             <!--departement list-->
                             <div id="department-list">
-                                <!--<h3>Choisir une carte &agrave; afficher</h3>-->
-                                <h3>Choisir D&eacute;partementale</h3>
+                                <h3>Choisir une carte &agrave; afficher</h3>
                                 <form action="" method="get" name="departmentlist">
                                     <select name="dep-list-dropdmenu" id="dep-list-dropdmenu">
                                         <option value="none">---</option>
@@ -76,7 +73,7 @@ include_once('lib/init.php');
                                         <optgroup label="Carte D&eacute;partementale">
                                             <option value="Artibonite">Artibonite</option>
                                             <option value="Centre">Centre</option>
-                                            <option value="Grand-Anse">Grand'Anse</option>
+                                            <option value="Grand Anse">Grand'Anse</option>
                                             <option value="Nippes">Nippes</option>
                                             <option value="Nord">Nord</option>
                                             <option value="Nord-Est">Nord-Est</option>
@@ -96,17 +93,18 @@ include_once('lib/init.php');
                                         <td><label for="health_fac">Institutions sanitaires</label>&nbsp;<span id="fac_typeTotal" class="badge badge-info">-</span>
                                             <ul id="fac_type" class="treeview">
                                                 <li>
-                                                    <input type="checkbox" value="CAL" class="opt_fac_type" id="chk_health_a_lit" checked />&nbsp;<span><label for="chk_health_a_lit" title="Centre de sant&eacute; &agrave; lit">CAL</label></span>&nbsp;<span class="badge badge-info stotal">-</span>
+                                                    <input type="checkbox" value="Centre de sante a lit" class="opt_fac_type" id="chk_health_a_lit" checked />&nbsp;<span><label for="chk_health_a_lit" title="Centre de sant&eacute; &agrave; lit">CAL</label></span>&nbsp;<span class="badge badge-info stotal">-</span>
                                                 </li>
                                                 <li>
-                                                    <input type="checkbox" value="CSL" class="opt_fac_type" id="chk_health_sans_lit" checked/>&nbsp;<span><label for="chk_health_sans_lit" title="Centre de sant&eacute; sans lit">CSL</label></span>&nbsp;<span class="badge badge-info stotal">-</span>
+                                                    <input type="checkbox" value="Centre de sante sans lit" class="opt_fac_type" id="chk_health_sans_lit" checked/>&nbsp;<span><label for="chk_health_sans_lit" title="Centre de sant&eacute; sans lit">CSL</label></span>&nbsp;<span class="badge badge-info stotal">-</span>
                                                 </li>
                                                 <li>
                                                     <input type="checkbox" value="Hopital" class="opt_fac_type" id="chk_health_h" checked/>&nbsp;<span><label for="chk_health_h" title="Hopitale">Hopital</label></span>&nbsp;<span class="badge badge-info stotal">-</span>
                                                 </li>
                                                 <li>
-                                                    <input type="checkbox" value="HCR" class="opt_fac_type" id="chk_health_hcr" checked/>&nbsp;<span><label for="chk_health_hcr" title="Hopital Communautaire de r&eacute;f&eacute;rence">HCR</label></span>&nbsp;<span class="badge badge-info stotal">-</span>
+                                                    <input type="checkbox" value="Hopital communautaire de reference" class="opt_fac_type" id="chk_health_hcr" checked/>&nbsp;<span><label for="chk_health_hcr" title="Hopital Communautaire de r&eacute;f&eacute;rence">HCR</label></span>&nbsp;<span class="badge badge-info stotal">-</span>
                                                 </li>
+
                                                 <li>
                                                     <input type="checkbox" value="Hopital universitaire" class="opt_fac_type" id="chk_health_hu" checked/>&nbsp;<span><label for="chk_health_hu" title="Hopital universitaire">HU</label></span>&nbsp;<span class="badge badge-info stotal">-</span>
                                                 </li>
@@ -128,15 +126,11 @@ include_once('lib/init.php');
                                     <tr>
                                         <td> <input type="checkbox" id="vih_fac" class="layerOpt"/></td>
                                         <td><label for="vih_fac">Institutions offrant le programme VIH</label>&nbsp;<span id="NB_vih_fac" class="badge badge-info">-</span></td>
-                                    </tr>                                            
-                                </table>                                
-                            </div>  
-                            <input type="button" class="btn btn-primary" id="btn_serv_filter" value="Filtrer les services (-/14)" style="margin-left: auto; margin-right: auto; display: block" />                          
-                            <br/>
-                            <input type="button" class="btn btn-primary" id="btn_report" value="Compte-rendu" style="margin-left: auto; margin-right: auto; display: block" />                          
-                        </div>
+                                    </tr>        
 
-                        <!-- Legend -->
+                                </table>
+                            </div>                            
+                        </div>
                         <div class="span10" id="mapViewDiv">
                             <div id="legendFac_btnShow"><a href="#" title="Afficher la l&eacute;gende">&laquo; L&eacute;gende</a></div>
                             <div id="legendFac">
@@ -206,116 +200,43 @@ include_once('lib/init.php');
                     </div>
                 </div>                
             </div>
+            <!--Login form modal box-->
+            <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="myModalLabel">MSPP - Se connecter</h3>
+                </div>
+                <div class="modal-body">
 
-            <!--footer-->
-            <div id="footer">
-                <span>Carte Sanitaire &copy; 2014</span> - <a href="#">Site web MSPP</a> | <a href="#">Documentation</a> 
-            </div>
-
-            <!--Service Filter-->
-            <div class="modal hide fade" id="servModWin" data-backdrop="static">                
-                <form role="form" method="get" id="servForm">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3>Sélectionnez services (-/14)</h3>
-                    </div>
-                    <div class="modal-body">
-                        <div class="checkbox">
-                            <input type="checkbox" id="cbxFilterbyServs" name="cbxFilterbyServs"/>
-                            <label class="bold" for="cbxFilterbyServs">Filtrer par services offerts</label>  
-                        </div> 
-                        <div id="servChecks">
-                            <div class="radio span3">
-                                <input id="ou_opt" type="radio" value="OR" name="opt_filter_radio" class="opt_filter_r" checked/>
-                                <label for="ou_opt">Au moins un des services coch&eacute;s</label>
-                            </div>
-                            <div class="radio span3">
-                                <input type="radio" id="et_opt" value="AND" name="opt_filter_radio" class="opt_filter_r"/>
-                                <label for="et_opt">&Agrave; la fois les services coch&eacute;s</label>
-                            </div>
-                            <div class="clearfix" style="margin-bottom: 8px"></div>
-                            <div class="checkbox" style="margin-bottom: 3px">
-                                <input type="checkbox" id="cbxSelAllFilters" name="cbxSelAllFilters" checked="checked"/>
-                                <label for="cbxSelAllFilters">Sélectionner tout</label>  
-                            </div>
-                            <div id="clFilters">
-                                <div class="checkbox span3">
-                                    <input type="checkbox" id="cbxPlanificationfamiliale" name="servFilter[]" value="fp" checked="checked" class="cbxServFil"/>
-                                    <label for="cbxPlanificationfamiliale">Planification familiale</label>                                    
-                                </div>
-                                <div class="checkbox span3">
-                                    <input type="checkbox" id="cbxSoinsprénataux" name="servFilter[]" value="anc" checked="checked" class="cbxServFil"/>
-                                    <label for="cbxSoinsprénataux">Soins prénataux</label>
-                                </div>
-                                <div class="checkbox span3">
-                                    <input type="checkbox" id="cbxSoindesPTME" name="servFilter[]" value="pmtct" checked="checked" class="cbxServFil"/>
-                                    <label for="cbxSoindesPTME">Soin des PTME</label>
-                                </div>
-                                <div class="checkbox span3">
-                                    <input type="checkbox" id="cbxAccouchement" name="servFilter[]" value="delivery" checked="checked" class="cbxServFil"/>
-                                    <label for="cbxAccouchement">Accouchement</label>
-                                </div>
-                                <div class="checkbox span3">
-                                    <input type="checkbox" id="cbxPriseenchargemalaria" name="servFilter[]" value="malaria"  checked="checked" class="cbxServFil"/>
-                                    <label for="cbxPriseenchargemalaria">Prise en charge malaria</label>
-                                </div>
-                                <div class="checkbox span3">
-                                    <input type="checkbox" id="cbxPriseenchargeTB" name="servFilter[]" value="tb" checked="checked" class="cbxServFil"/>
-                                    <label for="cbxPriseenchargeTB">Prise en charge TB</label>
-                                </div>
-                                <div class="checkbox span3">
-                                    <input type="checkbox" id="cbxSointraitementVIH" name="servFilter[]" value="hivct" checked="checked" class="cbxServFil"/>
-                                    <label for="cbxSointraitementVIH">Soin traitement VIH</label>
-                                </div>
-                                <div class="checkbox span3">
-                                    <input type="checkbox" id="cbxNoncomdiseases" name="servFilter[]" value="noncomdiseases" checked="checked" class="cbxServFil"/>
-                                    <label for="cbxNoncomdiseases">Noncomdiseases</label>
-                                </div>
-                                <div class="checkbox span3">
-                                    <input type="checkbox" id="cbxChirurgiemineure" name="servFilter[]" value="minorsurgery" checked="checked" class="cbxServFil"/>
-                                    <label for="cbxChirurgiemineure">Chirurgie mineure</label>
-                                </div>
-                                <div class="checkbox span3">
-                                    <input type="checkbox" id="cbxCésariennes" name="servFilter[]" value="csections" checked="checked" class="cbxServFil"/>
-                                    <label for="cbxCésariennes">Césariennes</label>
-                                </div>
-                                <div class="checkbox span3">
-                                    <input type="checkbox" id="cbxLaboratoire" name="servFilter[]" value="laboratory" checked="checked" class="cbxServFil"/>
-                                    <label for="cbxLaboratoire">Laboratoire</label>
-                                </div>
-                                <div class="checkbox span3">
-                                    <input type="checkbox" id="cbxTransfusionsanguine" name="servFilter[]" value="bloodtransf" checked="checked" class="cbxServFil"/>
-                                    <label for="cbxTransfusionsanguine">Transfusion sanguine</label>
-                                </div>
-                                <div class="checkbox span3">
-                                    <input type="checkbox" id="cbxMédecinegénérale" name="servFilter[]" value="generalmeds" checked="checked" class="cbxServFil"/>
-                                    <label for="cbxMédecinegénérale">Médecine générale</label>
-                                </div>
-                                <div class="checkbox span3">
-                                    <input type="checkbox" id="cbxHopitalisation" name="servFilter[]" value="hopitalisatioselmen" checked="checked" class="cbxServFil"/>   
-                                    <label for="cbxHopitalisation">Hopitalisation</label>
-                                </div>
-                                <div class="clearfix"></div>
+                    <!--login form-->
+                    <form class="form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label" for="inputEmail">Nom d'utilisateur</label>
+                            <div class="controls">
+                                <input type="text" id="inputEmail" required >
                             </div>
                         </div>
-                        <div id="rangefilter">
-                            <div class="checkbox">
-                                <input type="checkbox" id="cbxFilterbyRange" name="cbxFilterbyRange"/>
-                                <label class="bold" for="cbxFilterbyRange">Filtrer par services offerts Range</label>
-                            </div>
-                            <br />
-                            <div id="sliderCont" style="margin-left: 15px;">
-                                <input id="sldDistance" type="text" value="" style="width: 250px;" />
-                                <label id="lblSldDistance" style="margin-left:10px;">0 km</label>
+                        <div class="control-group">
+                            <label class="control-label" for="inputPassword">Mot de passe</label>
+                            <div class="controls">
+                                <input type="password" id="inputPassword" required>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-success"  name="btnServFilter" id="btnServFilter" value="filterServs">Appliquer le filtre</button>
-                    </div>
-                </form>
-            </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <label class="checkbox">
+                                    <input type="checkbox"> Remember me
+                                </label>
+                                <button type="submit" class="btn">Sign in</button>
+                            </div>
+                        </div>
+                    </form>
 
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Fermer</button>
+                </div>
+            </div>
             <!--OFFLINE POPUP WINDOW-->
             <div class="modal hide fade" id="offModWin" data-backdrop="static">
                 <div class="modal-header">
@@ -330,25 +251,21 @@ include_once('lib/init.php');
                     <a href="#" class="btn btn-danger" data-dismiss="modal" id="closeModOff">Je continue hors ligne</a>
                 </div>
             </div>
+            <!--footer-->
 
-            <!-- Report Popup -->
-            <div class="modal hide fade" id="RepWin" data-backdrop="static"> 
-                <form role="form" method="get" action="lib/inc/reports.php" id="repForm" name="repForm">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3>Sélectionnez Paramètres Rapport</h3>
-                    </div>
-                    <div class="modal-body">                        
+            <div id="footer">
 
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-success"  name="btnGenReport" id="btnGenReport" value="GenRep"> Générer un rapport</button>
-                    </div>  
-                </form>
+                <span>Carte Sanitaire &copy; 2014</span> - <a href="#">Site web MSPP</a> | <a href="#">Documentation</a> 
             </div>
+            <!--<div id="chartContainer" style="max-width:700px;height: 300px;"></div>-->
+            <script>
+                     $('#myTab a').click(function (e) {
+                         e.preventDefault();
+                         $(this).tab('show');
+                     })
+            </script>
 
             <script>
-                // Below handles offline alert                
                 var winOn = false;
                 setInterval(function () {
                     if (navigator.onLine) {

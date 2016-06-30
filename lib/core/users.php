@@ -45,5 +45,91 @@ class Users{
 				}	
 		}
 		
+	//update user info
+	
+	public function update_user($username, $fullname,$pass,$email){
+		$conn=new DBConnection();
+		$con=$conn->dbconnect();
+		if($con){			
+			$query="UPDATE users SET fullname='".$fullname."', pass='".$pass."', usremail='".$email."' WHERE username='".$username."'";
+			$result=$conn->queryTable($query);
+			pg_close($con);
+			return true;			
+			}else{				
+				return false;
+				}	
+		}
+		
+	//list users
+	public function userslist(){
+		$conn=new DBConnection();
+		$con=$conn->dbconnect();
+		if($con){
+			$query="SELECT * FROM users";
+			$result=$conn->queryTable($query);
+			pg_close($con);
+			return $result;			
+			}else{				
+				return false;
+				}		
+		}
+		
+	public function addnewuser($fullname,$username,$pass,$email,$role){
+		$conn=new DBConnection();
+		$con=$conn->dbconnect();
+		$id=time();
+		$role=1;
+		if($con){
+			$query="INSERT INTO users (id,fullname,username,pass,image,userright_id,track_id,access_level,access_allowed,force_change_pass,creationdate,usremail)
+VALUES ($id,'".$fullname."','".$username."','".$pass."','noimage.jpg',$id,'1',$role,'1','1',now(),'".$email."')";
+			$result=$conn->insertTable($query);
+			//pg_close($con);
+			return $result;			
+			}else{				
+				return false;
+				}		
+		}
+		
+		public function delUser($id){
+			$conn=new DBConnection();
+			$con=$conn->dbconnect();
+			if($con){
+				$query="DELETE FROM users WHERE id=".$id."";
+				$res=$conn->delTable($query);
+				if($res){
+					return true;
+				}
+			}
+			
+		}
+		
+		//list by username
+		public function userinfobyusername($usrname){
+			$conn=new DBConnection();
+			$con=$conn->dbconnect();
+			if($con){
+				$query="SELECT * FROM users WHERE username='".$usrname."'";
+				$result=$conn->queryTable($query);
+				pg_close($con);
+				return $result;			
+				}else{				
+					return false;
+					}	
+		}
+		
+		//list by username
+		public function userinfobyId($id){
+			$conn=new DBConnection();
+			$con=$conn->dbconnect();
+			if($con){
+				$query="SELECT * FROM users WHERE id=".$id."";
+				$result=$conn->queryTable($query);
+				pg_close($con);
+				return $result;			
+				}else{				
+					return false;
+					}	
+		}
+		
 	}
 ?>

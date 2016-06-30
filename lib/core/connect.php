@@ -104,21 +104,32 @@ class DBConnection{
 				pg_free_result($q);
 				return $result;
 			}
-                        
-                        /* 
-		 * query a table from the database
+			
+			/* 
+		 * insert in a table of the database
 		 * @param string $query
 		 * @return array
 		 */		 
-		public function queryTableSPA_indexiscode($query){
-				$result=array();
-				$q=pg_query($this->conn,$query);
-				while($rows=pg_fetch_array($q)){
-						$result[$rows['moh_facility_code']]=$rows;
-					}
-				pg_free_result($q);
-				return $result;
+		public function insertTable($query){				
+				$q=pg_query($this->conn,$query);			
+				return $q;
+				// Closing connection
+				pg_close($dbconn);
 			}
+			
+		
+		/* 
+		 * insert in a table of the database
+		 * @param string $query
+		 * @return array
+		 */		 
+		public function delTable($query){				
+				$q=pg_query($this->conn,$query);			
+				return $q;
+				// Closing connection
+				pg_close($dbconn);
+			}
+		
 	}
 	
 		
