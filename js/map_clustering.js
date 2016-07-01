@@ -4,7 +4,10 @@
  */
 
 var markerclusterer;                // global array of markers for clustering
-
+var facTypeCount = [];
+facTypeCount['lab'] = 0;            // Preset lab var (count of lab service facilities)
+facTypeCount['hiv'] = 0;            // preset hiv var (count of hiv service facilities)
+var FullInstlist = "";              // First time page is loaded, this will be filled with institutions, from there filtering by type can be done on this list
 /*
  * Retrieve xml data from database for viewing markers
  * @param data
@@ -15,6 +18,10 @@ function getXmlData(data) {
     FACILITY_ID = [];	//clear this array			  
     var markers = xml.documentElement.getElementsByTagName("marker");
     removeClusterOnMap();//remove markers from the map
+    FullInstlist = markers;
+    facTypeCount = [];
+    facTypeCount['lab'] = 0;
+    facTypeCount['hiv'] = 0;
     for (var i = 0; i < markers.length; i++) {
         var lat = parseFloat(markers[i].getAttribute("lat"));
         var lng = parseFloat(markers[i].getAttribute("lng"));
@@ -43,12 +50,161 @@ function getXmlData(data) {
         var minorsurgery = markers[i].getAttribute("minorsurgery");
         var csections = markers[i].getAttribute("csections");
 
+        var isLab = markers[i].getAttribute("is_Lab");
+        var isHIV = markers[i].getAttribute("is_HIVService");
+
+        // Rather do a count of facilities here instead of another db call
+        if (!(facType in facTypeCount))
+        {
+            facTypeCount[facType] = 1;
+        } else
+        {
+            facTypeCount[facType] += 1;
+        }
+
+        if (isLab === "1")
+            facTypeCount['lab'] += 1;
+
+        if (isHIV === "1")
+            facTypeCount['hiv'] += 1;
+
         facTypeIcon = facType;
         addMarkerOnMap(id, lat, lng, facType, title, manag_authority, vComm_name, deptname, nb_bed_overnight, nb_gen_medPrac, nb_spePrac, typ_service_avail, ChildVacc, GrowthMon, Sickchild, FP, ANC, PMTCT, delivery, malaria, sti, tb, hivct, minorsurgery, csections);
-
     }
-    //store fac id in session								
-    storeFacID();
+}
+
+function FilterMapByType(facilityType) {
+    removeClusterOnMap();//remove markers from the map
+
+    var facTypes = facilityType.split(':');
+
+    var services = [];
+    var optF = '';
+
+    if ($('#cbxFilterbyServs').prop('checked')) {
+        optF = $(".opt_filter_r:checked").val();
+        facTypeCount = [];
+        facTypeCount['lab'] = 0;
+        facTypeCount['hiv'] = 0;
+        $('#clFilters .cbxServFil:checked').each(function (i) {
+            services.push($(this).val());
+        });
+    }
+
+    var markers = FullInstlist;
+    for (var i = 0; i < markers.length; i++) {
+        if (facilityType != 'all')
+            if (facilityType == "lab" || facilityType == 'vih')
+            {
+                if (facilityType == "lab" && !(markers[i].getAttribute("is_Lab") == "1"))
+                    continue;
+                if (facilityType == "vih" && !(markers[i].getAttribute("is_HIVService") == "1"))
+                    continue;
+            } else
+            if (facTypes.indexOf(markers[i].getAttribute("facility_type")) === -1)
+                continue;
+
+        var ServicesAvailable = [];
+
+        var lat = parseFloat(markers[i].getAttribute("lat"));
+        var lng = parseFloat(markers[i].getAttribute("lng"));
+        var facType = markers[i].getAttribute("facility_type");
+        var id = markers[i].getAttribute("id_code");
+        var title = markers[i].getAttribute("titre");
+        var manag_authority = markers[i].getAttribute("manag_authority");
+        var vComm_name = markers[i].getAttribute("vComm_name");
+        var deptname = markers[i].getAttribute("departement_name");
+        var nb_bed_overnight = markers[i].getAttribute("nb_bed_overnight");
+        var nb_gen_medPrac = markers[i].getAttribute("nb_gen_medPrac");
+        var nb_spePrac = markers[i].getAttribute("nb_spePrac");
+        var typ_service_avail = markers[i].getAttribute("typ_service_avail");
+        //services variables
+        var ChildVacc = markers[i].getAttribute("ChildVacc");
+        if (ChildVacc == 1)
+            ServicesAvailable.push('childvacc');
+        var GrowthMon = markers[i].getAttribute("GrowthMon");
+        if (GrowthMon == 1)
+            ServicesAvailable.push('growthmon');
+        var Sickchild = markers[i].getAttribute("Sickchild");
+        if (Sickchild == 1)
+            ServicesAvailable.push('sickchild');
+        var FP = markers[i].getAttribute("FP");
+        if (FP == 1)
+            ServicesAvailable.push('fp');
+        var ANC = markers[i].getAttribute("ANC");
+        if (ANC == 1)
+            ServicesAvailable.push('anc');
+        var PMTCT = markers[i].getAttribute("PMTCT");
+        if (PMTCT == 1)
+            ServicesAvailable.push('pmtct');
+        var delivery = markers[i].getAttribute("delivery");
+        if (delivery == 1)
+            ServicesAvailable.push('delivery');
+        var malaria = markers[i].getAttribute("malaria");
+        if (malaria == 1)
+            ServicesAvailable.push('malaria');
+        var sti = markers[i].getAttribute("sti");
+        if (sti == 1)
+            ServicesAvailable.push('sti');
+        var tb = markers[i].getAttribute("tb");
+        if (tb == 1)
+            ServicesAvailable.push('tb');
+        var hivct = markers[i].getAttribute("hivct");
+        if (hivct == 1)
+            ServicesAvailable.push('hivct');
+        var minorsurgery = markers[i].getAttribute("minorsurgery");
+        if (minorsurgery == 1)
+            ServicesAvailable.push('minorsurgery');
+        var csections = markers[i].getAttribute("csections");
+        if (csections == 1)
+            ServicesAvailable.push('csections');
+
+        if (services.length > 0)
+        {
+            if (filterByService(services, ServicesAvailable, optF))
+                continue;
+
+            var isLab = markers[i].getAttribute("is_Lab");
+            var isHIV = markers[i].getAttribute("is_HIVService");
+
+            // Rather do a count of facilities here instead of another db call
+            if (!(facType in facTypeCount))
+            {
+                facTypeCount[facType] = 1;
+            } else
+            {
+                facTypeCount[facType] += 1;
+            }
+
+            if (isLab === "1")
+                facTypeCount['lab'] += 1;
+
+            if (isHIV === "1")
+                facTypeCount['hiv'] += 1;
+        }
+
+        facTypeIcon = facType;
+        addMarkerOnMap(id, lat, lng, facType, title, manag_authority, vComm_name, deptname, nb_bed_overnight, nb_gen_medPrac, nb_spePrac, typ_service_avail, ChildVacc, GrowthMon, Sickchild, FP, ANC, PMTCT, delivery, malaria, sti, tb, hivct, minorsurgery, csections);
+    }
+}
+
+function filterByService(services, servicesAvail, optF)
+{
+    var intersect = $(services).filter(servicesAvail);
+
+    if (optF === 'OR')
+    {
+        if (intersect.length > 0)
+            return false;
+        else
+            return true
+    } else    // = AND
+    {
+        if (intersect.length == services.length)
+            return false;
+        else
+            return true;
+    }
 }
 
 var clusterInfoWindow;
@@ -79,7 +235,7 @@ function addClusterOnMap() {
         clusterInfoWindow.setContent(htmlString);
         clusterInfoWindow.open(map);
     });
-    
+
     google.maps.event.addListener(markerclusterer, "click", function (mcluster) {
         clusterInfoWindow.close();
     });
@@ -180,6 +336,9 @@ function addMarkerOnMap(id, lat, lng, facType, tit, manag_authority, vComm_name,
         }
     }
 
+    if (fac_services.length == 0)
+        fac_services = 'Inconnu';
+
     //check service 24/24h available
     if (typ_service_avail == '1') {
         typ_service_avail = 'Oui';
@@ -249,58 +408,42 @@ function xmlParse(str) {
  * @return void
  */
 function getNumFacTypeByDep() {
-    var depname = $('#dep-list-dropdmenu').val();
-    $.get("lib/inc/orgunit.inc.php?facSPAtypeDep=" + depname, function (data) {
-        var obj = jQuery.parseJSON(data);
-        //reset the number of facility by type	
-        $('#fac_type li span.badge.badge-info.stotal').each(function () {
-            $(this).text("-");
-        });
-        //Update the number of facility by type	
-        var facTypeTotal = 0;
-        $.each(obj, function () {
-
-            var facTypeName = this['facilitytype'];
-            var facTypeNumber = this['count'];
-            switch (facTypeName) {
-                case "Centre de sante a lit":
-                    $('#fac_type li:eq(0) span.badge.badge-info.stotal').text(facTypeNumber);
-                    facTypeTotal += parseInt(facTypeNumber);
-
-                    break;
-                case "Centre de sante sans lit":
-                    $('#fac_type li:eq(1) span.badge.badge-info.stotal').text(facTypeNumber);
-                    facTypeTotal += parseInt(facTypeNumber);
-                    break;
-
-                case "Hopital":
-                    $('#fac_type li:eq(2) span.badge.badge-info.stotal').text(facTypeNumber);
-                    facTypeTotal += parseInt(facTypeNumber);
-                    break;
-
-                case "Hopital communautaire de reference":
-                    $('#fac_type li:eq(3) span.badge.badge-info.stotal').text(facTypeNumber);
-                    facTypeTotal += parseInt(facTypeNumber);
-                    break;
-
-                case "Hopital universitaire":
-                    $('#fac_type li:eq(4) span.badge.badge-info.stotal').text(facTypeNumber);
-                    facTypeTotal += parseInt(facTypeNumber);
-                    break;
-
-                case "Dispensaire":
-                    $('#fac_type li:eq(5) span.badge.badge-info.stotal').text(facTypeNumber);
-                    facTypeTotal += parseInt(facTypeNumber);
-                    break;
-
-                case "Hopital departemental":
-                    $('#fac_type li:eq(6) span.badge.badge-info.stotal').text(facTypeNumber);
-                    facTypeTotal += parseInt(facTypeNumber);
-                    break;
-            }
-        });
-        $('#fac_typeTotal').text(facTypeTotal);
+    //reset the number of facility by type	
+    $('#fac_type li span.badge.badge-info.stotal').each(function () {
+        $(this).text("-");
     });
+    //Update the number of facility by type	
+    var facTypeTotal = 0;
+
+    $('#fac_type li').eq(0).find('span.badge.badge-info.stotal').text(facTypeCount["CAL"]);
+    if ("CAL" in facTypeCount)
+        facTypeTotal += facTypeCount["CAL"];
+
+    $('#fac_type li').eq(1).find('span.badge.badge-info.stotal').text(facTypeCount["CSL"]);
+    if ("CSL" in facTypeCount)
+        facTypeTotal += facTypeCount["CSL"];
+
+    $('#fac_type li').eq(2).find('span.badge.badge-info.stotal').text(facTypeCount["Hopital"]);
+    if ("Hopital" in facTypeCount)
+        facTypeTotal += facTypeCount["Hopital"];
+
+    $('#fac_type li').eq(3).find('span.badge.badge-info.stotal').text(facTypeCount["HCR"]);
+    if ("HCR" in facTypeCount)
+        facTypeTotal += facTypeCount["HCR"];
+
+    $('#fac_type li').eq(4).find('span.badge.badge-info.stotal').text(facTypeCount["Hopital universitaire"]);
+    if ("Hopital universitaire" in facTypeCount)
+        facTypeTotal += facTypeCount["Hopital universitaire"];
+
+    $('#fac_type li').eq(5).find('span.badge.badge-info.stotal').text(facTypeCount["Dispensaire"]);
+    if ("Dispensaire" in facTypeCount)
+        facTypeTotal += facTypeCount["Dispensaire"];
+
+    $('#fac_type li').eq(6).find('span.badge.badge-info.stotal').text(facTypeCount["Hopital departemental"]);
+    if ("Hopital departemental" in facTypeCount)
+        facTypeTotal += facTypeCount["Hopital departemental"];
+
+    $('#fac_typeTotal').text(facTypeTotal);
 }
 
 /*
@@ -311,11 +454,11 @@ function getNumFacTypeByDep() {
 function typeFacIconMarker(facType) {
     var path = 'images/mapicons/';
     switch (facType) {
-        case 'Centre de sante sans lit':
+        case 'CSL':
             path = path + 'csl22.png';
             break;
 
-        case 'Centre de sante a lit':
+        case 'CAL':
             path = path + 'cal22.png';
             break;
 
@@ -327,7 +470,7 @@ function typeFacIconMarker(facType) {
             path = path + 'hcr2_22.png';
             break;
 
-        case 'Hopital communautaire de reference':
+        case 'HCR':
             path = path + 'hcr22.png';
             break;
 

@@ -62,13 +62,37 @@ if(!isset($_SESSION['usr'])){
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">                
-                <?php include('admin-head.inc.php'); ?>
                 
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $username;?> <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="userprofile.php"><i class="fa fa-fw fa-user"></i> Profil</a>
+                        </li>
+                        
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-gear"></i> Parametres</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/cs/login.php?logout=1"><i class="fa fa-fw fa-power-off"></i> Se deconnecter</a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
-			<?php include_once('right-menu-inc.php'); ?>
-                
+                <ul class="nav navbar-nav side-nav">
+                    <li class="active">
+                        <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Tableau de bord</a>
+                    </li>
+                    <li>
+                        <a href="facilities.php"><i class="fa fa-fw fa-bar-chart-o"></i> Institutions</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-fw fa-table"></i> Indicateurs</a>
+                    </li>   
+                </ul>
             </div>
             <!-- /.navbar-collapse -->
         </nav>
@@ -108,15 +132,15 @@ if(!isset($_SESSION['usr'])){
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-university fa-5x"></i>
+                                        <i class="fa fa-support fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                        <!--  <div class="huge">26</div> -->
-                                        <div>Intitutions</div>
+                                        <div>Module 1</div>
                                     </div>
                                 </div>
                             </div>
-                            <a href="facilities.php">
+                            <a href="#">
                                 <div class="panel-footer">
                                     <span class="pull-left">Details »</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -130,15 +154,15 @@ if(!isset($_SESSION['usr'])){
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-arrows fa-5x"></i>
+                                        <i class="fa fa-support fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <!-- <div class="huge">12</div> -->
-                                        <div>Indicateurs</div>
+                                        <div>Module 2</div>
                                     </div>
                                 </div>
                             </div>
-                            <a href="indicator.php">
+                            <a href="#">
                                 <div class="panel-footer">
                                     <span class="pull-left">Details</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -152,15 +176,15 @@ if(!isset($_SESSION['usr'])){
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-users fa-5x"></i>
+                                        <i class="fa fa-support fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge"></div>
-                                        <div>Utilisateurs</div>
+                                        <div class="huge">124</div>
+                                        <div>Intititutions</div>
                                     </div>
                                 </div>
                             </div>
-                            <a href="users.php">
+                            <a href="#">
                                 <div class="panel-footer">
                                     <span class="pull-left">Details »</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -174,7 +198,7 @@ if(!isset($_SESSION['usr'])){
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-bookmark fa-5x"></i>
+                                        <i class="fa fa-support fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <!-- <div class="huge">13</div> -->
