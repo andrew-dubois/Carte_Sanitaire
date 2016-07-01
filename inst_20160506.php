@@ -1,58 +1,10 @@
-<?php
-include_once('lib/core/orgunitSPA.php');
-include_once('lib/core/orgunitDHIS.php');
-?>
+<?php include_once('lib/core/orgunitSPA.php'); ?>
 <?php
 $inst = array();
-$orgunit = new OrgUnitDHIS();
+$orgunit = new OrgUnitSPA;
 if (isset($_GET['c'])) {
     $code_inst = $_GET['c'];
-    $inst = $orgunit->getDHISfac_byID($code_inst);
-    $orgunitSPA = new OrgUnitSPA();
-    $instSPA = $orgunitSPA->getSPAfac_bymohcode($inst['code']);
-    // Need to set this incase there is no SPA data for the facility
-    // the page will then display IND (unknown)
-    if (count($instSPA) < 1) {
-        $instSPA[0] = [];
-        $instSPA[0]['fp'] = -1;
-        $instSPA[0]['anc'] = -1;
-        $instSPA[0]['pmtct'] = -1;
-        $instSPA[0]['delivery'] = -1;
-        $instSPA[0]['malaria'] = -1;
-        $instSPA[0]['tb'] = -1;
-        $instSPA[0]['hivct'] = -1;
-        $instSPA[0]['noncomdiseases'] = -1;
-        $instSPA[0]['minorsurgery'] = -1;
-        $instSPA[0]['csections'] = -1;
-        $instSPA[0]['laboratory'] = -1;
-        $instSPA[0]['bloodtransf'] = -1;
-        $instSPA[0]['generalmeds'] = -1;
-        $instSPA[0]['hopitalisatioselmen'] = -1;
-        $instSPA[0]['nombredelithospi1nuit'] = '';
-        $instSPA[0]['ambulancedispo'] = '';
-        $instSPA[0]['servicedisp024h'] = '';
-        $instSPA[0]['nobrlitmaternite'] = '';
-        $instSPA[0]['nombrelitaccouchment'] = '';
-        $instSPA[0]['nombremedgeneralist'] = '';
-        $instSPA[0]['nombremedspecialist'] = '';
-        $instSPA[0]['nombrparamedical'] = '';
-        $instSPA[0]['nombranesthesit'] = '';
-        $instSPA[0]['nombrinfirmierprofess'] = '';
-        $instSPA[0]['nombrauxilair'] = '';
-        $instSPA[0]['nombrsagefemeprof'] = '';
-        $instSPA[0]['nombresagefemmediplome'] = '';
-        $instSPA[0]['nimbrpharmacien'] = '';
-        $instSPA[0]['nombrpharmtechnologist'] = '';
-        $instSPA[0]['nombrassistanpharmacie'] = '';
-        $instSPA[0]['nombrlabscientist'] = '';
-        $instSPA[0]['nombrlabtechnologis'] = '';
-        $instSPA[0]['nombrlabtechnicien'] = '';
-        $instSPA[0]['childvacc'] = -1;
-        $instSPA[0]['growthmon'] = -1;
-        $instSPA[0]['sickchild'] = -1;
-        $instSPA[0]['sti'] = -1;
-        $instSPA[0]['bloodtype'] = -1;
-    }
+    $inst = $orgunit->getSPAfac_byID($code_inst);
 } else {
     header('Location:search.php');
 }
@@ -120,27 +72,23 @@ function getNbInfrast($valInfrast) {
             </div>
 
             <!--Navbar-->
-            <nav class="navbar navbar-default" id="navbar" role="navigation">
-                <div class="container-fluid">
-                    <!--mobile nav-->
-                    <div id="navbar-mob">
-                        <span id="nav-mob-menu"><i class="fa fa-bars"></i></span>
-                        <span id="nav-mob-menu-rightOpt"><i class="fa fa-user"></i></span>
-                    </div>
-
-                    <div id="navbar-inner">
-                        <ul>
-                            <?php include 'lib/inc/nav.php'; ?>
-                        </ul>
-                    </div>
+            <div id="navbar">
+                <div id="navbar-inner">
+                    <ul>
+                        <li><a href="index.php" class="mIcon homeicon">Accueil</a></li>
+                        <!--<li><a href="#" class="mIcon abouticon">A-Propos</a></li>-->
+                        <li><a href="dcart.php" class="mIcon mapicon focusMenuItem">Cartographie</a></li>
+                        <!--<li><a href="#" class="mIcon sitemapicon">Plan du site</a></li>-->
+                        <li><a href="#" class="mIcon docicon">Documentation</a></li>
+                    </ul>
                 </div>
-            </nav>
+            </div>
 
             <div id="mainContent">
                 <div class="container">
                     <div class="row">
                         <div class="span12">
-                            <div class="alert alert-info"><h1 id="inst_title"><?php echo $inst['displayName']; ?>&nbsp;<span class="badge badge-warning pull-right"><?php echo $inst['deptname']; ?>, <?php echo $inst['communename']; ?> / lat:<?php echo json_decode($inst['coordinates'])[1]; ?>, lng:<?php echo json_decode($inst['coordinates'])[0]; ?></span></h1></div>
+                            <div class="alert alert-info"><h1 id="inst_title"><?php echo $inst[0]['nameoffacility']; ?>&nbsp;<span class="badge badge-warning pull-right"><?php echo $inst[0]['deptname']; ?>, <?php echo $inst[0]['commune_name']; ?> / lat:<?php echo $inst[0]['latitude']; ?>, lng:<?php echo $inst[0]['longitude']; ?></span></h1></div>
                         </div>
                     </div>
                     <div class="row">
@@ -153,25 +101,25 @@ function getNbInfrast($valInfrast) {
 
                                     <tr>
                                         <td width="14%"><img src="images/mapicons/deptIcon.png"></td>
-                                        <td width="86%"><strong>D&eacute;partement: </strong><?php echo $inst['deptname']; ?></td>                            
+                                        <td width="86%"><strong>D&eacute;partement: </strong><?php echo $inst[0]['deptname']; ?></td>                            
                                     </tr> 
                                     <tr>
                                         <td width="14%"><img src="images/mapicons/communeIcon.png"></td>
-                                        <td><strong>Commune: </strong><?php echo $inst['communename']; ?></td>                            
+                                        <td><strong>Commune: </strong><?php echo $inst[0]['commune_name']; ?></td>                            
                                     </tr>
                                     <tr>
                                         <td width="14%"><img src="images/mapicons/inst_markerIcon.png"></td>
-                                        <td><strong>Location: </strong> lat:<?php echo json_decode($inst['coordinates'])[1]; ?>, lng:<?php echo json_decode($inst['coordinates'])[0]; ?></td>                            
+                                        <td><strong>Location: </strong> lat:<?php echo $inst[0]['latitude']; ?>, lng:<?php echo $inst[0]['longitude']; ?></td>                            
                                     </tr> 
 
                                     <tr>
                                         <td><img src="images/mapicons/inst_hostIcon.png"></td>
-                                        <td><strong>Type d'institution :</strong> <?php echo $inst['managauthority']; ?></td>                            
+                                        <td><strong>Type d'institution :</strong> <?php echo $inst[0]['managauthority']; ?></td>                            
                                     </tr>   
 
                                     <tr>
                                         <td><img src="images/mapicons/inst_codeInst.png"></td>
-                                        <td><strong>Code MSPP :</strong> <?php echo $inst['code']; ?></td>                            
+                                        <td><strong>Code MSPP :</strong> <?php echo $inst[0]['moh_facility_code']; ?></td>                            
                                     </tr>                      
                                 </table>
                             </div>
@@ -194,177 +142,361 @@ function getNbInfrast($valInfrast) {
                                 <div class="tab-pane active" id="tab-services"><table class="table table-condensed table-striped">
                                         <tr>
                                             <td>Planification Familiale</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['fp']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['fp']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Soins pr&eacute;nataux</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['anc']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['anc']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Soin des PTME</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['pmtct']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['pmtct']) ?></td>
                                         </tr>
 
                                         <tr>
                                             <td>Accouchement</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['delivery']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['delivery']) ?></td>
                                         </tr>
 
                                         <tr>
                                             <td>Prise en charge malaria</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['malaria']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['malaria']) ?></td>
                                         </tr>
 
                                         <tr>
                                             <td>Prise en charge TB</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['tb']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['tb']) ?></td>
                                         </tr>
 
                                         <tr>
                                             <td>Soin traitement VIH</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['hivct']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['hivct']) ?></td>
                                         </tr>
 
                                         <tr>
                                             <td>Noncomdiseases</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['noncomdiseases']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['noncomdiseases']) ?></td>
                                         </tr>
 
                                         <tr>
                                             <td>Chirurgie mineure</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['minorsurgery']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['minorsurgery']) ?></td>
                                         </tr>
 
                                         <tr>
                                             <td>C&eacute;sariennes</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['csections']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['csections']) ?></td>
                                         </tr>
 
                                         <tr>
                                             <td>Laboratoire</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['laboratory']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['laboratory']) ?></td>
                                         </tr>
 
                                         <tr>
                                             <td>Transfusion sanguine</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['bloodtransf']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['bloodtransf']) ?></td>
                                         </tr>
 
                                         <tr>
                                             <td>M&eacute;decine g&eacute;n&eacute;rale</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['generalmeds']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['generalmeds']) ?></td>
                                         </tr>
 
                                         <tr>
                                             <td>Hopitalisation</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['hopitalisatioselmen']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['hopitalisatioselmen']) ?></td>
                                         </tr>
                                     </table></div>
                                 <div class="tab-pane fade" id="tab-insfrast"><table class="table table-striped">
                                         <tr>
                                             <td>Nombre de lits disponibles</td>
-                                            <td><?php getNbInfrast($instSPA[0]['nombredelithospi1nuit']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nombredelithospi1nuit']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Ambulance disponible</td>
-                                            <td><?php getNbInfrast($instSPA[0]['ambulancedispo']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['ambulancedispo']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Service disponible 24/24</td>
-                                            <td><?php getNbInfrast($instSPA[0]['servicedisp024h']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['servicedisp024h']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Nombre de lit maternit&eacute;</td>
-                                            <td><?php getNbInfrast($instSPA[0]['nobrlitmaternite']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nobrlitmaternite']) ?></td>
                                         </tr>                        
                                         <tr>
                                             <td>Nombre de lit d'accouchment</td>
-                                            <td><?php getNbInfrast($instSPA[0]['nombrelitaccouchment']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nombrelitaccouchment']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Nombre de m&eacute;decin g&eacute;n&eacute;raliste</td>
-                                            <td><?php getNbInfrast($instSPA[0]['nombremedgeneralist']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nombremedgeneralist']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Nombre de m&eacute;decin sp&eacute;cialiste</td>
-                                            <td><?php getNbInfrast($instSPA[0]['nombremedspecialist']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nombremedspecialist']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>nombrparamedical</td>
-                                            <td><?php getNbInfrast($instSPA[0]['nombrparamedical']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nombrparamedical']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Nombre de m&eacute;decin anesth&eacute;siste</td>
-                                            <td><?php getNbInfrast($instSPA[0]['nombranesthesit']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nombranesthesit']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Nombre d'infirmi&egrave;re</td>
-                                            <td><?php getNbInfrast($instSPA[0]['nombrinfirmierprofess']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nombrinfirmierprofess']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Nombre d'auxilaire</td>
-                                            <td><?php getNbInfrast($instSPA[0]['nombrauxilair']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nombrauxilair']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Nombre de sage femme</td>
-                                            <td><?php getNbInfrast($instSPA[0]['nombrsagefemeprof']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nombrsagefemeprof']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Nombre de sage femme dipl&ocirc;m&eacute;</td>
-                                            <td><?php getNbInfrast($instSPA[0]['nombresagefemmediplome']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nombresagefemmediplome']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Nombre de pharmacien</td>
-                                            <td><?php getNbInfrast($instSPA[0]['nimbrpharmacien']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nombresagefemmediplome']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Nombre de technicien en pharmacie</td>                            
-                                            <td><?php getNbInfrast($instSPA[0]['nombrpharmtechnologist']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nimbrpharmacien']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Nombre d'assistant pharmacien</td>
-                                            <td><?php getNbInfrast($instSPA[0]['nombrassistanpharmacie']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nombrassistanpharmacie']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Nombre de laborantin(e)</td>
-                                            <td><?php getNbInfrast($instSPA[0]['nombrlabscientist']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nombrlabscientist']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Nombre de technologiste de laboratoire</td>
-                                            <td><?php getNbInfrast($instSPA[0]['nombrlabtechnologis']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nombrlabtechnologis']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Nombre de technicien de laboratoire</td>
-                                            <td><?php getNbInfrast($instSPA[0]['nombrlabtechnicien']) ?></td>
+                                            <td><?php getNbInfrast($inst[0]['nombrlabtechnicien']) ?></td>
                                         </tr>
 
                                     </table></div>
                                 <div class="tab-pane fade" id="tab-activites"><table class="table table-striped">
                                         <tr>
                                             <td>Vaccination des enfants</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['childvacc']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['childvacc']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>P&eacute;s&eacute;e des enfants</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['growthmon']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['growthmon']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Prise en charge sp&eacute;cialis&eacute; p&eacute;diatrique</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['sickchild']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['sickchild']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Maladie Sexuellement Transmissible(STI)</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['sti']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['sti']) ?></td>
                                         </tr>
                                         <tr>
                                             <td>Groupe sanguin</td>
-                                            <td><?php serviceSPAfac_check($instSPA[0]['bloodtype']) ?></td>
+                                            <td><?php serviceSPAfac_check($inst[0]['bloodtype']) ?></td>
                                         </tr>
                                     </table></div>
                             </div>
                             <!--end tab section-->
                         </div>
                     </div>
+
+                    <!-- <div class="row" style="margin-top:20px">
+                         <div class="span4 services">                	
+                                 <h2>Services</h2>
+                             <table class="table table-condensed table-striped">
+                                 <tr>
+                                         <td>Planification Familiale</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['fp']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Soins pr&eacute;nataux</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['anc']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Soin des PTME</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['pmtct']) ?></td>
+                                 </tr>
+                                 
+                                 <tr>
+                                         <td>Accouchement</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['delivery']) ?></td>
+                                 </tr>
+                                 
+                                 <tr>
+                                         <td>Prise en charge malaria</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['malaria']) ?></td>
+                                 </tr>
+                                 
+                                 <tr>
+                                         <td>Prise en charge TB</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['tb']) ?></td>
+                                 </tr>
+                                 
+                                 <tr>
+                                         <td>Soin traitement VIH</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['hivct']) ?></td>
+                                 </tr>
+                                 
+                                 <tr>
+                                         <td>Noncomdiseases</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['Noncomdiseases']) ?></td>
+                                 </tr>
+                                 
+                                 <tr>
+                                         <td>Chirurgie mineure</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['minorsurgery']) ?></td>
+                                 </tr>
+                                 
+                                 <tr>
+                                         <td>C&eacute;sariennes</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['csections']) ?></td>
+                                 </tr>
+                                 
+                                 <tr>
+                                         <td>Laboratoire</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['laboratory']) ?></td>
+                                 </tr>
+                                 
+                                 <tr>
+                                         <td>Transfusion sanguine</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['bloodtransf']) ?></td>
+                                 </tr>
+                                 
+                                 <tr>
+                                         <td>M&eacute;decine g&eacute;n&eacute;rale</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['generalmeds']) ?></td>
+                                 </tr>
+                                 
+                                 <tr>
+                                         <td>Hopitalisation</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['hospitalisatioselmen']) ?></td>
+                                 </tr>
+                             </table>
+                         </div>
+                        
+                         <div class="span4 infrast">   
+                              <h2>Infrastructures</h2> 
+                              <table class="table table-striped">
+                                 <tr>
+                                         <td>Nombre de lits disponibles</td>
+                                     <td><?php getNbInfrast($inst[0]['nombredelithospi1nuit']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Ambulance disponible</td>
+                                     <td><?php getNbInfrast($inst[0]['ambulancedispo']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Service disponible 24/24</td>
+                                     <td><?php getNbInfrast($inst[0]['servicedisp024h']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Nombre de lit maternit&eacute;</td>
+                                     <td><?php getNbInfrast($inst[0]['nobrlitmaternite']) ?></td>
+                                 </tr>                        
+                                 <tr>
+                                         <td>Nombre de lit d'accouchment</td>
+                                     <td><?php getNbInfrast($inst[0]['nombrelitaccouchment']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Nombre de m&eacute;decin g&eacute;n&eacute;raliste</td>
+                                     <td><?php getNbInfrast($inst[0]['nombremedgeneralist']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Nombre de m&eacute;decin sp&eacute;cialiste</td>
+                                     <td><?php getNbInfrast($inst[0]['nombremedspecialist']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>nombrparamedical</td>
+                                     <td><?php getNbInfrast($inst[0]['nombrparamedical']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Nombre de m&eacute;decin anesth&eacute;siste</td>
+                                     <td><?php getNbInfrast($inst[0]['nombranesthesit']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Nombre d'infirmi&egrave;re</td>
+                                     <td><?php getNbInfrast($inst[0]['nombrinfirmierprofess']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Nombre d'auxilaire</td>
+                                     <td><?php getNbInfrast($inst[0]['nombrauxilair']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Nombre de sage femme</td>
+                                     <td><?php getNbInfrast($inst[0]['nombrsagefemeprof']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Nombre de sage femme dipl&ocirc;m&eacute;</td>
+                                     <td><?php getNbInfrast($inst[0]['nombresagefemmediplome']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Nombre de pharmacien</td>
+                                     <td><?php getNbInfrast($inst[0]['nombresagefemmediplome']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Nombre de technicien en pharmacie</td>                            
+                                     <td><?php getNbInfrast($inst[0]['nimbrpharmacien']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Nombre d'assistant pharmacien</td>
+                                     <td><?php getNbInfrast($inst[0]['nombrassistanpharmacie']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Nombre de laborantin(e)</td>
+                                     <td><?php getNbInfrast($inst[0]['nombrlabscientist']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Nombre de technologiste de laboratoire</td>
+                                     <td><?php getNbInfrast($inst[0]['nombrlabtechnologis']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Nombre de technicien de laboratoire</td>
+                                     <td><?php getNbInfrast($inst[0]['nombrlabtechnicien']) ?></td>
+                                 </tr>
+                                 
+                              </table>       	
+                         </div>
+                         
+                         <div class="span4 activites">  
+                                 <h2>Activit&eacute;s</h2> 
+                             <table class="table table-striped">
+                                 <tr>
+                                         <td>Vaccination des enfants</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['childvacc']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>P&eacute;s&eacute;e des enfants</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['growthmon']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Prise en charge sp&eacute;cialis&eacute; p&eacute;diatrique</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['sickchild']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Maladie Sexuellement Transmissible(STI)</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['sti']) ?></td>
+                                 </tr>
+                                 <tr>
+                                         <td>Groupe sanguin</td>
+                                     <td><?php serviceSPAfac_check($inst[0]['bloodtype']) ?></td>
+                                 </tr>
+                             </table>          	
+                         </div>
+                     </div>-->
 
                     <div class="row" style="margin-top:20px">
                         <div class="span12">
@@ -488,8 +620,8 @@ function getNbInfrast($valInfrast) {
                 map = new google.maps.Map(mapDiv, opts);
 
                 //positioning the facility on the map					
-                var lat =<?php echo json_decode($inst['coordinates'])[1]; ?>;
-                var lng =<?php echo json_decode($inst['coordinates'])[0]; ?>;
+                var lat =<?php echo $inst[0]['latitude']; ?>;
+                var lng =<?php echo $inst[0]['longitude']; ?>;
                 var latlng = new google.maps.LatLng(lat, lng);
                 map.panTo(latlng);
 
@@ -497,11 +629,11 @@ function getNbInfrast($valInfrast) {
                 var marker = new google.maps.Marker({
                     position: latlng,
                     map: map,
-                    title: "<?php echo $inst['name']; ?>"
+                    title: "<?php echo $inst[0]['nameoffacility']; ?>"
                 });
 
                 //infobulle on the marker
-                marker.html = "<div id='inst_infobulle'><h2><?php echo $inst['name']; ?>&nbsp;<span class='badge badge-important'><?php echo $inst['deptname']; ?>, <?php echo $inst['communename']; ?></span></h2></div>";
+                marker.html = "<div id='inst_infobulle'><h2><?php echo $inst[0]['nameoffacility']; ?>&nbsp;<span class='badge badge-important'><?php echo $inst[0]['deptname']; ?>, <?php echo $inst[0]['commune_name']; ?></span></h2></div>";
                 infoWindow = new google.maps.InfoWindow();
                 infoWindow.setContent(marker.html);
                 infoWindow.open(map, marker);
@@ -516,36 +648,24 @@ function getNbInfrast($valInfrast) {
                 /************** JQUERY SEGMENT ****************/
                 $(document).ready(function (e) {
                     //View nearby facilities from a distance of 15km
-                    var comm_id = "<?php echo $inst['communeid'] ?>";
-                    $.get("lib/inc/orgunitDHIS.inc.php?comm_id=" + comm_id, function (data) {
+                    var comm_name = "<?php echo $inst[0]['commune_name'] ?>";
+                    $.get("lib/inc/orgunit.inc.php?comm_name=" + comm_name, function (data) {
                         var nearby_inst = '';
                         //facility coord
-                        var lat =<?php echo json_decode($inst['coordinates'])[1]; ?>;
-                        var lng =<?php echo json_decode($inst['coordinates'])[0]; ?>;
+                        var lat =<?php echo $inst[0]['latitude'] ?>;
+                        var lng =<?php echo $inst[0]['longitude'] ?>;
                         var facCoord = new google.maps.LatLng(lat, lng);
                         //fetching data
                         var obj = jQuery.parseJSON(data);
-                        var nearby_facs = [];
                         $.each(obj, function () {
                             var latlng_otherFacs = new google.maps.LatLng(this['latitude'], this['longitude']);
                             var distance = google.maps.geometry.spherical.computeDistanceBetween(facCoord, latlng_otherFacs);
                             var distance_km = Math.round(distance / 1000);
                             if (distance_km > 0 && distance_km <= 15) {
-                                nearby_fac = {
-                                    id: this['id'],
-                                    name: this['name'],
-                                    distance: distance_km
-                                };
-                                nearby_facs.push(nearby_fac);
+                                nearby_inst += '<div class="inst-nearby-item" data-id="' + this["id"] + '"><div class="img-inst"></div><div class="inst-info"><h3>' + this["nameoffacility"] + '</h3><a href="/cs/inst.php?c=' + this["id"] + '" title="Voir la fiche compl&egrave;te"><i class="icon-search"></i> Parcourir</a><br/><span>' + distance_km + ' kms environs</span></div></div>';
+
                             }
                         });
-                        //sort by distance: closest to furthest
-                        nearby_facs.sort(function (a, b) {
-                            return a.distance - b.distance;
-                        });
-                        for (var x in nearby_facs) {
-                            nearby_inst += '<div class="inst-nearby-item" data-id="' + nearby_facs[x].id + '"><div class="img-inst"></div><div class="inst-info"><h3>' + nearby_facs[x].name + '</h3><a href="/cs/inst.php?c=' + nearby_facs[x].id + '" title="Voir la fiche compl&egrave;te"><i class="icon-search"></i> Parcourir</a><br/><span>' + nearby_facs[x].distance + ' kms environs</span></div></div>';
-                        }
                         $('#nearby-inst').html(nearby_inst);
                     });
                 });

@@ -1,7 +1,7 @@
 <?php include_once('lib/init.php'); ?>
 <!DOCTYPE html">
 <?php
-include('lib/inc/dashdata.inc.php');
+include('lib/core/dhisAPI.php');
 Auth_DHIS2();
 ?>
 <html>
@@ -47,24 +47,22 @@ Auth_DHIS2();
             table.pivot{
                 width:100%
             }
-			
-			.dataTables_wrapper .dataTables_filter{
+
+            .dataTables_wrapper .dataTables_filter{
                 text-align: center;                
             }
-            
+
             .dataTables_wrapper .dataTables_filter label{
                 font-weight: bold;
             }
-            
+
             .dataTables_wrapper .dataTables_filter input{
                 margin-left: 0px;
             }
         </style>
- 
-<?php
-$reportTables = API_reportTables();
 
-
+        <?php
+        $reportTables = API_reportTables();
         ?>
 
     </head>
@@ -317,13 +315,12 @@ $reportTables = API_reportTables();
             </script>
 
             <script>
-                var base = "http://200.113.242.50:8000/dhis/"; //"http://192.168.1.10:8000/dhis/";
 
                 Ext.onReady(function () {
                     $('a.indlist')[0].click();
                 });
 
-				// Deals with the the coloring of the background of a selection
+                // Deals with the the coloring of the background of a selection
                 // Store the previous selection to reset the color, storage so the dom doesn't need to be searched
                 var previousPivot;
                 var previousGraph;
@@ -336,7 +333,7 @@ $reportTables = API_reportTables();
                         setLinks(linkid);
                         textlink = $(this).text();
                         $("#tableTitle").html(textlink);
-						if (previousPivot !== undefined)
+                        if (previousPivot !== undefined)
                             previousPivot.css("background-color", "#FFF");
                         // Color selection background
                         $(this).parent().css("background-color", "#DAE6F8");
@@ -347,7 +344,7 @@ $reportTables = API_reportTables();
                         // Get link id
                         linkid = $(this).attr("id");
                         setLinkschart(linkid);
-						 if (previousGraph !== undefined)
+                        if (previousGraph !== undefined)
                             previousGraph.css("background-color", "#FFF");
                         // Color selection background
                         $(this).parent().css("background-color", "#DAE6F8");
@@ -358,7 +355,7 @@ $reportTables = API_reportTables();
                         // Get link id
                         linkid = $(this).attr("id");
                         setLinksmap(linkid);
-						if (previousMap !== undefined)
+                        if (previousMap !== undefined)
                             previousMap.css("background-color", "#FFF");
                         // Color selection background
                         $(this).parent().css("background-color", "#DAE6F8");
@@ -368,8 +365,8 @@ $reportTables = API_reportTables();
                     //datatables
                     $('#indTable').DataTable({
                         "sDom": '<"top" f>t<"bottom"<"clear">>',
-						"scrollY": "300px",
-						"scrollCollapse": true,
+                        "scrollY": "300px",
+                        "scrollCollapse": true,
                         "oLanguage": {
                             "oPaginate": {
                                 "sFirst": "First page", // This is the link to the first page
@@ -377,15 +374,15 @@ $reportTables = API_reportTables();
                                 "sNext": "Suiv.", // This is the link to the next page
                                 "sLast": "Last page" // This is the link to the last page
                             },
-							"sSearch": "Filtrer un indicateur"
+                            "sSearch": "Filtrer un indicateur"
                         }
                     });
 
                     //datatables chart
                     $('#indTablechart').DataTable({
                         "sDom": '<"top" f>t<"bottom"<"clear">>',
-						"scrollY": "300px",
-						"scrollCollapse": true,
+                        "scrollY": "300px",
+                        "scrollCollapse": true,
                         "oLanguage": {
                             "oPaginate": {
                                 "sFirst": "First page", // This is the link to the first page
@@ -401,8 +398,8 @@ $reportTables = API_reportTables();
 
                     $('#indTablemap').DataTable({
                         "sDom": '<"top" f>t<"bottom"<"clear">>',
-						"scrollY": "300px",
-						"scrollCollapse": true,
+                        "scrollY": "300px",
+                        "scrollCollapse": true,
                         "oLanguage": {
                             "oPaginate": {
                                 "sFirst": "First page", // This is the link to the first page
