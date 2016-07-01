@@ -1,3 +1,18 @@
+<?php 
+session_start();
+$username="";
+if(!isset($_SESSION['usr'])){
+	header('Location: /cs/login.php');
+	exit;
+}else{
+	$username=$_SESSION['usr'];
+	
+}
+
+
+include('../lib/inc/dashdata.inc.php');
+Auth_DHIS2();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +24,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin - Bootstrap Admin Template</title>
+    <title>Liste des institutions</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -43,41 +58,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Carte Sanitaire</a>
+                <a class="navbar-brand" href="index.php">Carte Sanitaire</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">                
                 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Utilisateur <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profil</a>
-                        </li>
-                        
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Parametres</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Se deconnecter</a>
-                        </li>
-                    </ul>
-                </li>
+                <?php include('admin-head.inc.php'); ?>
             </ul>
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav side-nav">
-                    <li class="active">
-                        <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Tableau de bord</a>
-                    </li>
-                    <li>
-                        <a href="facilities.php"><i class="fa fa-fw fa-bar-chart-o"></i> Institutions</a>
-                    </li>
-                    <li>
-                        <a href="indicator.php"><i class="fa fa-fw fa-table"></i> Indicateurs</a>
-                    </li>   
-                </ul>
+                <?php include_once('right-menu-inc.php'); ?>
             </div>
             <!-- /.navbar-collapse -->
         </nav>
@@ -105,6 +95,7 @@
                 <!-- /.row -->
 
                 <div class="row">
+			
                     
                     <div class="col-lg-12">
                         <h2>Institutions</h2>
@@ -112,58 +103,24 @@
                             <table class="table table-bordered table-hover table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Id</th>
-                                        <th>Nom</th>
-                                        <th>Commune</th>
-                                        <th>Action</th>
+                                        <th>Liste des intitutions</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-									<tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-									<tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-									<tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-									<tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-									<tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-									<tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
+								<?php
+								$reportOrg=API_OrganisationUnits();
+								$orgUnits= $reportOrg["organisationUnits"][0]["children"];
+								foreach ($orgUnits as $i => $value) {
+									
+										echo "<tr><td><a href='javascript:void(0)' class='' id='" . $value["id"] . "'>" . $value["name"] . "</a></td></tr>";
+									
+								}
+								?>	
+                                    
                                 </tbody>
                             </table>
-							<button type="button" class="btn btn-primary">Ajouter une institution</button>
+							<!--<a href="addfacilities.php" class="btn btn-primary">Ajouter une institution</a>-->
                         </div>
                     </div>
                 </div>

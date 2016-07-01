@@ -1,3 +1,15 @@
+<?php 
+session_start();
+$username="";
+if(!isset($_SESSION['usr'])){
+	header('Location: /cs/login.php');
+	exit;
+}else{
+	$username=$_SESSION['usr'];
+	
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,40 +55,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Carte Sanitaire</a>
+                <a class="navbar-brand" href="index.php">Carte Sanitaire</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">                
                 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Utilisateur <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profil</a>
-                        </li>
-                        
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Parametres</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Se deconnecter</a>
-                        </li>
-                    </ul>
-                </li>
+                <?php include('admin-head.inc.php'); ?>
             </ul>
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li class="active">
-                        <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Tableau de bord</a>
-                    </li>
-                    <li>
-                        <a href="facilities.php"><i class="fa fa-fw fa-bar-chart-o"></i> Institutions</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-fw fa-table"></i> Indicateurs</a>
-                    </li>   
+                    <?php include_once('right-menu-inc.php'); ?>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -92,41 +81,39 @@
 					  <div class="row">
 						<div class="col-md-12 lead">Profil d'utilisateur<hr></div>
 					  </div>
+					  <?php
+					  include('../lib/core/users.php');
+					  $usr= new Users;
+					  $userinfo= $usr-> userinfobyusername($username);
+						
+					  ?>
 					  <div class="row">
 						<div class="col-md-4 text-center">
-						  <img class="img-circle avatar avatar-original" style="-webkit-user-select:none; 
-						  display:block; margin:auto;" src="http://robohash.org/sitsequiquia.png?size=120x120">
+						  <img class="img-circle avatar avatar-original" width="200" style="-webkit-user-select:none; 
+						  display:block; margin:auto;" src="http://i1.wp.com/www.techrepublic.com/bundles/techrepubliccore/images/icons/standard/icon-user-default.png">
 						</div>
 						<div class="col-md-8">
 						  <div class="row">
 							<div class="col-md-12">
-							  <h1 class="only-bottom-margin">Nom d'utilisateur</h1>
+							  <h1 class="only-bottom-margin"><?php echo $userinfo[0]['fullname']?></h1>
 							</div>
 						  </div>
 						  <div class="row">
 							<div class="col-md-6">
-							  <span class="text-muted">Email:</span> email@test.com<br>
-							  <span class="text-muted">Date de naissance:</span> 01.01.2001<br>
-							  <span class="text-muted">Genre:</span> male<br><br>
-							  <small class="text-muted">Date de creation: 01.01.2015</small>
+							  <span class="text-muted">Email:</span> <?php echo $userinfo[0]['usremail']?><br>							
+							  
+							  
 							</div>
-							<!--<div class="col-md-6">
-							  <div class="activity-mini">
-								<i class="glyphicon glyphicon-comment text-muted"></i> 500
-							  </div>
-							  <div class="activity-mini">
-								<i class="glyphicon glyphicon-thumbs-up text-muted"></i> 1500
-							  </div>
-							</div>-->
+							
 						  </div>
 						</div>
 					  </div>
 					  <div class="row">
 					  <div class="col-md-8">
-						  <hr><a href="userregistration.php" class="btn btn-info"><i class="glyphicon glyphicon-user"></i> Nouvel utilisateur</a>
+						  <a href="edituser.php?iduser=<?php echo $userinfo[0]['id']?>" class="btn btn-default "><i class="glyphicon glyphicon-pencil"></i> Modifier profil</a>
 						</div>
 						<div class="col-md-4">
-						  <hr><button class="btn btn-default pull-right"><i class="glyphicon glyphicon-pencil"></i> Modifier profil</button>
+						  <hr>
 						</div>
 						
 					  </div>
