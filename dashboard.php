@@ -101,7 +101,6 @@ Auth_DHIS2();
 
                         <!--Dashboard welcome are-->
                         <div id="dboardViewDiv_welcome">
-                            <h1>TABLEAU DE BORD</h1>
                             <p>Utiliser le panel gauche pour faire une requ&ecirc;te d'apr&egrave;s le proc&eacute;d&eacute; suivant</p>
                         </div>
                         <!--Dashboard area-->
@@ -315,6 +314,7 @@ Auth_DHIS2();
             </script>
 
             <script>
+                var base = "http://localhost:8000/dhis/" //var base = "http://200.113.242.50:8000/dhis/"; //"http://192.168.1.10:8000/dhis/";
 
                 Ext.onReady(function () {
                     $('a.indlist')[0].click();
