@@ -9,7 +9,7 @@ if(!isset($_SESSION['usr'])){
 	
 }
 
-include('../lib/inc/dashdata.inc.php');
+include('../lib/core/dhisAPI.php');
 Auth_DHIS2();
 ?>
 <!DOCTYPE html>
