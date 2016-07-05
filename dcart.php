@@ -10,15 +10,13 @@ include_once('lib/init.php');
         <script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>  
         <script type="text/javascript" src="js/markerClusterer/markerclusterer_packaged.js"></script>
 
-<!--<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/src/markerclusterer.js"></script>-->
-
         <script type="text/javascript" src="js/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/bootstrap/js/bootstrap-slider.js"></script>
         <script type="text/javascript" src="js/cs_tree/lib/jquery.cookie.js"></script>
         <script type="text/javascript" src="js/cs_tree/jquery.treeview.js"></script> 
 
         <script type="text/javascript" src="js/custom.js"></script>
-        <script type="text/javascript" src="js/map.js"></script>        
+        <script type="text/javascript" src="js/dcartmap.js"></script>        
         <script type="text/javascript" src="js/map_clustering.js"></script>
         <script type="text/javascript" src="js/dcart_legend.js"></script>
         <script type="text/javascript" src="js/dcart_leftmenu.js"></script>
