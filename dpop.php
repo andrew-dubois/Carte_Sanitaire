@@ -22,8 +22,7 @@
         <link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="css/bootstrap-custum.css" rel="stylesheet" type="text/css"> 
         <link href="js/cs_tree/jquery.treeview.css" rel="stylesheet" type="text/css">
-        <script type="text/javascript" src="js/slimscroll/jquery.slimscroll.min.js"></script>      
-
+        <script type="text/javascript" src="js/slimscroll/jquery.slimscroll.min.js"></script>
     </head>
 
     <body>

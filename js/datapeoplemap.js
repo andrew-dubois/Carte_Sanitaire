@@ -3,6 +3,7 @@ var geoXml = null;
 var geoXmlDoc = null;
 var removPoly = Array();
 var infoWindow = null;
+var map = null;
 
 // Create an array of styles for the map.
 var styles = [
@@ -44,10 +45,10 @@ var styles = [
 
 /***JQUERY STATEMENT***/
 $(document).ready(function (e) {
-    var styledMap = new google.maps.StyledMapType(styles, {name: "Principale"});    
+    var styledMap = new google.maps.StyledMapType(styles, {name: "Principale"});
     var mapDiv = document.getElementById('cs_map');
     var latlng = new google.maps.LatLng(19.02577027586866, -72.70854949951172);
-    
+
     var opts = {
         zoom: 9,
         center: latlng,
@@ -74,6 +75,8 @@ $(document).ready(function (e) {
     var mcOptions = {gridSize: 60, maxZoom: 10};
     markerclusterer = new MarkerClusterer(map, [], mcOptions);
 
+    loadCommunePolys();
+
     /*****************************************GOOGLE MAP EVENTS****************************************/
     google.maps.event.addListenerOnce(map, 'idle', function () {
         executeRemoveDom();
@@ -90,8 +93,9 @@ $(document).ready(function (e) {
         var nameDep = $('#datap-dep-list').val();
         var indicator_name = $(this).attr('data-column');
         var indicator_val = $(this).attr('value');
-        removeColorDep();
-        runColorizeHTICommDep();
+        //removeColorDep();
+        useTheData_colorizeHTCommDep();//executeColorizeComm();
+        //runColorizeHTICommDep();
         //pan to the departement								
         zoomDep(nameDep);
         $.get("lib/inc/orgunit.inc.php?ind_name=" + indicator_name + "&ind_val=" + indicator_val + "&deptname=" + nameDep, function (data) {
@@ -137,16 +141,13 @@ function useTheData_colorizeHT(doc) {
             placemarkName = placemark.name;
             removPoly.push(placemark.polygon);
             colorizeHT(placemark.polygon, placemarkName);
-
         }
-
     }
 }
 
 //Function View facilities by communes -  communes boundaries included
 
 function viewAllFac_by_comm(nameDep) {
-
     removeColorDep();
     runColorizeHTICommDep();
     //pan to the departement
@@ -160,14 +161,55 @@ function viewAllFac_by_comm(nameDep) {
         getXmlData(data);//retrieving xml data from database				  
         addClusterOnMap();//clustering							
     });//end get
+}
 
+var comsPolygons = [];  // Global storage for polygons
+//Execute the colorization of the communes
+function loadCommunePolys() {
+    $.get("lib/inc/polygons.inc.php?Communes=1", function (data) {
+        var coms = $.parseJSON(data);
+
+        var comInfoWindow = new google.maps.InfoWindow({content: ""});
+
+        for (var com in coms) {
+            var comName = coms[com].Name;
+            var ComPoly = {
+                ComName: comName,
+                Polys: []
+            };
+
+            for (var poly in coms[com].Polys) {
+                var HaitiR = new google.maps.Polygon({
+                    paths: coms[com].Polys[poly].Coords,
+                    strokeColor: '#ea5656',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 1,
+                    fillColor: '#ea5656',
+                    fillOpacity: 0.4
+                });
+
+                ComPoly.Polys.push(HaitiR);
+
+                //HaitiR.setMap(map);
+
+                BindDepInfoWindow(HaitiR, comName, comInfoWindow);
+            }
+
+            comsPolygons.push(ComPoly);
+        }
+    });
+}
+
+function BindDepInfoWindow(poly, comName, comInfoWindow) {
+    poly.addListener('click', function (event) {
+        comInfoWindow.setPosition(event.latLng);
+        comInfoWindow.setContent("<strong>" + comName + "</strong>");
+        comInfoWindow.open(map);
+    });
 }
 
 //function reading the kml file for coloration communes of a department
-function useTheData_colorizeHTCommDep(doc) {
-    geoXmlDoc = doc;
-    var poly_shape = new Array();
-    //var placemark_shape=new Array();
+function useTheData_colorizeHTCommDep() {
     var depname = $('#datap-dep-list').val();
     //get all department communes
     var data_pop = new Array();//population data
@@ -179,35 +221,20 @@ function useTheData_colorizeHTCommDep(doc) {
             valObj[1] = this['population_generale'];
             data_pop.push(valObj);
         });
-
-        for (var j = 0; j < geoXmlDoc.length; j++) {
-            for (var i = 0; i < geoXmlDoc[j].placemarks.length; i++) {
-                placemark = geoXmlDoc[j].placemarks[i];
-                //placemarkName=placemark.name;	
-                removPoly.push(placemark.polygon);
-                poly_shape.push(placemark.polygon);
-                //placemark_shape.push(placemarkName);												
-                //colorizeHTComm(placemark.polygon, placemarkName,data_pop);				
-
-            }
-        }
-        colorizeHTComm(poly_shape, data_pop);
+        colorizeHTComm(data_pop);
     });
-
-
-
 }
 
 //remove colorization of the departments commuunes
-function removeColorDep() {
-    if (removPoly) {
-        //alert(removPoly.length);			
-        for (var i = 0; i < removPoly.length; i++) {
-            removPoly[i].setMap(null);
-        }
-    }
-    removPoly = [];
-}
+//function removeColorDep() {
+//    if (removPoly) {
+//        //alert(removPoly.length);			
+//        for (var i = 0; i < removPoly.length; i++) {
+//            removPoly[i].setMap(null);
+//        }
+//    }
+//    removPoly = [];
+//}
 //Colorize the departements
 function colorizeHT(poly, polyName) {
     poly.setOptions({fillColor: '#D6E9F9', strokeWeight: 1, strokeColor: '#175F9C', fillOpacity: 1});
@@ -215,7 +242,7 @@ function colorizeHT(poly, polyName) {
 //Colorize the departements commune
 //@param array
 // return none
-function colorizeHTComm(poly_arr, datapop) {
+function colorizeHTComm(datapop) {
     //get all communes list
     communelist = new Array();
 
@@ -252,7 +279,6 @@ function colorizeHTComm(poly_arr, datapop) {
             }
         }
 
-
         for (var i = 0; i < sizeGrpItem; i++) {
             var arrTemp = new Array();
             arrTemp[0] = datapop[ind_datapop][0];//commune name
@@ -265,19 +291,39 @@ function colorizeHTComm(poly_arr, datapop) {
     //console.log(com_list);
 
     //colorize shape	
-    for (var i = 0; i < poly_arr.length; i++) {
+    for (var i = 0; i < comsPolygons.length; i++) {
+        var fcolor = '#ccc';
         for (var j = 0; j < com_list.length; j++) {
-            if (poly_arr[i].title == com_list[j][0])
+            if (comsPolygons[i].ComName === com_list[j][0])
             {
-                var fcolor = com_list[j][2];
-                poly_arr[i].setOptions({fillColor: fcolor, strokeWeight: 1, strokeColor: '#EAEEF1', fillOpacity: .6});
+                fcolor = com_list[j][2];
                 break;
-            } else {
-                poly_arr[i].setOptions({fillColor: '#ccc', strokeWeight: 0, strokeColor: '#175F9C', fillOpacity: 0});
             }
         }
-    }
+        if (fcolor != '#ccc')
+        {
+            for (var poly = 0; poly < comsPolygons[i].Polys.length; poly++)//comsPolygons[i].Polys)
+            {
 
+                comsPolygons[i].Polys[poly].fillColor = fcolor;
+                comsPolygons[i].Polys[poly].strokeWeight = 1;
+                comsPolygons[i].Polys[poly].strokeColor = '#EAEEF1';
+                comsPolygons[i].Polys[poly].fillOpacity = 0.6;
+                comsPolygons[i].Polys[poly].setMap(map);
+            }
+        }
+//        else
+//        {
+//            for (var poly = 0; poly < comsPolygons[i].Polys.length; poly++)//
+//            {
+//                comsPolygons[i].Polys[poly].fillColor = fcolor;//'#ccc';
+//                comsPolygons[i].Polys[poly].strokeWeight = 0.1;
+//                comsPolygons[i].Polys[poly].strokeColor = '#175F9C';
+//                comsPolygons[i].Polys[poly].fillOpacity = 0.2;
+//                comsPolygons[i].Polys[poly].setMap(map);
+//            }
+//        }
+    }
     //Generate legend content				
 
     var legend_color_inter = [];
@@ -315,7 +361,6 @@ function colorizeHTComm(poly_arr, datapop) {
     }
     //add legend content					
     datapop_legend(legend_color_inter);
-
 }
 
 //add and replace legend content
@@ -346,18 +391,18 @@ function runColorizeHTI() {
     geoXml.parse(filename);
 }
 //execute the colorization of the communes of a departement
-function runColorizeHTICommDep() {
-    geoXml = new geoXML3.parser({
-        map: map,
-        //infoWindow: infowindow,
-        singleInfoWindow: true,
-        zoom: false,
-        markerOptions: {optimized: false},
-        suppressInfoWindows: false,
-        afterParse: useTheData_colorizeHTCommDep
-    });
-    geoXml.parse(filename);
-}
+//function runColorizeHTICommDep() {
+//    geoXml = new geoXML3.parser({
+//        map: map,
+//        //infoWindow: infowindow,
+//        singleInfoWindow: true,
+//        zoom: false,
+//        markerOptions: {optimized: false},
+//        suppressInfoWindows: false,
+//        afterParse: useTheData_colorizeHTCommDep
+//    });
+//    geoXml.parse(filename);
+//}
 //Generate color for kml file
 function kmlColor(kmlIn) {
     var kmlColor = {};
