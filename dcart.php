@@ -303,8 +303,8 @@ include_once('lib/init.php');
                             </div>
                             <br />
                             <div id="sliderCont" style="margin-left: 15px;">
-                                <input id="sldDistance" type="text" value="" style="width: 250px;" />
-                                <label id="lblSldDistance" style="margin-left:10px;">0 km</label>
+                                <input id="sldDistance" type="text" value="2" style="width: 250px;" />
+                                <label id="lblSldDistance" style="margin-left:10px;">2 km</label>
                             </div>
                         </div>
                     </div>
