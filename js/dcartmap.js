@@ -18,6 +18,8 @@ var placemark;
 
 var facTypeIcon;
 
+var markerclusterer;
+
 // Create an array of styles for the map.
 var styles = [
     {
@@ -86,7 +88,8 @@ $(document).ready(function () {
                 google.maps.MapTypeId.SATELLITE,
                 google.maps.MapTypeId.TERRAIN
             ]
-        }
+        },
+        scaleControl: true
     };
     map = new google.maps.Map(mapDiv, opts);
 
@@ -96,7 +99,7 @@ $(document).ready(function () {
 
     /***** General initialisation *****/
     // Setup The cluster variable
-    var mcOptions = {gridSize: 80, maxZoom: 10};
+    var mcOptions = {gridSize: 80, maxZoom: 10, ignoreHidden: true};
     markerclusterer = new MarkerClusterer(map, [], mcOptions);
 
     /* 
@@ -107,19 +110,6 @@ $(document).ready(function () {
     google.maps.event.addListener(map, 'mousemove', function (ev) {
         MOUSE_LOCATION[0] = ev.latLng.lat();
         MOUSE_LOCATION[1] = ev.latLng.lng();
-//        if (distanceSearch)
-//        {
-//            var cityCircle = new google.maps.Circle({
-//                strokeColor: '#FF0000',
-//                strokeOpacity: 0.8,
-//                strokeWeight: 2,
-//                fillColor: '#FF0000',
-//                fillOpacity: 0.35,
-//                map: map,
-//                center: ev.latLng,
-//                radius: 5
-//            });
-//        }
     });
 
     /*When user select a map type*/
@@ -199,6 +189,7 @@ function executeColorizeDep() {
 }
 
 var DistanceCircle;
+var moveCircle = false;
 
 function BindDepInfoWindow(poly, depName, depInfoWindow) {
     poly.addListener('click', function (event) {
@@ -212,24 +203,83 @@ function BindDepInfoWindow(poly, depName, depInfoWindow) {
         MOUSE_LOCATION[1] = ev.latLng.lng();
         if (distanceSearch)
         {
-            if (typeof DistanceCircle !== "undefined")
+            if (typeof DistanceCircle === "undefined")
             {
-                // Move Poly
-                //DistanceCircle.moveTo(new google.maps.LatLng(MOUSE_LOCATION[0], MOUSE_LOCATION[1]));
-            } else
-            {
+                // * 1000 to convert to meters
+                var searchRad = ($('#sldDistance').val() * 1000) / 2; // Radius
                 // Create poly
                 DistanceCircle = new google.maps.Circle({
                     strokeColor: '#FFFFFF',
-                    strokeOpacity: 0.8,
+                    strokeOpacity: 0.9,
                     strokeWeight: 2,
                     fillColor: '#FFFFFF',
-                    fillOpacity: 0.35,
+                    fillOpacity: 0.7,
                     map: map,
                     center: ev.latLng,
-                    radius: 200,
-                    draggable: true
+                    radius: searchRad,
+                    draggable: false,
+                    zIndex: 9999
                 });
+
+                moveCircle = true;
+
+                DistanceCircle.addListener('click', function (event) {
+                    if (!moveCircle)
+                    {
+                        for (var i = 0; i < markersM.length; i++)
+                        {
+                            markersM[i].setVisible(false);
+                        }
+                    } else
+                    {
+                        var searchRad = $('#sldDistance').val() / 2;
+
+                        for (var i = 0; i < markersM.length; i++)
+                        {
+                            var distance = google.maps.geometry.spherical.computeDistanceBetween(event.latLng, markersM[i].position);
+                            var distance_km = Math.round(distance / 1000);
+                            if (distance_km > 0 && distance_km <= searchRad) {
+                                markersM[i].setVisible(true);
+                            } else
+                            {
+                                markersM[i].setVisible(false);
+                            }
+                        }
+                    }
+                    moveCircle = !moveCircle;
+
+
+                    markerclusterer.repaint();
+                });
+
+                DistanceCircle.addListener('mousemove', function (event) {
+                    if (moveCircle)
+                    {
+                        //MOUSE_LOCATION[0] = event.latLng.lat();
+                        //MOUSE_LOCATION[1] = event.latLng.lng();
+                        // Move Poly                
+                        DistanceCircle.setCenter(event.latLng);//new google.maps.LatLng(MOUSE_LOCATION[0], MOUSE_LOCATION[1]));
+
+//                        {
+//                        var tempClusters = markerclusterer.getClusters();
+//                        for (var i = 0; i < tempClusters.length; i++)
+//                        {
+//                            var distance = google.maps.geometry.spherical.computeDistanceBetween(event.latLng, tempClusters[i].getCenter());
+//                            var distance_km = Math.round(distance / 1000);
+//                            if (distance_km > 0 && distance_km <= searchRad) {
+//                                tempClusters[i].clusterIcon_.show();
+//                            }
+//                            else
+//                            {
+//                                tempClusters[i].clusterIcon_.hide();
+//                            }
+//                        }
+                        //markerclusterer.repaint();
+                    }
+                });
+            } else {
+                if (moveCircle)
+                    DistanceCircle.setCenter(ev.latLng);
             }
         }
     });
@@ -416,7 +466,6 @@ function zoomComm(nameComm) {
     var zoomComm = 11;
     var zoomht = 8;
     switch (nameComm) {
-
         case 'Haiti':
             map.panTo(latlng_haiti);
             map.setZoom(zoomht);
