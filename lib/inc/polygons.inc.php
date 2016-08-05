@@ -59,3 +59,38 @@ if (isset($_GET['Haiti'])) {
     echo json_encode($departments);
 }
 
+if (isset($_GET['Communes'])) {
+    // Parse the xml
+    $xml = simplexml_load_file("../../js/gis/htiadm3.kml") or die("Error: Cannot create object");
+    // Get the coords of the departments
+    $placemarks = $xml->Document->Placemark;
+    $Communes = array();
+    foreach ($placemarks as $placemark) {
+        $polys = array();
+        $ComName = (string) $placemark->name;
+        // some of the placemarks have multiple polygons
+        $xmlPolys = $placemark->MultiGeometry->Polygon;
+        foreach ($xmlPolys as $value) {
+            $parsedCoords = $value->outerBoundaryIs->LinearRing->coordinates;
+
+            // get the string into an array of coords
+            $combinedCoords = explode(" ", $parsedCoords);
+            // an array to store our coords in an array google understands
+            $googleCoordArray = array();
+            $coordCount = 0;
+            // setup the array with the info given above
+            foreach ($combinedCoords as $i => $value) {
+                $longLat = explode(",", trim($value));
+                // Ignore empty string in last pos
+                if (count($longLat) > 1) {
+                    $googleCoordArray[$coordCount] = (object) array("lat" => (0 + $longLat[1]), "lng" => (0 + $longLat[0]));
+                    $coordCount += 1;
+                }
+            }
+
+            array_push($polys, (object) array("Coords" => $googleCoordArray));
+        }
+        array_push($Communes, (object) array("Name" => $ComName, "Polys" => $polys));
+    }
+    echo json_encode($Communes);
+}

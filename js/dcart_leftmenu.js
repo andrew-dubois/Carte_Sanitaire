@@ -1,4 +1,5 @@
 var distanceSearch = false;
+var numServChecked = "-"; // Store number of services checked for label updates
 
 function SetupLeftMenu() {
     /*
@@ -128,8 +129,6 @@ function SetupLeftMenu() {
         zoomDep(valNameDep);
     });
 
-    var numServChecked = "-"; // Store number of services checked for label updates
-
     $('#servChecks input').prop('disabled', true);
 
     $('#cbxFilterbyServs').on('click', function () {
@@ -156,7 +155,7 @@ function SetupLeftMenu() {
         $("#servModWin").modal('show').on('shown', function () {
             if (!servFilterShown)
             {// initiate slider
-                $('#sldDistance').slider({min: 0, max: 5000, value: 0}).on('slide', function (ev) {
+                $('#sldDistance').slider({min: 0.5, max: 20, value: 2, step: 0.5}).on('slide', function (ev) {
                     $('#lblSldDistance').text(ev.value + 'km');
                 });
                 servFilterShown = true;
@@ -197,38 +196,56 @@ function SetupLeftMenu() {
     $('#btnServFilter').on('click', function (e) {
         // TODO: Modify this to include filters
         //       Update any other calls to take services into account
-        //collect all checked fac type
+        //       collect all checked fac type
         e.preventDefault();
 
         var typeFac_checked = '';
-        if ($('#health_fac').prop('checked')) {
+
+        // first check the single level trees then move onto second layer tree
+        if ($('#vih_fac').prop('checked'))
+        {
+            typeFac_checked = 'vih';
+        } else if ($('#lab_infr').prop('checked'))
+        {
+            typeFac_checked = 'lab';
+        } else {
             $('.opt_fac_type:checked').each(function (i) {
                 if ($('.opt_fac_type:checked').length == i + 1)
                     typeFac_checked += $(this).val()
                 else
                     typeFac_checked += $(this).val() + ':';
             });
-        } else if ($('#lab_infr').prop('checked'))
-        {
-            typeFac_checked = 'lab';
-        } else
-        {
-            typeFac_checked = 'vih';
         }
+
+        FilterMapByType(typeFac_checked);
+
+        addClusterOnMap();
+
+        getNumFacTypeByDep();//Get the facility number by department
+        getNumFacLabDep();// get the facility number with lab by dep
+        getNumFacHIVDep();//get the facility number with hiv by dep
 
         if ($('#cbxFilterbyRange').prop('checked'))
         {
             distanceSearch = true;
-        } else
-        {
-            FilterMapByType(typeFac_checked);
 
-            addClusterOnMap();
-
-            getNumFacTypeByDep();//Get the facility number by department
-            getNumFacLabDep();// get the facility number with lab by dep
-            getNumFacHIVDep();//get the facility number with hiv by dep
+            for (var x = 0; x < markersM.length; x++)
+            {
+                markersM[x].setVisible(false);
+            }
+//            var markers = markerclusterer.getMarkers();
+//            for (var x = 0; x < markers.length; x++)
+//            {                
+//                markers[x].visible = false;
+//            }
+//            var tempClusters = markerclusterer.getClusters();
+//            for (var x = 0; x < tempClusters.length; x++)
+//            {                
+//                tempClusters[x].clusterIcon_.hide();
+//            }
+            markerclusterer.repaint();
         }
+
         $("#servModWin").modal('hide');
     });
 

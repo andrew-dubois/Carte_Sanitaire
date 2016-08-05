@@ -83,26 +83,32 @@ function FilterMapByType(facilityType) {
 
     if ($('#cbxFilterbyServs').prop('checked')) {
         optF = $(".opt_filter_r:checked").val();
-        facTypeCount = [];
-        facTypeCount['lab'] = 0;
-        facTypeCount['hiv'] = 0;
+
         $('#clFilters .cbxServFil:checked').each(function (i) {
             services.push($(this).val());
         });
     }
 
+    facTypeCount = [];
+    facTypeCount['lab'] = 0;
+    facTypeCount['hiv'] = 0;
+
     var markers = FullInstlist;
     for (var i = 0; i < markers.length; i++) {
+        var AddMarker = true;
         if (facilityType != 'all')
             if (facilityType == "lab" || facilityType == 'vih')
             {
                 if (facilityType == "lab" && !(markers[i].getAttribute("is_Lab") == "1"))
-                    continue;
+                    AddMarker = false;
+                //continue;
                 if (facilityType == "vih" && !(markers[i].getAttribute("is_HIVService") == "1"))
-                    continue;
+                    AddMarker = false;
+                //continue;
             } else
             if (facTypes.indexOf(markers[i].getAttribute("facility_type")) === -1)
-                continue;
+                AddMarker = false;
+        //continue;
 
         var ServicesAvailable = [];
 
@@ -163,28 +169,30 @@ function FilterMapByType(facilityType) {
         {
             if (filterByService(services, ServicesAvailable, optF))
                 continue;
+        }
+        
+        var isLab = markers[i].getAttribute("is_Lab");
+        var isHIV = markers[i].getAttribute("is_HIVService");
 
-            var isLab = markers[i].getAttribute("is_Lab");
-            var isHIV = markers[i].getAttribute("is_HIVService");
-
-            // Rather do a count of facilities here instead of another db call
-            if (!(facType in facTypeCount))
-            {
-                facTypeCount[facType] = 1;
-            } else
-            {
-                facTypeCount[facType] += 1;
-            }
-
-            if (isLab === "1")
-                facTypeCount['lab'] += 1;
-
-            if (isHIV === "1")
-                facTypeCount['hiv'] += 1;
+        // Rather do a count of facilities here instead of another db call
+        if (!(facType in facTypeCount))
+        {
+            facTypeCount[facType] = 1;
+        } else
+        {
+            facTypeCount[facType] += 1;
         }
 
+        if (isLab === "1")
+            facTypeCount['lab'] += 1;
+
+        if (isHIV === "1")
+            facTypeCount['hiv'] += 1;
+
+
         facTypeIcon = facType;
-        addMarkerOnMap(id, lat, lng, facType, title, manag_authority, vComm_name, deptname, nb_bed_overnight, nb_gen_medPrac, nb_spePrac, typ_service_avail, ChildVacc, GrowthMon, Sickchild, FP, ANC, PMTCT, delivery, malaria, sti, tb, hivct, minorsurgery, csections);
+        if (AddMarker)
+            addMarkerOnMap(id, lat, lng, facType, title, manag_authority, vComm_name, deptname, nb_bed_overnight, nb_gen_medPrac, nb_spePrac, typ_service_avail, ChildVacc, GrowthMon, Sickchild, FP, ANC, PMTCT, delivery, malaria, sti, tb, hivct, minorsurgery, csections);
     }
 }
 

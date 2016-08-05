@@ -10,15 +10,13 @@ include_once('lib/init.php');
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBKTJn79hsRgdkWhnJr8QxodRTidYVFTKs"></script>  
         <script type="text/javascript" src="js/markerClusterer/markerclusterer_packaged.js"></script>
 
-<!--<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/src/markerclusterer.js"></script>-->
-
         <script type="text/javascript" src="js/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/bootstrap/js/bootstrap-slider.js"></script>
         <script type="text/javascript" src="js/cs_tree/lib/jquery.cookie.js"></script>
         <script type="text/javascript" src="js/cs_tree/jquery.treeview.js"></script> 
 
         <script type="text/javascript" src="js/custom.js"></script>
-        <script type="text/javascript" src="js/map.js"></script>        
+        <script type="text/javascript" src="js/dcartmap.js"></script>        
         <script type="text/javascript" src="js/map_clustering.js"></script>
         <script type="text/javascript" src="js/dcart_legend.js"></script>
         <script type="text/javascript" src="js/dcart_leftmenu.js"></script>
@@ -305,8 +303,8 @@ include_once('lib/init.php');
                             </div>
                             <br />
                             <div id="sliderCont" style="margin-left: 15px;">
-                                <input id="sldDistance" type="text" value="" style="width: 250px;" />
-                                <label id="lblSldDistance" style="margin-left:10px;">0 km</label>
+                                <input id="sldDistance" type="text" value="2" style="width: 250px;" />
+                                <label id="lblSldDistance" style="margin-left:10px;">2 km</label>
                             </div>
                         </div>
                     </div>
