@@ -58,6 +58,77 @@ class Users{
 				return false;
 				}		
 		}
+		
+	//GUID allows to get an unique ID
+	public function getGUID(){    
+        //mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+        $charid = strtoupper(md5(uniqid(rand(), true)));
+        $hyphen = chr(45);// "-"
+        $uuid = substr($charid, 0, 8).$hyphen
+            .substr($charid, 8, 4).$hyphen
+            .substr($charid,12, 4).$hyphen
+            .substr($charid,16, 4).$hyphen
+            .substr($charid,20,12);
+            
+        return $uuid;
+    
+	}
+	//insert user guid for password changing
+	public function insertGUID($email,$guid){
+		$conn=new DBConnection();
+		$con=$conn->dbconnect();
+		if($con){
+			$query="INSERT INTO userchangepass (useremail,guid)VALUES ('".$email."','".$guid."')";
+			$result=$conn->insertTable($query);
+			//pg_close($con);
+			return $result;			
+			}else{				
+				return false;
+				}	
+		
+	}
+	//check guid
+	public function checkGUID($guid){
+		$conn=new DBConnection();
+		$con=$conn->dbconnect();
+		if($con){
+			$query="SELECT * FROM userchangepass where guid='".$guid."'";
+			$result=$conn->queryTable($query);
+			//pg_close($con);
+			return $result;			
+			}else{				
+				return false;
+				}	
+		
+	}
+	// check guid of useremail
+	public function checkGUIDuseremail($email){
+		$conn=new DBConnection();
+		$con=$conn->dbconnect();
+		if($con){
+			$query="SELECT * FROM userchangepass where useremail='".$email."'";
+			$result=$conn->queryTable($query);
+			//pg_close($con);
+			return $result;			
+			}else{				
+				return false;
+				}	
+		
+	}
+	
+	
+	//delete guid
+	public function deleteGUID($email){
+		$conn=new DBConnection();
+			$con=$conn->dbconnect();
+			if($con){
+				$query="DELETE FROM userchangepass WHERE useremail='".$email."'";
+				$res=$conn->delTable($query);
+				if($res){
+					return true;
+				}
+			}		
+	}
 	
 	// change force_change_pass status
 	public function change_fchange_pass($username,$status){

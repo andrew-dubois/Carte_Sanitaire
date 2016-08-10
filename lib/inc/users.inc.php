@@ -107,8 +107,14 @@ include(dirname(dirname(__FILE__)).'/core/users.php');
 		$res=$usr->changepassEmail($email,$newpass);
 		
 		if($res){
-			
+			//delete the guid using the user email
+			$delguid=$usr->deleteGUID($_POST['email']);
+			if(! $delguid){
+				echo "Erreur de suppression. Veuillez contactez votre administrateur.";
+				exit;
+			}
 			header('Location: ../../login.php?cpw=1');
+			
 			exit;
 		}
 		
