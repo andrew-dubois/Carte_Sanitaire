@@ -93,6 +93,28 @@ include(dirname(dirname(__FILE__)).'/core/users.php');
 		exit;
 				
 		}
+		
+		/* 
+	 * update forgot password
+	 * @param NONE
+	 * Returns TRUE OR FALSE
+	*/	
+	
+	if(isset($_POST['cpwpasstext'])){
+		$usr= new Users;
+		$email=$_POST['email'];
+		$newpass=$_POST['cpwpasstext'];
+		$res=$usr->changepassEmail($email,$newpass);
+		
+		if($res){
+			
+			header('Location: ../../login.php?cpw=1');
+			exit;
+		}
+		
+		exit;
+				
+		}
 	
 	//delete a user
 	if(isset($_POST['iduser'])){

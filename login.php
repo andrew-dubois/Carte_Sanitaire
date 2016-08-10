@@ -63,6 +63,15 @@ if(isset($_GET['logout'])){
   </div>
   <div class="form">
     <h2>Se connecter</h2>
+	<?php 
+	if(isset($_GET['cpw'])){
+		?>
+		<div class="alert alert-info">
+		Votre mot de passe a été modifié avec succes. Veuillez-vous connecter maintenant.
+		</div>
+		<?php
+	}
+	?>
     <form action="admin" id="form_login">
       <input type="text" id="usernametext" placeholder="Nom d'utilisateur" required />
       <input type="password" id="passwtext" placeholder="Mot de passe" required />

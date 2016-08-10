@@ -314,7 +314,7 @@ Auth_DHIS2();
             </script>
 
             <script>
-                var base = "http://localhost:8000/dhis/" //var base = "http://200.113.242.50:8000/dhis/"; //"http://192.168.1.10:8000/dhis/";
+                var base = "http://200.113.242.50:8000/dhis/"; //"http://192.168.1.10:8000/dhis/";
 
                 Ext.onReady(function () {
                     $('a.indlist')[0].click();

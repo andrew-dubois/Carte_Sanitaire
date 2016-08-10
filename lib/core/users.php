@@ -16,6 +16,20 @@ class Users{
 				}		
 		}
 		
+	//check if user email exists - return true if so, false if not
+	public function checkUserEmail($useremail){
+		$conn=new DBConnection();
+		$con=$conn->dbconnect();
+		if($con){
+			$query="SELECT usremail FROM users where usremail='".$useremail."'";
+			$result=$conn->queryTable($query);
+			pg_close($con);
+			return $result;			
+			}else{				
+				return false;
+				}		
+		}
+		
 	
 	//change user password
 	public function changepass($username,$newpass){
@@ -23,6 +37,20 @@ class Users{
 		$con=$conn->dbconnect();
 		if($con){
 			$query="UPDATE users SET pass='".$newpass."'where username='".$username."'";
+			$result=$conn->queryTable($query);
+			pg_close($con);
+			return true;			
+			}else{				
+				return false;
+				}		
+		}
+		
+	//change user password by email
+	public function changepassEmail($email,$newpass){
+		$conn=new DBConnection();
+		$con=$conn->dbconnect();
+		if($con){
+			$query="UPDATE users SET pass='".$newpass."'where usremail='".$email."'";
 			$result=$conn->queryTable($query);
 			pg_close($con);
 			return true;			

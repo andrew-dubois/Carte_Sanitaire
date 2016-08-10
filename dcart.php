@@ -7,7 +7,7 @@ include_once('lib/init.php');
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>MSPP -  Carte Sanitaire</title>
         <script type="text/javascript" src="js/jquery191.js"></script>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>  
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBKTJn79hsRgdkWhnJr8QxodRTidYVFTKs"></script>  
         <script type="text/javascript" src="js/markerClusterer/markerclusterer_packaged.js"></script>
 
         <script type="text/javascript" src="js/bootstrap/js/bootstrap.min.js"></script>
