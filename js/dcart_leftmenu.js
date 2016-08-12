@@ -70,6 +70,18 @@ function SetupLeftMenu() {
 
         FilterMapByType(typeFac_checked);
         addClusterOnMap();
+
+        if ($('#cbxFilterbyRange').prop('checked'))
+        {
+            moveCircle = true;
+
+            for (var x = 0; x < markersM.length; x++)
+            {
+                markersM[x].setVisible(false);
+            }
+
+            markerclusterer.repaint();
+        }
     });
 
     // View facilities with lab services by dep
@@ -78,7 +90,17 @@ function SetupLeftMenu() {
             //uncheck other options
             FilterMapByType('lab');
             addClusterOnMap();//clustering
+            if ($('#cbxFilterbyRange').prop('checked'))
+            {
+                moveCircle = true;
 
+                for (var x = 0; x < markersM.length; x++)
+                {
+                    markersM[x].setVisible(false);
+                }
+
+                markerclusterer.repaint();
+            }
         } else {
             removeClusterOnMap();//remove markers form the map
         }
@@ -89,6 +111,17 @@ function SetupLeftMenu() {
         if ($('#vih_fac').is(':checked')) {
             FilterMapByType('vih');
             addClusterOnMap();//clustering
+            if ($('#cbxFilterbyRange').prop('checked'))
+            {
+                moveCircle = true;
+
+                for (var x = 0; x < markersM.length; x++)
+                {
+                    markersM[x].setVisible(false);
+                }
+
+                markerclusterer.repaint();
+            }
         } else {
             removeClusterOnMap();//remove markers form the map
         }
@@ -111,7 +144,18 @@ function SetupLeftMenu() {
                 //$.get("lib/inc/marker.inc.php?allFSPA=" + depname, function (data) {
                 //getXmlData(data);//retrieving xml data from database								
                 FilterMapByType('all');
-                addClusterOnMap();//clustering									
+                addClusterOnMap();//clustering	
+                if ($('#cbxFilterbyRange').prop('checked'))
+                {
+                    moveCircle = true;
+
+                    for (var x = 0; x < markersM.length; x++)
+                    {
+                        markersM[x].setVisible(false);
+                    }
+
+                    markerclusterer.repaint();
+                }
                 //});//end get
             } else {
                 $(".opt_fac_type").prop('checked', false);
@@ -233,16 +277,7 @@ function SetupLeftMenu() {
             {
                 markersM[x].setVisible(false);
             }
-//            var markers = markerclusterer.getMarkers();
-//            for (var x = 0; x < markers.length; x++)
-//            {                
-//                markers[x].visible = false;
-//            }
-//            var tempClusters = markerclusterer.getClusters();
-//            for (var x = 0; x < tempClusters.length; x++)
-//            {                
-//                tempClusters[x].clusterIcon_.hide();
-//            }
+
             markerclusterer.repaint();
         }
 
