@@ -15,7 +15,6 @@ include_once('lib/init.php');
         <script type="text/javascript" src="js/cs_tree/lib/jquery.cookie.js"></script>
         <script type="text/javascript" src="js/cs_tree/jquery.treeview.js"></script> 
 
-        <script type="text/javascript" src="js/custom.js"></script>
         <script type="text/javascript" src="js/dcartmap.js"></script>        
         <script type="text/javascript" src="js/map_clustering.js"></script>
         <script type="text/javascript" src="js/dcart_legend.js"></script>
