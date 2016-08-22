@@ -1,0 +1,15 @@
+[22/Aug/2016:14:44:28] (polygons.inc) Test message1
+[22/Aug/2016:14:44:28] (polygons.inc) Test message2
+[22/Aug/2016:14:53:28] (polygons.inc) Test message1
+[22/Aug/2016:14:53:29] (polygons.inc) 1
+[22/Aug/2016:14:55:17] (polygons.inc) 13
+[22/Aug/2016:15:03:56] (polygons.inc) 0
+[22/Aug/2016:15:04:00] (polygons.inc) 0
+[22/Aug/2016:15:04:24] (polygons.inc) 0
+[22/Aug/2016:15:04:25] (polygons.inc) 0
+[22/Aug/2016:15:05:25] (polygons.inc) 0
+[22/Aug/2016:15:05:53] (polygons.inc) 0
+[22/Aug/2016:15:06:25] (polygons.inc) Execution Time - 2
+[22/Aug/2016:15:06:26] (polygons.inc) 0
+[22/Aug/2016:15:06:47] (polygons.inc) Execution Time - 0
+[22/Aug/2016:15:06:48] (polygons.inc) Execution Time - 1

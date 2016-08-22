@@ -88,7 +88,7 @@ function API_Institutions() {
     global $username, $password, $baseURL;
     // TODO : Need to update the sql view via another api call to ensure most up to date data
     // Get the indicators from the API
-    $service_url = $baseURL . 'api/sqlViews/ZTNrw5zgvFV/data.json';
+    $service_url = $baseURL . 'api/sqlViews/ioJtWPHGxIk/data.json';
 
     // initialise the curl call
     $curl = curl_init($service_url);

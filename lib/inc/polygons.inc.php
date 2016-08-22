@@ -1,5 +1,7 @@
 <?php
 
+include dirname(__FILE__) . '/../logging/logging.php';
+
 use phpFastCache\CacheManager;
 
 require __DIR__ . '/../../phpfastcache-final/src/autoload.php';
@@ -7,6 +9,12 @@ require __DIR__ . '/../../phpfastcache-final/src/autoload.php';
 $InstanceCache = CacheManager::getInstance('files');
 
 if (isset($_GET['DomRep'])) {
+    // Logging class initialization
+    // Script start
+    $timeStart = time();
+    $log = new Logging();
+    // set path and name of log file (optional)
+    $log->lfile(dirname(__FILE__) . '/../logging/executionLog.txt');
     $key = "DomRep";
     $CachedString = $InstanceCache->getItem($key);
     if (is_null($CachedString->get())) {
@@ -42,12 +50,21 @@ if (isset($_GET['DomRep'])) {
         //echo $CachedString->get();
         echo json_encode($CachedString->get());
     }
+
+    $timeEnd = time();
+
+    $log->lwrite("Execution Time - " . ($timeEnd - $timeStart));
 }
 
 //echo json_encode($googleCoordArray);
 
 
 if (isset($_GET['Haiti'])) {
+    $timeStart = time();
+    $log = new Logging();
+    // set path and name of log file (optional)
+    $log->lfile(dirname(__FILE__) . '/../logging/executionLog.txt');
+    
     $key = "HaitiDep";
     $CachedString = $InstanceCache->getItem($key);
     if (is_null($CachedString->get())) {
@@ -85,13 +102,17 @@ if (isset($_GET['Haiti'])) {
         }
         $CachedString->set($departments)->expiresAfter(0);
         $InstanceCache->save($CachedString);
-        
+
         echo json_encode($departments);
     } else {
         //echo "READ FROM CACHE // ";
         //echo $CachedString->get();
         echo json_encode($CachedString->get());
     }
+    
+    $timeEnd = time();
+
+    $log->lwrite("Execution Time - " . ($timeEnd - $timeStart));
 }
 
 if (isset($_GET['Communes'])) {
