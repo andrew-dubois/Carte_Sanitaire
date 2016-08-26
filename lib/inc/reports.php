@@ -1,28 +1,39 @@
 <?php
 
-include('../core/orgunit.php');
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+include (__DIR__ . "/../core/orgunitDHIS.php");
 
-$depname = filter_input(INPUT_POST, 'dep-list-dropdmenu');
-$repFilters = filter_input(INPUT_POST, 'repFilter', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+if (!$_POST)
+    exit;
 
-// If No Filters then just output every facility
-if (empty($repFilters)) {
-    $facs = new OrgUnit;
-    $dataFac = $facs->getAllInsSPA($depname);
+$deparment = filter_input(INPUT_POST, 'department', FILTER_DEFAULT);
+$facTypes = filter_input(INPUT_POST, 'facTypes', FILTER_DEFAULT);
+$services = filter_input(INPUT_POST, 'services', FILTER_DEFAULT);
 
-    if ($depname == 'Haiti') {
-        // Report each facility grouped by region
+if ($facTypes == null || $deparment == null) {
+    exit;
+}
 
-        echo $dataFac;
+$orgUnitDHIS = new OrgUnitDHIS();
+$facs = $orgUnitDHIS->getAllInsDHIS($deparment);
+
+$facTypeArr = split(":", $facTypes);
+
+foreach ($facs as $facIndex => $fac) {
+    if (!in_array($fac["facilitytype"], $facTypeArr)) {
+        unset($facs[$facIndex]);
     }
 }
-// If they filter then filter the list of facilities based on the filters selected
-else {
-    echo "Filters!";
+
+$file = fopen(__DIR__ . "/../../reports/cartographie/" . date("Y - M - d") . "_" . time() . ".csv", "w");
+
+// TODO : 
+// Add Headers
+// Select appropriate fields to show
+// Get Service Info from SPA DB
+// Group by department and type if Haiti Selected else just by type
+foreach ($facs as $fac) {
+    fputcsv($file, $fac);
 }
+
+echo json_encode(__DIR__ . "/../../reports/cartographie/" . date("Y - M - d") . " - " . time() . ".csv");
 

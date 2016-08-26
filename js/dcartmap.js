@@ -255,26 +255,7 @@ function BindDepInfoWindow(poly, depName, depInfoWindow) {
                 DistanceCircle.addListener('mousemove', function (event) {
                     if (moveCircle)
                     {
-                        //MOUSE_LOCATION[0] = event.latLng.lat();
-                        //MOUSE_LOCATION[1] = event.latLng.lng();
-                        // Move Poly                
-                        DistanceCircle.setCenter(event.latLng);//new google.maps.LatLng(MOUSE_LOCATION[0], MOUSE_LOCATION[1]));
-
-//                        {
-//                        var tempClusters = markerclusterer.getClusters();
-//                        for (var i = 0; i < tempClusters.length; i++)
-//                        {
-//                            var distance = google.maps.geometry.spherical.computeDistanceBetween(event.latLng, tempClusters[i].getCenter());
-//                            var distance_km = Math.round(distance / 1000);
-//                            if (distance_km > 0 && distance_km <= searchRad) {
-//                                tempClusters[i].clusterIcon_.show();
-//                            }
-//                            else
-//                            {
-//                                tempClusters[i].clusterIcon_.hide();
-//                            }
-//                        }
-                        //markerclusterer.repaint();
+                        DistanceCircle.setCenter(event.latLng);
                     }
                 });
             } else {

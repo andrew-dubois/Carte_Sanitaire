@@ -1,7 +1,5 @@
 <?php
 
-include dirname(__FILE__) . '/../logging/logging.php';
-
 use phpFastCache\CacheManager;
 
 require __DIR__ . '/../../phpfastcache-final/src/autoload.php';
@@ -9,16 +7,9 @@ require __DIR__ . '/../../phpfastcache-final/src/autoload.php';
 $InstanceCache = CacheManager::getInstance('files');
 
 if (isset($_GET['DomRep'])) {
-    // Logging class initialization
-    // Script start
-    $timeStart = time();
-    $log = new Logging();
-    // set path and name of log file (optional)
-    $log->lfile(dirname(__FILE__) . '/../logging/executionLog.txt');
     $key = "DomRep";
     $CachedString = $InstanceCache->getItem($key);
     if (is_null($CachedString->get())) {
-
         // Parse the xml
         $xml = simplexml_load_file("../../js/gis/DomRep.kml") or die("Error: Cannot create object");
         // Get the coords part that we need
@@ -50,21 +41,12 @@ if (isset($_GET['DomRep'])) {
         //echo $CachedString->get();
         echo json_encode($CachedString->get());
     }
-
-    $timeEnd = time();
-
-    $log->lwrite("Execution Time - " . ($timeEnd - $timeStart));
 }
 
 //echo json_encode($googleCoordArray);
 
 
-if (isset($_GET['Haiti'])) {
-    $timeStart = time();
-    $log = new Logging();
-    // set path and name of log file (optional)
-    $log->lfile(dirname(__FILE__) . '/../logging/executionLog.txt');
-    
+if (isset($_GET['Haiti'])) {    
     $key = "HaitiDep";
     $CachedString = $InstanceCache->getItem($key);
     if (is_null($CachedString->get())) {
@@ -109,10 +91,6 @@ if (isset($_GET['Haiti'])) {
         //echo $CachedString->get();
         echo json_encode($CachedString->get());
     }
-    
-    $timeEnd = time();
-
-    $log->lwrite("Execution Time - " . ($timeEnd - $timeStart));
 }
 
 if (isset($_GET['Communes'])) {
