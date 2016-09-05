@@ -430,7 +430,7 @@ commune.departement_code from institution,commune where institution.commune_code
             $queryString = trim($facName);
             $queryString = explode(' ', $facName);
             $nbStr = count($queryString);
-            $query = "select * from spa where";
+            $query = "select id, moh_facility_code, nameoffacility, deptname, commune_name from spa where";
             for ($i = 0; $i < $nbStr; $i++) {
                 if ($nbStr == ($i + 1)) {
                     $query.=" LOWER(nameoffacility) LIKE LOWER('%" . $queryString[$i] . "%')";

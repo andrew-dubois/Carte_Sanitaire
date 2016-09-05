@@ -286,13 +286,19 @@ function SetupLeftMenu() {
 
     $('#repForm').submit(function (e) {
         e.preventDefault();
+        // For now, we just generate a report based on the filters selected for the map
+        // A table version of the map data if you would
+
+        var sendJSON = getMapFiltsForReport();
+
         $.ajax({
             type: 'POST',
-            data: $('#repForm').serialize(),
+            data: sendJSON,
             url: 'lib/inc/reports.php',
             success: function (data) {
                 //document.location.href = data;
-                var seeData = data;
+                //var seeData = data;
+                window.open(data, '_blank');
             }
         });
     });
@@ -302,4 +308,41 @@ function SetupLeftMenu() {
 function updServSel() {
     $('#servModWin .modal-header h3').text('Sélectionnez services (' + numServChecked + '/14)');
     $('#btn_serv_filter').val('Filtrer les services (' + numServChecked + '/14)');
+}
+
+function getMapFiltsForReport() {
+    var reportJSON = {};
+
+    reportJSON.department = $('#dep-list-dropdmenu').val();
+
+    var typeFac_checked = '';
+    // first check the single level trees then move onto second layer tree
+    if ($('#vih_fac').prop('checked'))
+    {
+        typeFac_checked = 'vih';
+    } else if ($('#lab_infr').prop('checked'))
+    {
+        typeFac_checked = 'lab';
+    } else {
+        $('.opt_fac_type:checked').each(function (i) {
+            if ($('.opt_fac_type:checked').length == i + 1)
+                typeFac_checked += $(this).val()
+            else
+                typeFac_checked += $(this).val() + ':';
+        });
+    }
+
+    var services = [];
+    if ($('#cbxFilterbyServs').prop('checked')) {
+        optF = $(".opt_filter_r:checked").val();
+
+        $('#clFilters .cbxServFil:checked').each(function (i) {
+            services.push($(this).val());
+        });
+    }
+
+    reportJSON.facTypes = typeFac_checked;
+    reportJSON.services = services;
+
+    return reportJSON;
 }
