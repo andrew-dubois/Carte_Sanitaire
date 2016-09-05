@@ -20,7 +20,7 @@ if(!isset($_SESSION['usr'])){
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Liste des institutions</title>
+    <title>Liste des Utilisateurs</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -81,7 +81,7 @@ if(!isset($_SESSION['usr'])){
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Institutions
+                            Utilisateurs
                         </h1>
                         <ol class="breadcrumb">
                             <li>

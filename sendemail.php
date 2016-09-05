@@ -62,9 +62,16 @@
 			$emailtext=$_POST['emailtext'];
 		    $userEmail= $usr-> checkUserEmail($emailtext);
 			if($userEmail){
+				//check GUID of the userEmail if exits, delete it
+				$chkUseremail= $usr->checkGUIDuseremail($emailtext);
+				if($chkUseremail){
+					$del=$usr->deleteGUID($emailtext);
+				}
 				
+				//create and insert the the GUID
+				 $guid=$usr->getGUID();
 				// Le message
-				$message = "Bonjour,\r\n\r\nVeuillez cliquer le lien ci-dessous pour reinitialiser votre mot de passe \r\n\r\n http://200.113.242.50:8000/cs/cpw.php?email=".$emailtext." \r\n\r\nL'Equipe de Support de la Carte Sanitaire";
+				$message = "Bonjour,\r\n\r\nVeuillez cliquer le lien ci-dessous pour reinitialiser votre mot de passe \r\n\r\n http://200.113.242.50:8000/cs/cpw.php?guid=".$guid." \r\n\r\nL'Equipe de Support de la Carte Sanitaire";
 				
 
 				// Dans le cas où nos lignes comportent plus de 70 caractères, nous les coupons en utilisant wordwrap()
@@ -73,13 +80,14 @@
 				$headers = "From: <" . $emailFrom . ">" . "\r\n";
 				 //Envoi du mail
 		
-				if(mail('gens12003@yahoo.fr', 'Carte sanitaire - Recuperez votre mot de passe', $message, $headers)){
+				if(mail('cartesanitaire@gmail.com', 'Carte sanitaire - Recuperez votre mot de passe', $message, $headers)){
 					?>
 					<div class="alert alert-success">
 					Votre demande de recuperation de mot de passe a été envoyée avec succes. Merci de verifier votre adresse e-mail.
 					</div>
 					<?php
-					
+					//record guid
+					$recordguid=$usr->insertGUID($emailtext,$guid);//
 				}else{
 					?>
 					<div class="alert alert-danger">

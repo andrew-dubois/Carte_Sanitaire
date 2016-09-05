@@ -55,12 +55,24 @@
     
     <?php
 		  
-		if($_GET['email']){
-			//Check if the email adress exist
+		if($_GET['guid']){
 			include('lib/core/users.php');
 		    $usr= new Users;
-			$emailtext=$_GET['email'];
-		    $userEmail= $usr-> checkUserEmail($emailtext);
+			
+			// Check the guid and the email
+			$arrguid= $usr->checkGUID($_GET['guid']);
+			$userguid=trim($arrguid[0][1]);
+			if($userguid !== $_GET['guid']){
+				echo "<meta http-equiv='refresh' content='0;url=/cs/login.php'>";
+				exit;
+			}
+			//echo"<pre>".$userguid;
+			//print_r($arrguid);exit;
+			//Check if the email adress exist
+			
+			$emailtext=trim($arrguid[0][0]);
+			
+		    $userEmail= $usr->checkUserEmail($emailtext);
 			if($userEmail){
 				?>
 				

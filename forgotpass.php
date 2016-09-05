@@ -50,6 +50,7 @@
     
   </div>
   <div class="form" style="width:500px">
+ 
     <h2>Recuperation de mot de passe</h2>
     <form action="sendemail.php" id="form_login" method="post">
 	 <div class="">Saisissez votre adresse email. Un lien vous sera envoy&eacute; pour la reinitialisation de votre mot de passe</div></br>
