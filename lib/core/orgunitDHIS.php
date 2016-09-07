@@ -80,18 +80,64 @@ class OrgUnitDHIS {
 
         return $institution;
     }
-    
+
     // Gets all the facilities from DHIS by commune id
-    public function getDHISfac_byComm($commID)
-    {
+    public function getDHISfac_byComm($commID) {
         $institutions = API_InstitutionbyCommune($commID)['organisationUnits'];
-        
-        for($x = 0; $x <= count($institutions) -1; $x++)
-        {
+
+        for ($x = 0; $x <= count($institutions) - 1; $x++) {
             $institutions[$x]['latitude'] = json_decode($institutions[$x]['coordinates'])[1];
             $institutions[$x]['longitude'] = json_decode($institutions[$x]['coordinates'])[0];
         }
-        
+
+        return $institutions;
+    }
+
+    public function getDHISfacs_byNameLimit5($FacName) {
+        $institutions = API_InstitutionbyNameLimit5($FacName)['organisationUnits'];
+
+        for ($x = 0; $x <= count($institutions) - 1; $x++) {
+            $institutions[$x]['latitude'] = json_decode($institutions[$x]['coordinates'])[1];
+            $institutions[$x]['longitude'] = json_decode($institutions[$x]['coordinates'])[0];
+            $institutions[$x]['sec_commune'] = $institutions[$x]['parent']['name'];
+            $institutions[$x]['commune'] = $institutions[$x]['parent']['parent']['name'];
+            $institutions[$x]['UAS'] = $institutions[$x]['parent']['parent']['parent']['name'];
+            $institutions[$x]['department'] = $institutions[$x]['parent']['parent']['parent']['parent']['name'];
+        }
+
+        return $institutions;
+    }
+
+    public function getDHISfacs_byName($FacName) {
+        $institutions = API_InstitutionbyName($FacName)['organisationUnits'];
+        $groupsets = API_organisationUnitGroupSets();
+
+        for ($x = 0; $x <= count($institutions) - 1; $x++) {
+            $institutions[$x]['facilitytype'] = '';
+            $institutions[$x]['managauthority'] = '';
+
+            foreach ($institutions[$x]['organisationUnitGroups'] as $group) {
+                foreach ($groupsets['organisationUnitGroupSets'] as $groupset) {
+                    foreach ($groupset['organisationUnitGroups'] as $orgUnitGroup) {
+                        if ($group['id'] == $orgUnitGroup['id']) {
+                            if ($groupset['name'] == 'Categorie / Type') {
+                                $institutions[$x]['facilitytype'] = $orgUnitGroup['name'];
+                            } else {
+                                $institution[$x]['managauthority'] = $orgUnitGroup['name'];
+                            }
+                        }
+                    }
+                }
+            }
+
+            $institutions[$x]['latitude'] = json_decode($institutions[$x]['coordinates'])[1];
+            $institutions[$x]['longitude'] = json_decode($institutions[$x]['coordinates'])[0];
+            $institutions[$x]['sec_commune'] = $institutions[$x]['parent']['name'];
+            $institutions[$x]['commune'] = $institutions[$x]['parent']['parent']['name'];
+            $institutions[$x]['UAS'] = $institutions[$x]['parent']['parent']['parent']['name'];
+            $institutions[$x]['department'] = $institutions[$x]['parent']['parent']['parent']['parent']['name'];
+        }
+
         return $institutions;
     }
 
