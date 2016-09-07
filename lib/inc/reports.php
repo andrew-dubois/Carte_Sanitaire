@@ -13,27 +13,38 @@ if ($facTypes == null || $deparment == null) {
     exit;
 }
 
+// Get from DHIS All institutions
 $orgUnitDHIS = new OrgUnitDHIS();
 $facs = $orgUnitDHIS->getAllInsDHIS($deparment);
 
+// Split the factypes from the map filters that are sent through
 $facTypeArr = split(":", $facTypes);
 
+// if the institutions is not of the types selected then remove it from the array
 foreach ($facs as $facIndex => $fac) {
     if (!in_array($fac["facilitytype"], $facTypeArr)) {
         unset($facs[$facIndex]);
     }
 }
 
-$file = fopen(__DIR__ . "/../../reports/cartographie/" . date("Y - M - d") . "_" . time() . ".csv", "w");
+// Create the report file and open it with write privelage
+$timeNow = time();
+$file = fopen(__DIR__ . "/../../reports/cartographie/" . date("Y-M-d") . "_" . $timeNow . ".csv", "w");
 
 // TODO : 
 // Add Headers
 // Select appropriate fields to show
 // Get Service Info from SPA DB
 // Group by department and type if Haiti Selected else just by type
+fputcsv($file, ["moh_facility_code", "facility_name", "facility_type", "managing_authority", "department", "uas", "commune", "section_commune"]);
 foreach ($facs as $fac) {
-    fputcsv($file, $fac);
+    // some institutions don't have managing authority
+    if (array_key_exists("managauthority", $fac)) {
+        fputcsv($file, [$fac["code"], $fac["name"], $fac["facilitytype"], $fac["managauthority"], $fac["deptname"], $fac["uasname"], $fac["communename"], $fac["seccomname"]]);
+    } else {
+        fputcsv($file, [$fac["code"], $fac["name"], $fac["facilitytype"], "", $fac["deptname"], $fac["uasname"], $fac["communename"], $fac["seccomname"]]);
+    }
 }
 
-echo json_encode(__DIR__ . "/../../reports/cartographie/" . date("Y - M - d") . " - " . time() . ".csv");
+echo "reports/cartographie/" . date("Y-M-d") . "_" . $timeNow . ".csv";
 
