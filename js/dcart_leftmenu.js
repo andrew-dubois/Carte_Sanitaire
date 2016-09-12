@@ -343,6 +343,7 @@ function getMapFiltsForReport() {
 
     reportJSON.facTypes = typeFac_checked;
     reportJSON.services = services;
+    reportJSON.operator = $(".opt_filter_r:checked").val();
 
     return reportJSON;
 }

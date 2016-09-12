@@ -158,19 +158,31 @@ function FilterMapByType(facilityType) {
         var hivct = markers[i].getAttribute("hivct");
         if (hivct == 1)
             ServicesAvailable.push('hivct');
+        var noncomdiseases = markers[i].getAttribute("noncomdiseases");
+        if (noncomdiseases == 1)
+            ServicesAvailable.push('noncomdiseases');
         var minorsurgery = markers[i].getAttribute("minorsurgery");
         if (minorsurgery == 1)
             ServicesAvailable.push('minorsurgery');
         var csections = markers[i].getAttribute("csections");
         if (csections == 1)
             ServicesAvailable.push('csections');
+        var hopitalisatioselmen = markers[i].getAttribute("hopitalisatioselmen");
+        if (hopitalisatioselmen == 1)
+            ServicesAvailable.push('hopitalisatioselmen');
+        var generalmeds = markers[i].getAttribute("generalmeds");
+        if (generalmeds == 1)
+            ServicesAvailable.push('generalmeds');
+        var bloodtransf = markers[i].getAttribute("bloodtransf");
+        if (bloodtransf == 1)
+            ServicesAvailable.push('bloodtransf');
 
         if (services.length > 0)
         {
             if (filterByService(services, ServicesAvailable, optF))
                 continue;
         }
-        
+
         var isLab = markers[i].getAttribute("is_Lab");
         var isHIV = markers[i].getAttribute("is_HIVService");
 
