@@ -277,8 +277,8 @@ include_once('lib/init.php');
                                     <label for="cbxCésariennes">Césariennes</label>
                                 </div>
                                 <div class="checkbox span3">
-                                    <input type="checkbox" id="cbxLaboratoire" name="servFilter[]" value="laboratory" checked="checked" class="cbxServFil"/>
-                                    <label for="cbxLaboratoire">Laboratoire</label>
+                                    <input type="checkbox" id="cbxSTI" name="servFilter[]" value="sti" checked="checked" class="cbxServFil"/>
+                                    <label for="cbxSTI">Maladie Sexuellement Transmissible(STI)</label>
                                 </div>
                                 <div class="checkbox span3">
                                     <input type="checkbox" id="cbxTransfusionsanguine" name="servFilter[]" value="bloodtransf" checked="checked" class="cbxServFil"/>

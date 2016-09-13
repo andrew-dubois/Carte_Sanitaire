@@ -120,18 +120,22 @@ if (isset($_GET['allFDHIS'])) {
             $newnode->setAttribute("is_Lab", ($SPAFac['laboratory'] === null) ? 0 : (int) $SPAFac['laboratory']);  // assume no if null
             $newnode->setAttribute("is_HIVService", ($SPAFac['hivct'] || $SPAFac['hivcss'] || $SPAFac['pmtct']) ? 1 : 0);
             //Services
-            $newnode->setAttribute("GrowthMon", $SPAFac['growthmon']);
-            $newnode->setAttribute("Sickchild", $SPAFac['sickchild']);
             $newnode->setAttribute("FP", $SPAFac['fp']);
             $newnode->setAttribute("ANC", $SPAFac['anc']);
             $newnode->setAttribute("PMTCT", $SPAFac['pmtct']);
             $newnode->setAttribute("delivery", $SPAFac['delivery']);
             $newnode->setAttribute("malaria", $SPAFac['malaria']);
-            $newnode->setAttribute("sti", $SPAFac['sti']);
             $newnode->setAttribute("tb", $SPAFac['tb']);
             $newnode->setAttribute("hivct", $SPAFac['hivct']);
+            $newnode->setAttribute("noncomdiseases", $SPAFac['noncomdiseases']);
             $newnode->setAttribute("minorsurgery", $SPAFac['minorsurgery']);
             $newnode->setAttribute("csections", $SPAFac['csections']);
+            $newnode->setAttribute("sti", $SPAFac['sti']);
+            $newnode->setAttribute("bloodtransf", $SPAFac['bloodtransf']);
+            $newnode->setAttribute("generalmeds", $SPAFac['generalmeds']);
+            $newnode->setAttribute("hopitalisatioselmen", $SPAFac['hopitalisatioselmen']);
+            $newnode->setAttribute("GrowthMon", $SPAFac['growthmon']);
+            $newnode->setAttribute("Sickchild", $SPAFac['sickchild']);
         } else {    // In order to have "Inconnu" on the info window instead of "null"
             $newnode->setAttribute("nb_bed_overnight", "Inconnu");
             $newnode->setAttribute("nb_gen_medPrac", "Inconnu");
@@ -140,14 +144,6 @@ if (isset($_GET['allFDHIS'])) {
             $newnode->setAttribute("is_HIVService", 0); // assume no if unknown
         }
     }
-    //}
-    // If we ARE filtering by services, then we can only display facilities from DHIS 2 which have
-    // a link to SPA service data (based on the filter of services provided by $servFilters)
-//    else {
-//        $servFilterOpt = filter_input(INPUT_GET, 'opt_filter_radio', FILTER_DEFAULT);
-//        
-//        $dataFacSPA = $facSPA->facServ_selected_custom($depname);
-//    }
 
     $xmlfile = $dom->saveXML();
     echo $xmlfile;
@@ -204,6 +200,7 @@ if (isset($_GET['facilityid']) && isset($_GET['sfac'])) {
         $newnode->setAttribute("hivct", $SPAFac['hivct']);
         $newnode->setAttribute("minorsurgery", $SPAFac['minorsurgery']);
         $newnode->setAttribute("csections", $SPAFac['csections']);
+        $newnode->setAttribute("hopitalisatioselmen", $SPAFac['hopitalisatioselmen']);
     } else {    // In order to have "Inconnu" on the info window instead of "null"
         $newnode->setAttribute("nb_bed_overnight", "Inconnu");
         $newnode->setAttribute("nb_gen_medPrac", "Inconnu");
