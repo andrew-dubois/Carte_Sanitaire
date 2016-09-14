@@ -64,11 +64,11 @@ foreach ($facs as $facIndex => $fac) {
                 $serviceCheckOR = false;
                 foreach ($services as $service) {
                     if ($assocSPAData[$service] == 1) {
-                        $serviceCheck = true;
+                        $serviceCheckOR = true;
                         break;  // Already has one, short circuit, no need to check others for OR
                     }
                 }
-                if (!$serviceCheck) {
+                if (!$serviceCheckOR) {
                     unset($facs[$facIndex]);
                     continue;
                 }
@@ -76,13 +76,13 @@ foreach ($facs as $facIndex => $fac) {
                 $serviceCheckAND = false;
                 foreach ($services as $service) {
                     if ($assocSPAData[$service] == 1) {
-                        $serviceCheck = true;
+                        $serviceCheckAND = true;
                     } else {
-                        $serviceCheck = false;
+                        $serviceCheckAND = false;
                         break; // short circuit, if it doesn't have any 1 of the services it's excluded
                     }
                 }
-                if (!$serviceCheck) {
+                if (!$serviceCheckAND) {
                     unset($facs[$facIndex]);
                     continue;
                 }
