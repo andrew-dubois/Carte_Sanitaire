@@ -333,16 +333,14 @@ include_once('lib/init.php');
                 <form role="form" method="get" action="lib/inc/reports.php" id="repForm" name="repForm">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3>Sélectionnez Paramètres Rapport</h3>
-                        <small>Séparée de filtres Carte</small>
+                        <h3>Sélectionnez Paramètres Rapport</h3>                        
                     </div>
                     <div class="modal-body">                        
-                        <div>
-
-                        </div>
+                        <p>Sélectionner un format pour le téléchargement</p>                        
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-success"  name="btnGenReport" id="btnGenReport" value="GenRep"> Générer un rapport</button>
+                        <button class="btn btn-secondary"  name="btnGenReport" id="btnGenReport" value="GenRepCSV"> Télécharger en format CSV</button>
+                        <button class="btn btn-primary"  name="btnGenReport" id="btnGenReport" value="GenRepPDF"> Télécharger en format PDF</button>
                     </div>  
                 </form>
             </div>
