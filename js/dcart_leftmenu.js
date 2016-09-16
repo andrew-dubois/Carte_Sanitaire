@@ -284,13 +284,25 @@ function SetupLeftMenu() {
         $("#servModWin").modal('hide');
     });
 
+    $(".rep_filter_r").on('change', function () {
+        if (this.value === 'mp_filt') { // Use filters from maps
+            $('#rep_adv_cont').slideUp();
+        } else // only one other option for now (use advanced filtering
+        {
+            $('#rep_adv_cont').slideDown();
+        }
+    });
+
+    $("#repForm button").click(function () {
+        $("button", $(this).parents("form")).removeAttr("clicked");
+        $(this).attr("clicked", "true");
+    });
+
     $('#repForm').submit(function (e) {
         e.preventDefault();
-        // For now, we just generate a report based on the filters selected for the map
-        // A table version of the map data if you would
 
         var sendJSON = getMapFiltsForReport();
-
+        sendJSON.reportFormat = $("button[clicked=true]").val();
         $.ajax({
             type: 'POST',
             data: sendJSON,

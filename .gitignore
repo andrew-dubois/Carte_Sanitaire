@@ -47,4 +47,5 @@ Temporary Items
 .apdisk
 
 # Reporting files
-.csv
+*.csv
+*.pdf
