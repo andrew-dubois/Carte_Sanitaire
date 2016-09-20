@@ -303,16 +303,26 @@ function SetupLeftMenu() {
 
         var sendJSON = getMapFiltsForReport();
         sendJSON.reportFormat = $("button[clicked=true]").val();
-        $.ajax({
-            type: 'POST',
-            data: sendJSON,
-            url: 'lib/inc/reports.php',
-            success: function (data) {
-                //document.location.href = data;
-                //var seeData = data;
-                window.open(data, '_blank');
-            }
-        });
+
+        if (sendJSON.facTypes.length > 0)
+        {
+            // Remove warning if they have facility types
+            $("#RepWin .modal-body #warnText").remove();
+            $.ajax({
+                type: 'POST',
+                data: sendJSON,
+                url: 'lib/inc/reports.php',
+                success: function (data) {
+                    //document.location.href = data;
+                    //var seeData = data;
+                    window.open(data, '_blank');
+                }
+            });
+        } else
+        {
+            var noFactTypesWarning = "<span id='warnText' style='color: red; font-size: 12px;'>Vous devez sélectionner au moins un type d'installation</span>";
+            $("#RepWin .modal-body").append(noFactTypesWarning);
+        }
     });
 }
 
