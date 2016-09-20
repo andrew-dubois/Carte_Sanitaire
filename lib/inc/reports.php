@@ -169,12 +169,12 @@ if ($reportFormat == "GenRepCSV") {
     array_splice($facTypeArr, 0, 0, "Type Filters:");
     fputcsv($file, $facTypeArr);
     if (count($services) > 0) {
-        array_splice($services, 0, 0, "Service Filters:" . ($operator == "OR" ? "(équipements mentionnés offrent au moins un)" : "(équipements mentionnés offrent tout)"));
+        array_splice($services, 0, 0, ("Service Filters:" . ($operator == "OR" ? iconv('UTF-8', 'windows-1252', "(équipements mentionnés offrent au moins un)") : iconv('UTF-8', 'windows-1252', "(équipements mentionnés offrent tout)"))));
         fputcsv($file, PrettifyServices($services));
     }
     fputcsv($file, $header);
     foreach ($facs as $fac) {
-// some institutions don't have managing authority
+    // some institutions don't have managing authority
         if (array_key_exists("managauthority", $fac)) {
             fputcsv($file, [$fac["code"], $fac["name"], $fac["facilitytype"], $fac["managauthority"], $fac["deptname"], $fac["uasname"], $fac["communename"], $fac["seccomname"], $fac["laboratory"], $fac["vih"]]);
         } else {
@@ -279,6 +279,9 @@ function PrettifyServices($services) {
                 break;
             case "hopitalisatioselmen":
                 array_push($prettyServices, "Hopitalisation");
+                break;
+            default:
+                array_push($prettyServices, $service);
                 break;
         }
     return $prettyServices;
