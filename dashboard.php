@@ -105,7 +105,20 @@ Auth_DHIS2();
                         </div>
                         <!--Dashboard area-->
                         <div id="dboardViewDiv">                
-
+							
+							<div class="dropdown" style="clear:both; float:right" >
+											  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+												T&eacute;l&eacute;charger en
+												<span class="caret"></span>
+											  </button>
+											  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+												<li><a href="#">Excel</a></li>
+												<li><a href="#">PDF</a></li>
+												<li><a href="#">Image</a></li>
+												
+											  </ul>
+											</div>
+							
                             <div id="content-dbord-inner" style="width:100%; min-height:80.51030927835052%;">
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li class="active"><a href="#tab-services" role="tab" data-toggle="tab" class="link-infoinst" style="cursor: pointer;"><i class="fa fa-table fa-1"></i> Pivot Table</a></li>
@@ -212,10 +225,15 @@ Auth_DHIS2();
                                             </table>
                                         </div>
                                         <div style="width: 80%; float: right;">
-                                            <div id="cs_map" style="width:100%; height:70%"></div>  
+                                            <div id="cs_map" style="width:100%; height:70%"></div> 
+											
+										
                                         </div>
+										
+										
                                     </div>
                                 </div>
+								
                             </div>
                             <!--<span class="badge badge-info">Source: <strong>DHIS2</strong></span>-->
                         </div>
