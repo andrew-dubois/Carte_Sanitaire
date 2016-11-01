@@ -307,7 +307,7 @@ function SetupLeftMenu() {
         if (sendJSON.facTypes.length > 0)
         {
             // Remove warning if they have facility types
-            $("#RepWin .modal-body #warnText").remove();
+            $("#RepWin #warnText").hide();
             $.ajax({
                 type: 'POST',
                 data: sendJSON,
@@ -320,8 +320,7 @@ function SetupLeftMenu() {
             });
         } else
         {
-            var noFactTypesWarning = "<span id='warnText' style='color: red; font-size: 12px;'>Vous devez sélectionner au moins un type d'installation</span>";
-            $("#RepWin .modal-body").append(noFactTypesWarning);
+            $("#RepWin #warnText").show();
         }
     });
 }

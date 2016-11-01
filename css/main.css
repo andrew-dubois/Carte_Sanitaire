@@ -359,6 +359,9 @@ table {
 #navbar-inner ul li a.mIcon.docicon {
     background-image: url(../images/doc-icon.png);	
 }
+#navbar-inner ul li a.mIcon.clipicon {
+    background-image: url(../images/clip-icon.png);	
+}
 #leftmenu form .accordionButton h3 {
     font-size: 16px;
     margin: 0px;

@@ -33,25 +33,6 @@ class PDF extends FPDF {
         $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 
-    function ImprovedTable($header, $data) {
-        // Column widths
-        $w = array(40, 35, 40, 45);
-        // Header
-        for ($i = 0; $i < count($header); $i++)
-            $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C');
-        $this->Ln();
-        // Data
-        foreach ($data as $row) {
-            $this->Cell($w[0], 6, $row[0], 'LR');
-            $this->Cell($w[1], 6, $row[1], 'LR');
-            $this->Cell($w[2], 6, number_format($row[2]), 'LR', 0, 'R');
-            $this->Cell($w[3], 6, number_format($row[3]), 'LR', 0, 'R');
-            $this->Ln();
-        }
-        // Closing line
-        $this->Cell(array_sum($w), 0, '', 'T');
-    }
-
 }
 
 if (!$_POST)
@@ -174,7 +155,7 @@ if ($reportFormat == "GenRepCSV") {
     }
     fputcsv($file, $header);
     foreach ($facs as $fac) {
-    // some institutions don't have managing authority
+        // some institutions don't have managing authority
         if (array_key_exists("managauthority", $fac)) {
             fputcsv($file, [$fac["code"], $fac["name"], $fac["facilitytype"], $fac["managauthority"], $fac["deptname"], $fac["uasname"], $fac["communename"], $fac["seccomname"], $fac["laboratory"], $fac["vih"]]);
         } else {

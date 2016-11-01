@@ -89,16 +89,14 @@ function getNbInfrast($valInfrast) {
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>MSPP -  Carte Sanitaire</title>
         <script type="text/javascript" src="js/jquery191.js"></script>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=geometry"></script>
-        <script type="text/javascript" src="js/inst.js"></script> 
-        <script type="text/javascript" src="js/custom.js"></script>    
+        <script type="text/javascript" src="js/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=geometry&key=AIzaSyBKTJn79hsRgdkWhnJr8QxodRTidYVFTKs"></script>
+        <script type="text/javascript" src="js/inst.js"></script>                 
+
         <link href="css/main.css" rel="stylesheet" type="text/css"> 
         <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans">
-        <script type="text/javascript" src="js/bootstrap/js/bootstrap.min.js"></script>
-
         <link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-        <link href="css/bootstrap-custum.css" rel="stylesheet" type="text/css">     
-
+        <link href="css/bootstrap-custum.css" rel="stylesheet" type="text/css">
     </head>
 
     <body>
