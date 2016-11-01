@@ -323,7 +323,8 @@ include_once('lib/init.php');
                         <h3>Sélectionnez Paramètres Rapport</h3>                        
                     </div>
                     <div class="modal-body">                        
-                        <p>Sélectionner un format pour le téléchargement</p>                        
+                        <p>Sélectionner un format pour le téléchargement</p>
+                        <span id='warnText' style='color: red; font-size: 12px; display:none;'>Vous devez sélectionner au moins un type d'installation</span>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary"  name="btnGenReport" id="btnGenReport" value="GenRepCSV"> Télécharger en format CSV</button>

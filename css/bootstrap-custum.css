@@ -1,195 +1,204 @@
 /* CSS Document */
 
 /*General*/
+
 h1, h2, h3, h4, h5, h6 {
-margin: 5px 0;
-font-family: inherit;
-font-weight: bold;
-line-height:normal;
-color: inherit;
-font-size:16px;
+    margin: 5px 0;
+    font-family: inherit;
+    font-weight: bold;
+    line-height:normal;
+    color: inherit;
+    font-size:16px;
+}
+
+h1{
+    font-size:18px;    
+}
+
+h4{
+    font-size: 14px;
 }
 
 label{
-display:inline;
+    display:inline;
 }
 
 /*custum tab links*/
 #myTab{
-	padding-left:20px;
-	margin-bottom:2px;
-	}
+    padding-left:20px;
+    margin-bottom:2px;
+}
 #myTab li a{
-	height:20px;
-	background-color:#b3d1ff;
-	border-radius:0;
-	color:#000;
-	font-family:Verdana, Geneva, sans-serif;
-	font-size:11px;
-	padding-top:2px;
-	padding-bottom:2px;
-	margin-right:0;
-	}
+    height:20px;
+    background-color:#b3d1ff;
+    border-radius:0;
+    color:#000;
+    font-family:Verdana, Geneva, sans-serif;
+    font-size:11px;
+    padding-top:2px;
+    padding-bottom:2px;
+    margin-right:0;
+}
 #myTab li.active a{
-	background-color:#fff;
-	margin-top:-3px;
-	padding-top:5px;
-	}
+    background-color:#fff;
+    margin-top:-3px;
+    padding-top:5px;
+}
 #myTab li a.width-link{
-	padding-left:30px;
-	padding-right:30px;
-	}
-	
+    padding-left:30px;
+    padding-right:30px;
+}
+
 /*custum navbar*/
 
 /*custom background for map tab navbar*/
 .navbar-inner{
-	background: #45484d; /* Old browsers */
-	background: -moz-linear-gradient(top,  #45484d 0%, #000000 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#45484d), color-stop(100%,#000000)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #45484d 0%,#000000 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #45484d 0%,#000000 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #45484d 0%,#000000 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #45484d 0%,#000000 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
-	min-height:20px;
-	padding-left:5px;
-	}
-	
+    background: #45484d; /* Old browsers */
+    background: -moz-linear-gradient(top,  #45484d 0%, #000000 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#45484d), color-stop(100%,#000000)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #45484d 0%,#000000 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #45484d 0%,#000000 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #45484d 0%,#000000 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #45484d 0%,#000000 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
+    min-height:20px;
+    padding-left:5px;
+}
+
 .navbar .nav{
-	height:auto;
-	padding-top:4px;
-	padding-bottom:4px;
-	}
-	
+    height:auto;
+    padding-top:4px;
+    padding-bottom:4px;
+}
+
 .navbar .nav>li>a {
-	float: none;
-	padding:3px 10px 3px 10px;
-	color: #777;
-	text-decoration: none;
-	text-shadow:none;	
+    float: none;
+    padding:3px 10px 3px 10px;
+    color: #777;
+    text-decoration: none;
+    text-shadow:none;	
 }
 .navbar .nav>li>a:hover{
-	color:#fff;
-	}
+    color:#fff;
+}
 
 .navbar .nav>.active>a{
-	color:#fff;
-	}
+    color:#fff;
+}
 .navbar .nav>.active>a, .navbar .nav>.active>a:hover {
-	background:none;
+    background:none;
 }
 .navbar .nav>li{
-	line-height:15px;
-	height:auto;
-	border-right-width: 1px;
-	border-right-style: solid;
-	border-right-color:#777;
-	}
+    line-height:15px;
+    height:auto;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color:#777;
+}
 .navbar .nav>li:last-child{
-	border-right-width:0;
-	}
+    border-right-width:0;
+}
 
 .dropdown .caret {
-	margin-top: 6px;
-	margin-left: 2px;
+    margin-top: 6px;
+    margin-left: 2px;
 }
 .caret {
-	border-top: 4px solid #777;
+    border-top: 4px solid #777;
 }
 
 /*navbar form search*/
 
 #mapSearchBtn{
-	line-height:8px;
-	}
+    line-height:8px;
+}
 #mapSearchForm{
-	margin-bottom:0px;
-	margin-top:2px;
+    margin-bottom:0px;
+    margin-top:2px;
 }
 .input-append input{
-	height:25px;
-	}
+    height:25px;
+}
 #map_navbar .navbar{
-	margin-bottom:0;
-	}
+    margin-bottom:0;
+}
 
 /*Custom the sidebar and map content*/
 .container-fluid {
-padding-left: 2px;
+    padding-left: 2px;
 }
 
 #map .container{
-	padding-left:0;
-	padding-right:0;
-	width:980px;
-	}
+    padding-left:0;
+    padding-right:0;
+    width:980px;
+}
 #map .container .row .span2{
-	width:180px;
-	height:420px;
-	overflow:hidden;
-	}
+    width:180px;
+    height:420px;
+    overflow:hidden;
+}
 #map .container .row .span10{
-	min-height:420px;
-	}
+    min-height:420px;
+}
 #map .accordionButton{
-	cursor:pointer;
-	}
+    cursor:pointer;
+}
 #map .accordionButton h3{
-	font-size:14px;
-	margin-top:0;
-	margin-bottom:0;
-	line-height:30px;
-	padding-left:20px;
-	
-	}
+    font-size:14px;
+    margin-top:0;
+    margin-bottom:0;
+    line-height:30px;
+    padding-left:20px;
+
+}
 .accordionContent label{
-	font-size:12px;
-	margin-bottom:3px;
-	}
+    font-size:12px;
+    margin-bottom:3px;
+}
 .accordionContent .table-condensed td{
-	padding:0px 1px;
-	}
+    padding:0px 1px;
+}
 .accordionContent .table td{
-	line-height:17px;
-	}
+    line-height:17px;
+}
 .sep_menubar{
-	display:block;
-	border-radius:4px;
-	background:#EFEFEF;
-	line-height:10px;
-	text-align:center;
-	border:1px solid #CCC;
-	overflow:hidden;
-	}
+    display:block;
+    border-radius:4px;
+    background:#EFEFEF;
+    line-height:10px;
+    text-align:center;
+    border:1px solid #CCC;
+    overflow:hidden;
+}
 .legend{
-	display:block;
-	border:1px solid #ddd;
-	height:13px;
-	width:13px;
-	margin-top:1px;
-	margin-bottom:1px;
-	}
+    display:block;
+    border:1px solid #ddd;
+    height:13px;
+    width:13px;
+    margin-top:1px;
+    margin-bottom:1px;
+}
 .legend_150{
-	background-color:#F00;
-	}
+    background-color:#F00;
+}
 .legend_100_149{
-	background-color:#FFC488;
-	}
+    background-color:#FFC488;
+}
 .legend_50_99{
-	background-color:#FF6;
-	}
+    background-color:#FF6;
+}
 #sitelist{
-	margin-left:13px;
-	}
+    margin-left:13px;
+}
 
 #sitelist li span input{
-	margin:-6px 0 0;
-	}
+    margin:-6px 0 0;
+}
 #sitelist li > ul > li > table tr td{
-	font-size:11px;
-	line-height:16px;
-	}
+    font-size:11px;
+    line-height:16px;
+}
 /*bootstrap google map css problem */
 #cs_map img {
     max-width: none;
@@ -200,120 +209,120 @@ padding-left: 2px;
 
 /*custom style for modal box*/
 .modal-backdrop{
-	background-color:#181515;
-	}
+    background-color:#181515;
+}
 
 /*custom style the reports navbar*/
 #reports .navbar{
-	margin-bottom:1px;
-	}
+    margin-bottom:1px;
+}
 #map-report .container{
-	width:980px;
-	}
-	
+    width:980px;
+}
+
 /*Custom offline popup window*/
 #offModWin div.modal-header h3{
-	font-weight:normal;
-	color:#B30000;
-	}
+    font-weight:normal;
+    color:#B30000;
+}
 #offModWin.modal.fade.in{
-	top:30%;
-	}
+    top:30%;
+}
 
 /*custom the tab content*/
 .tab-content{
-	overflow:hidden;
-	}
+    overflow:hidden;
+}
 /*custum container-fluid class*/
 .container-fluid {
-	padding-right:0;
-	}
-	
+    padding-right:0;
+}
+
 /*Custom left menu*/
 #leftmenu{
-	min-height:80.51030927835052%;
-	width: 13%;
-	border-top-width: 5px;
-	border-top-style: solid;
-	border-top-color: #7BA4C7;
-	box-shadow:1px 0 10px #EAEAEA;
-	padding-left:2px;
-	padding-right:2px;
-	}
+    min-height:80.51030927835052%;
+    width: 13%;
+    border-top-width: 5px;
+    border-top-style: solid;
+    border-top-color: #7BA4C7;
+    box-shadow:1px 0 10px #EAEAEA;
+    padding-left:2px;
+    padding-right:2px;
+}
 
 /*infowindow issue fixed*/
 .gm-style-iw{ overflow: hidden !important;}
 
 .bs-callout {
-padding: 20px;
-margin-bottom:10px;
-border: 1px solid #eee;
-border-left-width: 5px;
-border-radius:3px;
+    padding: 20px;
+    margin-bottom:10px;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius:3px;
 }
 
 .bs-callout h4 {
-margin-top: 0;
-margin-bottom: 5px;
-font-size:18px;
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size:18px;
 }
 
 .bs-callout-danger{
-	border-left-color: #d9534f;
-	}
+    border-left-color: #d9534f;
+}
 .bs-callout-warning {
-	border-left-color: #f0ad4e;
+    border-left-color: #f0ad4e;
 }
 
 .bs-callout-info {
-	border-left-color: #7BA4C7;
+    border-left-color: #7BA4C7;
 }
 
 .bs-callout-info h4 {
-color: #7BA4C7;
+    color: #7BA4C7;
 }
 
 /*pagination*/
 
 .pagination {
-	display: inline-block;
-	padding-left: 0;
-	margin: 20px 0;
-	border-radius: 4px;
+    display: inline-block;
+    padding-left: 0;
+    margin: 20px 0;
+    border-radius: 4px;
 }
 
 .pagination>li {
-display: inline;
+    display: inline;
 }
 
 .pagination>li:first-child>a, .pagination>li:first-child>span {
-	margin-left: 0;
-	border-top-left-radius: 4px;
-	border-bottom-left-radius: 4px;
+    margin-left: 0;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
 }
 
 .pagination>.disabled>span, .pagination>.disabled>span:hover, .pagination>.disabled>span:focus, .pagination>.disabled>a, .pagination>.disabled>a:hover, .pagination>.disabled>a:focus {
-	color: #777;
-	cursor: not-allowed;
-	background-color: #fff;
-	border-color: #ddd;
+    color: #777;
+    cursor: not-allowed;
+    background-color: #fff;
+    border-color: #ddd;
 }
 .pagination>li>a, .pagination>li>span {
-	position: relative;
-	float: left;
-	padding: 6px 12px;
-	margin-left: -1px;
-	line-height: 1.42857143;
-	color: #428bca;
-	text-decoration: none;
-	background-color: #fff;
-	border: 1px solid #ddd;
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #428bca;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
 }
 
 .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
-z-index: 2;
-color: #fff;
-cursor: default;
-background-color: #428bca;
-border-color: #428bca;
+    z-index: 2;
+    color: #fff;
+    cursor: default;
+    background-color: #428bca;
+    border-color: #428bca;
 }

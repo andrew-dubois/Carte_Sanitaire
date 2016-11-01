@@ -151,6 +151,9 @@
 #navbar-inner ul li a.mIcon.docicon {
     background-image: url(../images/doc-icon.png);	
 }
+#navbar-inner ul li a.mIcon.clipicon {
+    background-image: url(../images/clip-icon.png);	
+}
 #language a {
     padding-left: 32px;
     background-image: url(../images/flag-french-icon.png);
