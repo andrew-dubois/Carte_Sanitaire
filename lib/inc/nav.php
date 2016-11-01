@@ -42,6 +42,6 @@ switch ($filename) {
 <li><a href="dcart.php" class="<?php echo $class_focusitem_p2 ?> mIcon mapicon">Cartographie</a></li>
 <li><a href="dashboard.php" class="<?php echo $class_focusitem_p3 ?> mIcon sitemapicon">Tableau de bord</a></li>
 <li><a href="search.php" class="<?php echo $class_focusitem_p4 ?> mIcon docicon">Recherche</a></li>
-<li><a href="reports.php" class="<?php echo $class_focusitem_p6 ?> mIcon docicon">Rapports</a></li>
+<!--<li><a href="reports.php" class="<?php echo $class_focusitem_p6 ?> mIcon docicon">Rapports</a></li>-->
             <!--<li><a href="dpop.php" class=" <?php echo $class_focusitem_p5 ?> mIcon abouticon">D&eacute;mographie</a>-->
 </li>
