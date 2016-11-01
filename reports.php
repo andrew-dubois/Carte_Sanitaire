@@ -469,7 +469,9 @@
                                             <select name="cmbDisponibles">
                                                 <option value="" selected>--</option>
                                                 <option value=">">(>)greater-than</option>
+                                                <option value=">=">(>)greater-than-equal-to</option>
                                                 <option value="<">(<)less-than</option>
+                                                <option value="<=">(<)less-than-equal-to</option>
                                                 <option value="=">(=)equal-to</option>
                                             </select>
                                             <input id="nmbDisponibles" name="nmbDisponibles" type="text" value="0" class="number">
@@ -479,7 +481,9 @@
                                             <select name="cmbMaternite">
                                                 <option value="" selected>--</option>
                                                 <option value=">">(>)greater-than</option>
+                                                <option value=">=">(>)greater-than-equal-to</option>
                                                 <option value="<">(<)less-than</option>
+                                                <option value="<=">(<)less-than-equal-to</option>
                                                 <option value="=">(=)equal-to</option>
                                             </select>
                                             <input id="nmbMaternite" name="nmbMaternite" type="text" value="0" class="number">
@@ -489,7 +493,9 @@
                                             <select name="cmbAccouchment">
                                                 <option value="" selected>--</option>
                                                 <option value=">">(>)greater-than</option>
+                                                <option value=">=">(>)greater-than-equal-to</option>
                                                 <option value="<">(<)less-than</option>
+                                                <option value="<=">(<)less-than-equal-to</option>
                                                 <option value="=">(=)equal-to</option>
                                             </select>
                                             <input id="nmbAccouchment" name="nmbAccouchment" type="text" value="0" class="number">
@@ -678,16 +684,20 @@
                                 </div>
                             </div>
                             <div class="row-fluid">   
-                                <div class="span4">                                
-                                    <input id="rbGDepartment" checked type="radio" value="Department" name="grouping[]" class="radio" />
+                                <div class="span3">                                
+                                    <input id="rbGNone" checked type="radio" value="Non" name="grouping" class="radio" />
+                                    <label for="rbGNone">Aucun Groupement</label>                           
+                                </div>
+                                <div class="span3">                                
+                                    <input id="rbGDepartment" type="radio" value="Department" name="grouping" class="radio" />
                                     <label for="rbGDepartment">Par Département</label>                           
                                 </div>
-                                <div class="span4">
-                                    <input id="rbGType" type="radio" value="Department" name="grouping[]" class="radio" />
+                                <div class="span3">
+                                    <input id="rbGType" type="radio" value="Type" name="grouping" class="radio" />
                                     <label for="rbGType">Par Type</label>                           
                                 </div>
-                                <div class="span4">
-                                    <input id="rbGService" type="radio" value="Department" name="grouping[]" class="radio" />
+                                <div class="span3">
+                                    <input id="rbGService" type="radio" value="Service" name="grouping" class="radio" />
                                     <label for="rbGService">Par Service Fourni</label>                           
                                 </div>                         
                             </div>                        

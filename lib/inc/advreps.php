@@ -86,6 +86,7 @@ $deparment = filter_input(INPUT_POST, 'dep-list-dropdmenu', FILTER_DEFAULT);
 $services = filter_input(INPUT_POST, 'servFilter', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
 $facTypes = filter_input(INPUT_POST, 'facType', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
 $repType = filter_input(INPUT_POST, 'type', FILTER_DEFAULT);
+$grouping = filter_input(INPUT_POST, 'grouping', FILTER_DEFAULT);
 
 // Sélectionnez Infrastructures Start
 
@@ -270,7 +271,6 @@ foreach ($facs as $facIndex => $fac) {
 $timeNow = time();
 
 if ($repType == 'PDF') {
-
     $pdf = new PDF("L");
     $pdf->AliasNbPages();
     $pdf->AddPage();
@@ -315,40 +315,46 @@ if ($repType == 'PDF') {
     $pdf->SetXY($leftx, $y + $h);
 
     $pdf->SetFont('Arial', '', 7);
-    foreach ($facs as $fac) {
-        $nb = 0;
-        for ($i = 0; $i < count($columns); $i++) {
-            if (array_key_exists($columns[$i], $fac)) {
-                $nb = max($nb, $pdf->NbLines($w[$i], $fac[$columns[$i]]));
-            }
+    $groupedArr = groupFacilities($grouping, $facs);
+    foreach ($groupedArr as $group => $facs) {
+        if ($group != "single") {
+            $pdf->Cell(40, 6, $group);
+            $pdf->Ln();
         }
-        $h = 5 * $nb;
 
-        for ($i = 0; $i < count($columns); $i++) {
-            $x = $pdf->GetX();
+        foreach ($facs as $fac) {
+            $nb = 0;
+            for ($i = 0; $i < count($columns); $i++) {
+                if (array_key_exists($columns[$i], $fac)) {
+                    $nb = max($nb, $pdf->NbLines($w[$i], $fac[$columns[$i]]));
+                }
+            }
+            $h = 5 * $nb;
+
+            for ($i = 0; $i < count($columns); $i++) {
+                $x = $pdf->GetX();
+                $y = $pdf->GetY();
+                $pdf->Rect($x, $y, $w[$i], $h);
+                if (array_key_exists($columns[$i], $fac)) {
+                    if (is_numeric($fac[$columns[$i]]))
+                        $pdf->MultiCell($w[$i], 5, $fac[$columns[$i]], 0, 0, "C", false);
+                    else
+                        $pdf->MultiCell($w[$i], 5, $fac[$columns[$i]], 0, 0, "LR", false);
+                }
+                else {
+                    $pdf->MultiCell($w[$i], 5, "", 0, 0, "LR", false);
+                }
+            }
+
+            // breakline
             $y = $pdf->GetY();
-            $pdf->Rect($x, $y, $w[$i], $h);
-            if (array_key_exists($columns[$i], $fac)) {
-                if (is_numeric($fac[$columns[$i]]))
-                    $pdf->MultiCell($w[$i], 5, $fac[$columns[$i]], 0, 0, "C", false);
-                else
-                    $pdf->MultiCell($w[$i], 5, $fac[$columns[$i]], 0, 0, "LR", false);
+            if ($y > 170) {
+                $pdf->AddPage();
+            } else {
+                $pdf->SetXY($leftx, $y + $h);
             }
-            else {
-                $pdf->MultiCell($w[$i], 5, "", 0, 0, "LR", false);
-            }
-        }
-
-        // breakline
-        $y = $pdf->GetY();
-        if ($y > 175) {
-            $pdf->AddPage();
-        } else {
-            $pdf->SetXY($leftx, $y + $h);
         }
     }
-    // Closing line
-    //$pdf->Cell(array_sum($w), 0, '', 'T');
 
     $pdf->Output("D", date("Y-M-d") . "_" . $timeNow . ".pdf");
 } else {
@@ -687,4 +693,42 @@ function getArrayLengths($columns) {
     }
 
     return $w;
+}
+
+function groupFacilities($type, $facs) {
+    $groupedArr = array();
+
+    switch ($type) {
+        case "Non": {
+                $groupedArr["single"] = $facs;
+                break;
+            }
+        case "Department": {
+                foreach ($facs as $key => $item) {
+                    if (key_exists($item["deptname"], $groupedArr)) {
+                        array_push($groupedArr[$item["deptname"]], $item);
+                    } else {
+                        $groupedArr[$item["deptname"]] = [$item];
+                    }
+                }
+
+                break;
+            }
+        case "Type": {
+                foreach ($facs as $key => $item) {
+                    if (key_exists($item["facilitytype"], $groupedArr)) {
+                        array_push($groupedArr[$item["facilitytype"]], $item);
+                    } else {
+                        $groupedArr[$item["facilitytype"]] = [$item];
+                    }
+                }
+                break;
+            }
+        case "Service": {
+
+                break;
+            }
+    }
+
+    return $groupedArr;
 }
