@@ -92,7 +92,19 @@ Auth_DHIS2();
                         </div>
                         <!--Dashboard area-->
                         <div id="dboardViewDiv">                
-
+							
+							<div class="dropdown" style="clear:both; float:right" >
+											  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+												T&eacute;l&eacute;charger en
+												<span class="caret"></span>
+											  </button>
+											  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+												<li><a href="#" id="pdfdownload">PDF</a></li>
+												<li><a href="#" class="exportcsv">Excel (CSV)</a></li>												
+																								
+											  </ul>
+											</div>
+							
                             <div id="content-dbord-inner" style="width:100%; min-height:80.51030927835052%;">
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li class="active"><a href="#tab-services" role="tab" data-toggle="tab" class="link-infoinst" style="cursor: pointer;"><i class="fa fa-table fa-1"></i> Pivot Table</a></li>
@@ -199,10 +211,15 @@ Auth_DHIS2();
                                             </table>
                                         </div>
                                         <div style="width: 80%; float: right;">
-                                            <div id="cs_map" style="width:100%; height:70%"></div>  
+                                            <div id="cs_map" style="width:100%; height:70%"></div> 
+											
+										
                                         </div>
+										
+										
                                     </div>
                                 </div>
+								
                             </div>
                             <!--<span class="badge badge-info">Source: <strong>DHIS2</strong></span>-->
                         </div>
@@ -397,6 +414,40 @@ Auth_DHIS2();
                             "sSearch": "Filtrer un indicateur"
                         }
                     });
+					
+					//Get html content of the right panel (pivot table)
+					$('#pdfdownload').click(function(){
+						$("#pivot table").attr("border", "1");
+						var htmlcnt = $("#pivot").html();
+						var indTitle=$("#tableTitle").text();
+						
+						
+						$.post("reportstabledebord.php",
+							{
+								title: indTitle,
+								reportcntent: htmlcnt
+							},
+							function(data, status){
+								
+								//window.open('reportstabledebord.php');
+								window.open('http://docs.google.com/gview?url=http://200.113.242.50:8000/cs/reports/tableaudebord/report_'+data+'.pdf&embedded=true');
+								//alert("Data: " + data + "\nStatus: " + status);
+							});
+						
+						
+						//alert(htmlcnt);
+					});
+					
+					//Export dhis2 table in csv file
+					
+					$('.exportcsv').click(					
+						
+						function() { 
+						
+						var indTitle=$("#tableTitle").text();					
+						
+							exportTableToCSV.apply(this, [$('#pivot'), 'Rapport_'+indTitle+'.csv']);
+					 });
                 });
 
                 function setLinks(linkid, elm) {
@@ -432,6 +483,49 @@ Auth_DHIS2();
                     }
                     //alert(target);
                 });
-            </script>
+				
+            // Exports dhis2 table to csv
+			function exportTableToCSV($table, filename) {
+
+					var $rows = $table.find('tr:has(td)'),
+
+						// Temporary delimiter characters unlikely to be typed by keyboard
+						// This is to avoid accidentally splitting the actual contents
+						tmpColDelim = String.fromCharCode(11), // vertical tab character
+						tmpRowDelim = String.fromCharCode(0), // null character
+
+						// actual delimiter characters for CSV format
+						colDelim = '","',
+						rowDelim = '"\r\n"',
+
+						// Grab text from table into CSV formatted string
+						csv = '"' + $rows.map(function (i, row) {
+							var $row = $(row),
+								$cols = $row.find('td');
+
+							return $cols.map(function (j, col) {
+								var $col = $(col),
+									text = $col.text();
+
+								return text.replace('"', '""'); // escape double quotes
+
+							}).get().join(tmpColDelim);
+
+						}).get().join(tmpRowDelim)
+							.split(tmpRowDelim).join(rowDelim)
+							.split(tmpColDelim).join(colDelim) + '"',
+
+						// Data URI
+						csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+
+					$(this)
+						.attr({
+						'download': filename,
+							'href': csvData,
+							'target': '_blank'
+					});
+				}
+			
+			</script>
     </body>
 </html>
