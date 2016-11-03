@@ -332,7 +332,7 @@
                                         <input id="rgPdf" checked type="radio" value="PDF" name="type" class="radio" />
                                         <label for="rgPdf">PDF</label>    
                                         <input id="fgCsv" type="radio" value="CSV" name="type" class="radio" />
-                                        <label for="fgCsv">CSV</label>   
+                                        <label for="fgCsv">Excel</label>   
                                     </div>                                    
                                 </div>
                             </div>

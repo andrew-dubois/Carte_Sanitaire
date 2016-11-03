@@ -1,8 +1,12 @@
 <?php
 
-require (__DIR__ . "/../core/orgunitDHIS.php");
-require (__DIR__ . "/../core/orgunitSPA.php");
-require (__DIR__ . "/../../fpdf181/fpdf.php");
+require_once (__DIR__ . "/../core/orgunitDHIS.php");
+require_once (__DIR__ . "/../core/orgunitSPA.php");
+
+/** Include FPDF */
+require_once (__DIR__ . "/../../fpdf181/fpdf.php");
+/** Include PHPExcel */
+require_once dirname(__FILE__) . '/../../php_excel/PHPExcel.php';
 
 // Extension for FPDF to overried the header and footer methods which are currently empty
 class PDF extends FPDF {
@@ -268,6 +272,8 @@ foreach ($facs as $facIndex => $fac) {
     }
 }
 
+$prettyColumns = PrettifyColumns($columns);
+
 $timeNow = time();
 
 if ($repType == 'PDF') {
@@ -293,7 +299,7 @@ if ($repType == 'PDF') {
     }
     $pdf->Ln();
     $w = getArrayLengths($columns);
-    $prettyColumns = PrettifyColumns($columns);
+
     $pdf->SetFont('Arial', 'B', 8);
     $nb = 0;
     for ($i = 0; $i < count($columns); $i++) {
@@ -313,8 +319,10 @@ if ($repType == 'PDF') {
     // breakline
     $y = $pdf->GetY();
     $pdf->SetXY($leftx, $y + $h);
-
     $pdf->SetFont('Arial', '', 7);
+
+    // Group the facilities into an array of arrays
+    // Each array contains the facilities that fall into that group, for no grouping we will have a single array with index "Single"
     $groupedArr = groupFacilities($grouping, $facs);
     foreach ($groupedArr as $group => $facs) {
         if ($group != "single") {
@@ -357,8 +365,53 @@ if ($repType == 'PDF') {
     }
 
     $pdf->Output("D", date("Y-M-d") . "_" . $timeNow . ".pdf");
-} else {
-    
+} else {    // EXCEL
+    $objPHPExcel = new PHPExcel();
+
+    //Setup basic properties for Excel File
+    $objPHPExcel->getProperties()->setCreator("Carte Sanitaire")
+            ->setLastModifiedBy("Carte Sanitaire")
+            ->setTitle("Carte Sanitaire Data Export")
+            ->setDescription("Test document for PHPExcel, generated using PHP classes.");
+
+    // Group the facilities into an array of arrays
+    // Each array contains the facilities that fall into that group, for no grouping we will have a single array with index "Single"
+    $groupedArr = groupFacilities($grouping, $facs);
+    $groupCount = 0;
+    foreach ($groupedArr as $group => $facs) {
+        $objPHPExcel->getActiveSheet()->setTitle($group);
+
+        // Setup the headers
+        $objPHPExcel->setActiveSheetIndex($groupCount);
+
+        for ($i = 0; $i < count($columns); $i++) {
+            $objPHPExcel->getActiveSheet()
+                    ->setCellValueByColumnAndRow($i, 1, $prettyColumns[$i]);
+        }
+
+        // Do the rows for the faciclity info
+        $rowCount = 2;
+        foreach ($facs as $fac) {
+            for ($i = 0; $i < count($columns); $i++) {
+                if (key_exists($columns[$i], $fac))
+                    $objPHPExcel->getActiveSheet()
+                            ->setCellValueByColumnAndRow($i, $rowCount, $fac[$columns[$i]]);
+            }
+            $rowCount++;
+        }
+
+        $groupCount++;
+    }
+
+    $objPHPExcel->setActiveSheetIndex(0);
+
+    // Redirect output to a clientâ€™s web browser (Excel2007)
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename="01simple.xlsx"');
+    header('Cache-Control: max-age=0');
+
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+    $objWriter->save('php://output');
 }
 
 function checkInfrastructure($operator, $number, $dbValue) {
@@ -725,7 +778,36 @@ function groupFacilities($type, $facs) {
                 break;
             }
         case "Service": {
+                // Need to setup a services array to do the grouping
+                // this is because each service is it's own column
 
+                $groupedArr["ambulancedispo"] = array();
+                $groupedArr["servicedisp024h"] = array();
+                $groupedArr["fp"] = array();
+                $groupedArr["anc"] = array();
+                $groupedArr["pmtct"] = array();
+                $groupedArr["delivery"] = array();
+                $groupedArr["malaria"] = array();
+                $groupedArr["tb"] = array();
+                $groupedArr["hivct"] = array();
+                $groupedArr["noncomdiseases"] = array();
+                $groupedArr["minorsurgery"] = array();
+                $groupedArr["csections"] = array();
+                $groupedArr["laboratory"] = array();
+                $groupedArr["bloodtransf"] = array();
+                $groupedArr["generalmeds"] = array();
+                $groupedArr["hopitalisatioselmen"] = array();
+
+                // Now we check if the facility provides the service (indicated by a 1)
+                // In this grouping there will be duplicate facilities, this is obvious since a facility can offer more than one service   
+                foreach ($groupedArr as $servKey => $servItem) {
+                    foreach ($facs as $key => $item) {
+                        if (key_exists($servKey, $item))
+                            if ($item[$servKey] == 1) {
+                                array_push($groupedArr[$servKey], $item);
+                            }
+                    }
+                }
                 break;
             }
     }
