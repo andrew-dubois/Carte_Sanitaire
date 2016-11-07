@@ -379,14 +379,24 @@ if ($repType == 'PDF') {
     $groupedArr = groupFacilities($grouping, $facs);
     $groupCount = 0;
     foreach ($groupedArr as $group => $facs) {
-        $objPHPExcel->getActiveSheet()->setTitle($group);
+        if ($groupCount > 0) {
+            $objPHPExcel->createSheet();
+        }
 
         // Setup the headers
         $objPHPExcel->setActiveSheetIndex($groupCount);
+        // Max 31 characters for sheet name so need to do a check and truncate
+
+        if (strlen($group) > 31) {
+            $group = substr($group, 0, 31);
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle($group);
 
         for ($i = 0; $i < count($columns); $i++) {
             $objPHPExcel->getActiveSheet()
                     ->setCellValueByColumnAndRow($i, 1, $prettyColumns[$i]);
+            $objPHPExcel->getActiveSheet()->getCellByColumnAndRow($i, 1)->getStyle()->getFont()->setBold(true);
         }
 
         // Do the rows for the faciclity info
@@ -407,7 +417,7 @@ if ($repType == 'PDF') {
 
     // Redirect output to a clientâ€™s web browser (Excel2007)
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment;filename="01simple.xlsx"');
+    header('Content-Disposition: attachment;filename="' . date("Y-M-d") . "_" . $timeNow . '.xlsx"');
     header('Cache-Control: max-age=0');
 
     $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
