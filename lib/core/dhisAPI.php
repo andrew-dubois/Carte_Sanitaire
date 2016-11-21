@@ -154,41 +154,6 @@ function API_Institution($facUID) {
     return $decoded;
 }
 
-// Pulls through specific information for a given facility UID on the DHIS 2 API
-function API_InstitutionbyCommune($communeid) {
-    global $username, $password, $baseURL;
-    // TODO : Need to update the sql view via another api call to ensure most up to date data
-    // Get the indicators from the API
-    $service_url = $baseURL . 'api/organisationUnits/' . $communeid . '.json?includeDescendants=true&paging=false&fields=id,name,code,coordinates&filter=level:eq:6&filter=coordinates:like:[';
-
-    // initialise the curl call
-    $curl = curl_init($service_url);
-
-    // Set our curl options
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    // Authentication required even though we authenticate above, the cookie will only be used for XHR calls (clientside)
-    curl_setopt($curl, CURLOPT_USERPWD, $username . ':' . $password);
-
-    // get the curl response
-    $curl_response = curl_exec($curl);
-    if ($curl_response === false || $curl_response === '') {
-        $info = curl_getinfo($curl);
-        curl_close($curl);
-        die('error occured during curl exec. Additioanl info: ' . var_export($info));
-    }
-    // decode the json response into something we can work with
-    $decoded = json_decode($curl_response, true);
-    // close the connection
-    curl_close($curl);
-
-    // If there's an error, handle it
-    if (isset($decoded->response->status) && $decoded->response->status == 'ERROR') {
-        die('error occured: ' . $decoded->response->errormessage);
-    }
-
-    return $decoded;
-}
-
 function API_organisationUnitGroupSets() {
     global $username, $password, $baseURL;
     // TODO : Need to update the sql view via another api call to ensure most up to date data
@@ -363,6 +328,41 @@ function API_InstitutionbyName($InstName) {
     // TODO : Need to update the sql view via another api call to ensure most up to date data
     // Get the indicators from the API
     $service_url = $baseURL . 'api/organisationUnits.json?query=' . urlencode($InstName) . '&fields=*,parent[id,name,parent[id,name,parent[id,name,parent[id,name]]]]&filter=level:eq:6&filter=coordinates:like:[';
+
+    // initialise the curl call
+    $curl = curl_init($service_url);
+
+    // Set our curl options
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    // Authentication required even though we authenticate above, the cookie will only be used for XHR calls (clientside)
+    curl_setopt($curl, CURLOPT_USERPWD, $username . ':' . $password);
+
+    // get the curl response
+    $curl_response = curl_exec($curl);
+    if ($curl_response === false || $curl_response === '') {
+        $info = curl_getinfo($curl);
+        curl_close($curl);
+        die('error occured during curl exec. Additioanl info: ' . var_export($info));
+    }
+    // decode the json response into something we can work with
+    $decoded = json_decode($curl_response, true);
+    // close the connection
+    curl_close($curl);
+
+    // If there's an error, handle it
+    if (isset($decoded->response->status) && $decoded->response->status == 'ERROR') {
+        die('error occured: ' . $decoded->response->errormessage);
+    }
+
+    return $decoded;
+}
+
+// Get the list of communes from DHIS 2 and their parent Departments
+function API_Communes() {
+    global $username, $password, $baseURL;
+    // TODO : Need to update the sql view via another api call to ensure most up to date data
+    // Get the indicators from the API
+    $service_url = $baseURL . 'api/organisationUnits.json?paging=false&fields=id,name,parent[id,name,parent[id,name]]&filter=level:eq:4';
 
     // initialise the curl call
     $curl = curl_init($service_url);

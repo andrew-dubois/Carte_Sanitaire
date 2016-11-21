@@ -818,6 +818,15 @@ function zoomDep(nameDep) {
 
 }
 
+// uses the commune polygon to set the zoom and center of the map
+function ZoomCom(compoly) {
+    var poloyCenter = compoly.getBounds().getCenter();
+    map.panTo(poloyCenter);
+
+    var zoomLevel = map.getBoundsZoomLevel(compoly.getBounds());
+    map.setZoom(zoomLevel);
+}
+
 /*
  * Create a chart image as an icon image for map marker
  * @param size_long_larg int, series_val_color Array

@@ -369,16 +369,15 @@ table {
 }
 #department-list {
     min-height: 30px;
-    padding-top: 5px;
-    padding-bottom: 10px;
-
+    padding-top: 5px;    
 }
+
 #department-list h3 {
     font-weight: bold;
     margin-top: 0px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
-#department-list form select,#data-year form select,#commune-list select {
+#department-list select,#data-year form select,#commune-list select {
     width:83.5%;
     margin-left: auto;
     margin-right: auto;

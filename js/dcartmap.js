@@ -268,10 +268,15 @@ function BindDepInfoWindow(poly, depName, depInfoWindow) {
 
 // when a specific department is selected color all other polygons white
 function WhiteSelectDepartment(DepName) {
+    // hide the commune level polygons
+    for (var commune in comPolygons) {
+        for (var poly in comPolygons[commune].Polys)
+            comPolygons[commune].Polys[poly].setOptions({fillColor: '#ea5656', fillOpacity: 0.4, visible: false});
+    }
     if (DepName == "Haiti") {
         for (var department in depsPolygons) {
             for (var poly in depsPolygons[department].Polys) {
-                depsPolygons[department].Polys[poly].setOptions({fillColor: '#ea5656', fillOpacity: 0.4});
+                depsPolygons[department].Polys[poly].setOptions({fillColor: '#ea5656', fillOpacity: 0.4, visible: true});
             }
         }
     } else
@@ -280,10 +285,82 @@ function WhiteSelectDepartment(DepName) {
         for (var department in depsPolygons) {
             if (depsPolygons[department].DepName != DepName)
                 for (var poly in depsPolygons[department].Polys)
-                    depsPolygons[department].Polys[poly].setOptions({fillColor: "#FFF", fillOpacity: 0.8});
+                    depsPolygons[department].Polys[poly].setOptions({fillColor: "#FFF", fillOpacity: 0.8, visible: true});
             else    // If it matches colour it the right colour
                 for (var poly in depsPolygons[department].Polys)
-                    depsPolygons[department].Polys[poly].setOptions({fillColor: '#ea5656', fillOpacity: 0.4});
+                    depsPolygons[department].Polys[poly].setOptions({fillColor: '#ea5656', fillOpacity: 0.4, visible: true});
+        }
+    }
+}
+
+var comPolygons = [];  // Global storage for polygons
+
+function WhiteSelectCommune(ComName) {
+    // Hide the department level polygons
+    for (var department in depsPolygons) {
+        for (var poly in depsPolygons[department].Polys) {
+            depsPolygons[department].Polys[poly].setOptions({visible: false});
+        }
+    }
+
+    if (comPolygons.length < 1)
+    {
+        $.get("lib/inc/polygons.inc.php?Communes=1", function (data) {
+            var coms = $.parseJSON(data);
+
+            var comInfoWindow = new google.maps.InfoWindow({content: ""});
+
+            for (var com in coms) {
+                var comName = coms[com].Name;
+                var ComPoly = {
+                    ComName: comName,
+                    Polys: []
+                };
+
+                for (var poly in coms[com].Polys) {
+                    var HaitiR = new google.maps.Polygon({
+                        paths: coms[com].Polys[poly].Coords,
+                        strokeColor: '#ea5656',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 1,
+                        fillColor: '#ea5656',
+                        fillOpacity: 0.4
+                    });
+
+                    ComPoly.Polys.push(HaitiR);
+
+                    HaitiR.setMap(map);
+
+                    BindDepInfoWindow(HaitiR, comName, comInfoWindow);
+                }
+
+                comPolygons.push(ComPoly);
+            }
+
+            for (var commune in comPolygons) {
+                if (comPolygons[commune].ComName != ComName)
+                    for (var poly in comPolygons[commune].Polys)
+                        comPolygons[commune].Polys[poly].setOptions({fillColor: "#FFF", fillOpacity: 0.8, visible: true});
+                else {    // If it matches colour it the right colour
+                    for (var poly in comPolygons[commune].Polys)
+                        comPolygons[commune].Polys[poly].setOptions({fillColor: '#ea5656', fillOpacity: 0.4, visible: true});
+
+                    ZoomCom(comPolygons[commune].Polys)
+                }
+            }
+        });
+    } else
+    {
+        for (var commune in comPolygons) {
+            if (comPolygons[commune].ComName != ComName)
+                for (var poly in comPolygons[commune].Polys)
+                    comPolygons[commune].Polys[poly].setOptions({fillColor: "#FFF", fillOpacity: 0.8, visible: true});
+            else {    // If it matches colour it the right colour
+                for (var poly in comPolygons[commune].Polys)
+                    comPolygons[commune].Polys[poly].setOptions({fillColor: '#ea5656', fillOpacity: 0.4, visible: true});
+
+                ZoomCom(comPolygons[commune].Polys)
+            }
         }
     }
 }
@@ -585,9 +662,22 @@ function zoomDep(nameDep) {
         default:
             map.panTo(latlng_haiti);
             map.setZoom(zoomht);
+    }
+}
 
+// uses the commune polygon to set the zoom and center of the map
+function ZoomCom(compolys) {
+    var bounds = new google.maps.LatLngBounds();
+
+    for (var x in compolys) {
+        compolys[x].getPaths().forEach(function (element, index) {
+            element.forEach(function (element2, index2) {
+                bounds.extend(element2);
+            })
+        });
     }
 
+    map.fitBounds(bounds);
 }
 
 //Add a new button to the maptypecontrol option

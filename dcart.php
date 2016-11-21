@@ -1,5 +1,6 @@
 <?php
 include_once('lib/init.php');
+include_once('lib/core/orgunitDHIS.php');
 ?>
 <!DOCTYPE html">
 <html>
@@ -51,30 +52,44 @@ include_once('lib/init.php');
                             <div id="department-list">
                                 <!--<h3>Choisir une carte &agrave; afficher</h3>-->
                                 <h3>Choisir D&eacute;partementale</h3>
-                                <form action="" method="get" name="departmentlist">
-                                    <select name="dep-list-dropdmenu" id="dep-list-dropdmenu">
-                                        <option value="none">---</option>
-                                        <optgroup label="Carte Nationale">
-                                            <option value="Haiti">Haiti</option>
-                                        <optgroup/>
-                                        <optgroup label="Carte D&eacute;partementale">
-                                            <option value="Artibonite">Artibonite</option>
-                                            <option value="Centre">Centre</option>
-                                            <option value="Grand-Anse">Grand'Anse</option>
-                                            <option value="Nippes">Nippes</option>
-                                            <option value="Nord">Nord</option>
-                                            <option value="Nord-Est">Nord-Est</option>
-                                            <option value="Nord-Ouest">Nord-Ouest</option>
-                                            <option value="Ouest">Ouest</option>
-                                            <option value="Sud">Sud</option>
-                                            <option value="Sud-Est">Sud-Est</option>                                
-                                        <optgroup/>
-                                    </select>
-                                </form>
+                                <select name="dep-list-dropdmenu" id="dep-list-dropdmenu">
+                                    <option value="none">---</option>
+                                    <optgroup label="Carte Nationale">
+                                        <option value="Haiti">Haiti</option>
+                                    <optgroup/>
+                                    <optgroup label="Carte D&eacute;partementale">
+                                        <option value="Artibonite">Artibonite</option>
+                                        <option value="Centre">Centre</option>
+                                        <option value="Grand-Anse">Grand'Anse</option>
+                                        <option value="Nippes">Nippes</option>
+                                        <option value="Nord">Nord</option>
+                                        <option value="Nord-Est">Nord-Est</option>
+                                        <option value="Nord-Ouest">Nord-Ouest</option>
+                                        <option value="Ouest">Ouest</option>
+                                        <option value="Sud">Sud</option>
+                                        <option value="Sud-Est">Sud-Est</option>                                
+                                    <optgroup/>
+                                </select>
+                            </div>
+                            <div id="commune-list">                                
+                                <h3>Choisir Commune</h3>
+
+                                <select name="com-list-dropdmenu" id="com-list-dropdmenu">
+                                    <?php
+                                    echo '<option value="-" data-dept="-" selected>---</option>';
+
+                                    $orgUnitDHIS = new OrgUnitDHIS;
+
+                                    $communes = $orgUnitDHIS->getDHISComms_byDept('Haiti');
+                                    for ($x = 0; $x < count($communes); $x++) {
+                                        echo '<option value="' . $communes[$x]['name'] . '" data-dept="' . $communes[$x]['department'] . '">' . $communes[$x]['name'] . '</option>';
+                                    }
+                                    ?>
+                                </select>
                             </div>
                             <div id="layer-type1">
                                 <h3>Couche</h3>
-                                <table class="table table-condensed table-hover">
+                                <table class="table table-condensed table-hover" style="margin-bottom: 10px;">
                                     <tr>
                                         <td> <input type="checkbox" id="health_fac" checked class="layerOpt"/></td>
                                         <td><label for="health_fac">Institutions sanitaires</label>&nbsp;<span id="fac_typeTotal" class="badge badge-info">-</span>
@@ -116,7 +131,7 @@ include_once('lib/init.php');
                                 </table>                                
                             </div>  
                             <input type="button" class="btn btn-primary" id="btn_serv_filter" value="Filtrer les services (-/14)" style="margin-left: auto; margin-right: auto; display: block" />                          
-                            <br/>
+                            <div style="height: 5px;"></div>
                             <input type="button" class="btn btn-primary" id="btn_report" value="Compte-rendu" style="margin-left: auto; margin-right: auto; display: block" />                          
                         </div>
 
