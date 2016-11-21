@@ -82,15 +82,45 @@ class OrgUnitDHIS {
     }
 
     // Gets all the facilities from DHIS by commune id
-    public function getDHISfac_byComm($commID) {
-        $institutions = API_InstitutionbyCommune($commID)['organisationUnits'];
+    public function getDHISfac_byComm($commName) {
+        // Get all instutions
+        // *Note: the sqlView api does allow for a criteria query string where we could use this to filter dep name
+        // HOWEVER, this does not work for characters on testing i.e. it will not work for Nord-Est and returns the full
+        // list... Solution on writing this is to just get the full list and filter in php
+        $institutions = API_Institutions();
 
-        for ($x = 0; $x <= count($institutions) - 1; $x++) {
-            $institutions[$x]['latitude'] = json_decode($institutions[$x]['coordinates'])[1];
-            $institutions[$x]['longitude'] = json_decode($institutions[$x]['coordinates'])[0];
+        // we need to group rows into their respective institutions (duplicate institutions due to type and managing authority)
+
+        $institutionArray = [];
+        //$depname = ($depname == 'Grand\'Anse') ? 'Grand-Anse' : $depname;
+        foreach ($institutions['rows'] as $row) {
+            if ($commName != $row[5])
+                continue;
+
+            if (!array_key_exists($row[0], $institutionArray)) {
+                $institutionArray[$row[0]]['id'] = $row[0];
+                $institutionArray[$row[0]]['code'] = $row[1];
+                $institutionArray[$row[0]]['name'] = $row[2];
+                $institutionArray[$row[0]]['coordinates'] = $row[3];
+                if ($row[9] == 'Categorie / Type') {
+                    $institutionArray[$row[0]]['facilitytype'] = $row[8];
+                } else {
+                    $institutionArray[$row[0]]['managauthority'] = $row[8];
+                }
+                $institutionArray[$row[0]]['deptname'] = $row[7];
+                $institutionArray[$row[0]]['uasname'] = $row[6];
+                $institutionArray[$row[0]]['communename'] = $row[5];
+                $institutionArray[$row[0]]['seccomname'] = $row[4];
+            } else {
+                if ($row[9] == 'Categorie / Type') {
+                    $institutionArray[$row[0]]['facilitytype'] = $row[8];
+                } else {
+                    $institutionArray[$row[0]]['managauthority'] = $row[8];
+                }
+            }
         }
 
-        return $institutions;
+        return $institutionArray;
     }
 
     public function getDHISfacs_byNameLimit5($FacName) {
@@ -139,6 +169,26 @@ class OrgUnitDHIS {
         }
 
         return $institutions;
+    }
+    
+    public function getDHISComms_byDept($depName)
+    {
+        $communes = API_Communes()['organisationUnits'];
+        
+        for ($x = 0; $x < count($communes); $x++) {
+            if($communes[$x]['name'] == "")
+            {
+                unset($communes[$x]);
+                continue;
+            }
+            $communes[$x]['UAS'] = $communes[$x]['parent']['name'];
+            $communes[$x]['department'] = $communes[$x]['parent']['parent']['name'];        
+        }
+        
+        //reset the keys of the array
+        $communes = array_values($communes);
+        
+        return $communes;
     }
 
 }

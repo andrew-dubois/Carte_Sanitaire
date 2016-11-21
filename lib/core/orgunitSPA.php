@@ -102,6 +102,21 @@ commune.departement_code from institution,commune where institution.commune_code
         }
     }
 
+    //selectionne tous les facilities SPA par commune (uses moh_code as the index)
+    public function getAllInsSPAComCustom($nameCom) {
+        $conn = new DBConnection();
+        $con = $conn->dbconnect();
+        if ($con) {
+            $query = "select * FROM spa WHERE commune_name='" . $nameCom . "'";
+            
+            $result = $conn->queryTableSPA_indexiscode($query);
+            pg_close($con);
+            return $result;
+        } else {
+            return false;
+        }
+    }
+
     function facServ_selected_custom($depname, $serv_selected, $opt_filter) {
         $conn = new DBConnection();
         $con = $conn->dbconnect();

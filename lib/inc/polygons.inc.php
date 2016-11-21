@@ -95,7 +95,7 @@ if (isset($_GET['Haiti'])) {
 
 if (isset($_GET['Communes'])) {
     // Parse the xml
-    $xml = simplexml_load_file("../../js/gis/htiadm3.kml") or die("Error: Cannot create object");
+    $xml = simplexml_load_file("../../js/gis/HTI_level3_nostyle.kml") or die("Error: Cannot create object");
     // Get the coords of the departments
     $placemarks = $xml->Document->Placemark;
     $Communes = array();

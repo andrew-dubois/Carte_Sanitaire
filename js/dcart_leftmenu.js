@@ -1,5 +1,6 @@
 var distanceSearch = false;
 var numServChecked = "-"; // Store number of services checked for label updates
+var communeStore = [];
 
 function SetupLeftMenu() {
     /*
@@ -8,13 +9,48 @@ function SetupLeftMenu() {
 
     //****** view facilities on a national district view***
     $('#dep-list-dropdmenu').change(function () {
-        // Hide the cover page after they 
+        //Global var (selected department)
+        var depname = $(this).val();
+        // Hide the cover page after load
         $('#moh_div').hide();
+
+        // Reselect the first item in the drop down, which should always be the null option        
+        $('#com-list-dropdmenu option:first').prop('selected', 'selected');
 
         // Handles the selection of the dropdown, if nothing is selected, i.e. not in the array, don't show facility options
         var arr = ["Haiti", "Artibonite", "Centre", "Grand-Anse", "Nippes", "Nord", "Nord-Est", "Nord-Ouest", "Ouest", "Sud", "Sud-Est"];
-        if (jQuery.inArray($(this).val(), arr) !== -1) {
+        if (jQuery.inArray(depname, arr) !== -1) {
             $('#layer-type1').slideDown();
+
+            // first, if there are options in the store, put them back
+            if (communeStore.length > 0) {
+                for (var x in communeStore)
+                {
+                    var added = false;
+                    // insert the commune so that it's still in Alphabetical order
+                    $('#com-list-dropdmenu option').each(function () {
+                        if ($(this).text() > communeStore[x].text()) {
+                            communeStore[x].insertBefore($(this));
+                            added = true;
+                            return false;
+                        }
+                    });
+
+                    if (!added)
+                        $('#com-list-dropdmenu').append(communeStore[x]);
+                }
+            }
+
+            // If department isn't haiti
+            if (depname !== 'Haiti') {
+                // limit the communes to those in the department
+                $('#com-list-dropdmenu option').each(function () {
+                    if ($(this).data('dept') !== depname && $(this).data('dept') !== "-") {
+                        communeStore.push($(this));
+                        $(this).remove();
+                    }
+                });
+            }
         } else {
             $('#layer-type1').slideUp();
         }
@@ -25,22 +61,58 @@ function SetupLeftMenu() {
         $('#legendTable_btnShow').css('right', '0');
         $('#legendTable').css('right', '-600px');
 
-        //Global var (selected department)
-        var depname = $('#dep-list-dropdmenu').val();
-
         // the following two lines cause department selection to reset when changing regions
         $('.layerOpt').prop('checked', false);
         $('#health_fac').prop('checked', true);
         // set the first facility type to checked
         $('#fac_type li input[type=checkbox]').prop('checked', true);
 
-        var services = $('#servForm').serialize();
+        $.get("lib/inc/marker.inc.php?allFDHIS=" + depname, function (data) {
+            getXmlData(data);//retrieving xml data from database    //map_clustering.js	
 
-        $.get("lib/inc/marker.inc.php?allFDHIS=" + depname, services, function (data) {
-            getXmlData(data);//retrieving xml data from database    //map_clustering.js									
+            //collect all checked fac type
+            var typeFac_checked = '';
+            $('.opt_fac_type:checked').each(function (i) {
+                if ($('.opt_fac_type:checked').length == i + 1)
+                    typeFac_checked += $(this).val()
+                else
+                    typeFac_checked += $(this).val() + ':';
+            });
+
+            FilterMapByType(typeFac_checked);
+
             addClusterOnMap();//clustering
             // Need to change the selected department to white here
             WhiteSelectDepartment(depname);
+            getNumFacTypeByDep();//Get the facility number by department
+            getNumFacLabDep();// get the facility number with lab by dep
+            getNumFacHIVDep();//get the facility number with hiv by dep            
+
+            //Zooming by departement
+            zoomDep(depname);
+        });//end get	
+    });
+
+    $('#com-list-dropdmenu').on('change', function () {
+        var selCommune = $(this).val();
+
+        $.get("lib/inc/marker.inc.php?comFDHIS=" + selCommune, function (data) {
+            getXmlData(data);//retrieving xml data from database    //map_clustering.js	
+
+            //collect all checked fac type
+            var typeFac_checked = '';
+            $('.opt_fac_type:checked').each(function (i) {
+                if ($('.opt_fac_type:checked').length == i + 1)
+                    typeFac_checked += $(this).val()
+                else
+                    typeFac_checked += $(this).val() + ':';
+            });
+
+            FilterMapByType(typeFac_checked);
+
+            addClusterOnMap();//clustering
+            // Need to change the selected department to white here
+            WhiteSelectCommune(selCommune);
             getNumFacTypeByDep();//Get the facility number by department
             getNumFacLabDep();// get the facility number with lab by dep
             getNumFacHIVDep();//get the facility number with hiv by dep
@@ -165,12 +237,6 @@ function SetupLeftMenu() {
         } else {
             $('#fac_type').slideUp();
         }
-    });
-
-    //left pane event - Zooming by departement
-    $('#dep-list-dropdmenu').on("change", function () {
-        var valNameDep = $(this).val();
-        zoomDep(valNameDep);
     });
 
     $('#servChecks input').prop('disabled', true);

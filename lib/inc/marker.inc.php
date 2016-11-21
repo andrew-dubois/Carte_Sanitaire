@@ -78,21 +78,26 @@ if (isset($_GET['allF']) && $_GET['allF'] == 'all') {
 
 /* * ******************** DHIS **************************** */
 //View all DHIS facilities of all departements
-if (isset($_GET['allFDHIS'])) {
+if (isset($_GET['allFDHIS']) || isset($_GET['comFDHIS'])) {
     $dom = new DomDocument('1.0', 'utf-8');
     $node = $dom->createElement("markers");
     $parnode = $dom->appendChild($node);
-    $depname = $_GET['allFDHIS'];
     $facs = new OrgUnitDHIS;
     $facSPA = new OrgUnitSPA;
-    $dataFac = $facs->getAllInsDHIS($depname);
-
-    //$servFilters = filter_input(INPUT_GET, 'servFilter', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
-    // FOR FUTURE USE (Instead of resetting filters when a department is changed we incldue the filters to department)
-    // If we are not filtering by services
-    // Display all facilities from DHIS 2 (Whether or not they have a link to service information in SPA)
-    //if (!isset($servFilters)) {
-    $dataFacSPA = $facSPA->getAllInsSPACustom($depname);
+    $depname;
+    $comname;
+    $dataFac;
+    $dataFacSPA;
+    if (isset($_GET['allFDHIS'])) {
+        $depname = $_GET['allFDHIS'];
+        $dataFac = $facs->getAllInsDHIS($depname);
+        $dataFacSPA = $facSPA->getAllInsSPACustom($depname);
+    } else {
+        $comname = $_GET['comFDHIS'];
+        $dataFac = $facs->getDHISfac_byComm($_GET['comFDHIS']);
+        $dataFacSPA = $facSPA->getAllInsSPAComCustom($comname);
+    }   
+        
     foreach ($dataFac as $row) {
         $node = $dom->createElement("marker");
         $newnode = $parnode->appendChild($node);
